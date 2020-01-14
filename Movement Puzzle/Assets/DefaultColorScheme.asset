@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03898fc1dc4ac95439b73cf38aca4587, type: 3}
+  m_Name: DefaultColorScheme
+  m_EditorClassIdentifier: 
+  colors:
+  - name: Red
+    material: {fileID: 2100000, guid: b21e5d506e77d3b44beadcfe7fd8cac6, type: 2}
+  - name: Green
+    material: {fileID: 2100000, guid: 9f81dffe5fc3d254284c82cc1f02b72c, type: 2}
+  - name: Blue
+    material: {fileID: 2100000, guid: 78535f74cf416274cb13871ec663fbee, type: 2}
+  - name: Yellow
+    material: {fileID: 2100000, guid: ecc1e5f7dc017bb408d8aae2d49cd0a7, type: 2}
+  - name: Orange
+    material: {fileID: 2100000, guid: daf833edb695cc2409d141de87921771, type: 2}
+  - name: Brown
+    material: {fileID: 2100000, guid: 6d48c22ac0f25094581efad8004d5f3d, type: 2}
+  - name: Pink
+    material: {fileID: 2100000, guid: 6d0c3d0487964244087d6d42553db92f, type: 2}
+  - name: Black
+    material: {fileID: 2100000, guid: 4d6bb5a221425354fa10ca5be3ea4c44, type: 2}
+  goalColor:
+    name: Purple
+    material: {fileID: 2100000, guid: 5dff00e2d6e7fb249880d9a3a4397a81, type: 2}
+  shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
