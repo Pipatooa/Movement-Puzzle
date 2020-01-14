@@ -133,10 +133,10 @@ MonoBehaviour:
     y: 30
     width: 2560
     height: 1308
-  m_MinSize: {x: 608, y: 494}
-  m_MaxSize: {x: 16008, y: 14044}
+  m_MinSize: {x: 612, y: 494}
+  m_MaxSize: {x: 16012, y: 14044}
   vertical: 0
-  controlID: 1778
+  controlID: 76
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -158,10 +158,10 @@ MonoBehaviour:
     y: 0
     width: 2560
     height: 1308
-  m_MinSize: {x: 608, y: 494}
-  m_MaxSize: {x: 16008, y: 14044}
+  m_MinSize: {x: 612, y: 494}
+  m_MaxSize: {x: 16012, y: 14044}
   vertical: 1
-  controlID: 1779
+  controlID: 77
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -185,10 +185,10 @@ MonoBehaviour:
     y: 0
     width: 2560
     height: 926
-  m_MinSize: {x: 608, y: 222}
-  m_MaxSize: {x: 16008, y: 4022}
+  m_MinSize: {x: 612, y: 222}
+  m_MaxSize: {x: 16012, y: 4022}
   vertical: 0
-  controlID: 1780
+  controlID: 78
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -287,7 +287,7 @@ MonoBehaviour:
     y: 0
     width: 430
     height: 926
-  m_MinSize: {x: 302, y: 322}
+  m_MinSize: {x: 2, y: 22}
   m_MaxSize: {x: 4002, y: 4022}
   m_ActualView: {fileID: 20}
   m_Panes:
@@ -437,7 +437,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 66fbffff
+      m_ExpandedIDs: 76fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -699,7 +699,7 @@ MonoBehaviour:
   m_Script: {fileID: 13854, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MinSize: {x: 300, y: 300}
+  m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 4000, y: 4000}
   m_TitleContent:
     m_Text: Project Settings
@@ -762,14 +762,14 @@ MonoBehaviour:
   m_LastFolders:
   - Assets
   m_LastFoldersGridSize: 61
-  m_LastProjectPath: C:\Users\pipat\Desktop\Movement Puzzle\Movement Puzzle
+  m_LastProjectPath: C:\Users\pipat\Desktop\Github\Movement Puzzle\Movement Puzzle
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 602c0000
-    m_LastClickedID: 11360
-    m_ExpandedIDs: 00000000602c0000882c00001c2d0000d22d0000fc2d0000442e00006e2e000000ca9a3b
+    m_SelectedIDs: 582c0000
+    m_LastClickedID: 11352
+    m_ExpandedIDs: 00000000582c0000802c0000142d0000ca2d0000f42d00003c2e0000662e000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -797,7 +797,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000602c0000882c00001c2d0000d22d0000fc2d0000442e00006e2e000000ca9a3b
+    m_ExpandedIDs: 00000000582c0000802c0000142d0000ca2d0000f42d00003c2e0000662e0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

@@ -76,22 +76,22 @@
     <Compile Include="Assets\Scripts\Scriptable\LevelAssets.cs" />
     <Compile Include="Assets\Scripts\UndoSystem.cs" />
     <Reference Include="Unity.Timeline.Editor">
-      <HintPath>C:/Users/pipat/Desktop/Movement Puzzle/Movement Puzzle/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+      <HintPath>C:/Users/pipat/Desktop/Github/Movement Puzzle/Movement Puzzle/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-      <HintPath>C:/Users/pipat/Desktop/Movement Puzzle/Movement Puzzle/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+      <HintPath>C:/Users/pipat/Desktop/Github/Movement Puzzle/Movement Puzzle/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Users/pipat/Desktop/Movement Puzzle/Movement Puzzle/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>C:/Users/pipat/Desktop/Github/Movement Puzzle/Movement Puzzle/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>C:/Users/pipat/Desktop/Movement Puzzle/Movement Puzzle/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+      <HintPath>C:/Users/pipat/Desktop/Github/Movement Puzzle/Movement Puzzle/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-      <HintPath>C:/Users/pipat/Desktop/Movement Puzzle/Movement Puzzle/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+      <HintPath>C:/Users/pipat/Desktop/Github/Movement Puzzle/Movement Puzzle/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>C:/Users/pipat/Desktop/Movement Puzzle/Movement Puzzle/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+      <HintPath>C:/Users/pipat/Desktop/Github/Movement Puzzle/Movement Puzzle/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/2019.2.16f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
