@@ -24,10 +24,10 @@ public class CameraMovement : MonoBehaviour
         cameraOffset.z = -cameraOffset.y / Mathf.Tan(cameraRotation * Mathf.Deg2Rad);
 
         Vector3 previousCameraOffset = Quaternion.Euler(0, gameObject.transform.eulerAngles.y, 0) * cameraOffset;
-        gameObject.transform.rotation = Quaternion.Lerp(gameObject.transform.rotation, Quaternion.Euler(cameraRotation, Level.playerManager.currentPlayer.transform.eulerAngles.y, 0), cameraRotSpeed * Time.deltaTime);
+        gameObject.transform.rotation = Quaternion.Lerp(gameObject.transform.rotation, Quaternion.Euler(cameraRotation, LevelInfo.playerManager.currentPlayer.transform.eulerAngles.y, 0), cameraRotSpeed * Time.deltaTime);
 
         Vector3 newCameraOffset = Quaternion.Euler(0, gameObject.transform.eulerAngles.y, 0) * cameraOffset;
-        Vector3 desiredPosition = Level.playerManager.currentPlayer.transform.position;
+        Vector3 desiredPosition = LevelInfo.playerManager.currentPlayer.transform.position;
         desiredPosition.y = 0.5f;
 
         gameObject.transform.position = Vector3.Lerp(gameObject.transform.position - previousCameraOffset, desiredPosition, cameraMoveSpeed * Time.deltaTime) + newCameraOffset;

@@ -54,7 +54,7 @@ public class Player : MonoBehaviour
             arrow = Instantiate(arrowPrefab, gameObject.transform.position + rotation * new Vector3(0, 0.25f, 1), Quaternion.identity, gameObject.transform) as GameObject;
             arrow.transform.localScale *= arrowScale;
             arrow.transform.rotation = rotation;
-            arrow.GetComponent<Renderer>().material.color = Level.colorScheme.colors[colorIndex].material.color;
+            arrow.GetComponent<Renderer>().material.color = LevelInfo.colorScheme.colors[colorIndex].material.color;
 
             return arrow;
         }
@@ -66,7 +66,7 @@ public class Player : MonoBehaviour
         if (colorIndexLeft != -1) arrowUp = CreateArrow(Quaternion.Euler(0, 270, 0), colorIndexLeft);
 
         gameObject.transform.rotation = Quaternion.Euler(0, facingDir * 90, 0);
-        gameObject.GetComponent<Renderer>().material = Level.colorScheme.colors[colorIndex].material;
+        gameObject.GetComponent<Renderer>().material = LevelInfo.colorScheme.colors[colorIndex].material;
 
         needle = Instantiate(needlePrefab, gameObject.transform.position + new Vector3(0, 0.6f, 0), Quaternion.identity, gameObject.transform) as GameObject;
         needle.transform.localScale *= needleScale;
@@ -74,7 +74,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (selected && !Level.playerManager.resetLocked && !reachedGoal)
+        if (selected && !LevelInfo.playerManager.resetLocked && !LevelInfo.playerManager.levelCompleted && !reachedGoal)
         {
             if (Input.GetKeyDown(KeyCode.UpArrow) && colorIndexUp != -1) Move(0);
             else if (Input.GetKeyDown(KeyCode.RightArrow) && colorIndexRight != -1) Move(1);
@@ -150,13 +150,13 @@ public class Player : MonoBehaviour
         int newPosX = Mathf.RoundToInt(posX + vector.x);
         int newPosY = Mathf.RoundToInt(posY + vector.z);
 
-        if (newPosX < 0 || newPosX >= Level.levelData.tileArray.GetLength(0) || newPosY < 0 || newPosY >= Level.levelData.tileArray.GetLength(1))
+        if (newPosX < 0 || newPosX >= LevelInfo.levelData.tileArray.GetLength(0) || newPosY < 0 || newPosY >= LevelInfo.levelData.tileArray.GetLength(1))
         {
             return;
         }
 
         Player nudgedPlayer = null;
-        foreach (Player player in Level.playerManager.players)
+        foreach (Player player in LevelInfo.playerManager.players)
         {
             if (player.posX == newPosX && player.posY == newPosY && !player.reachedGoal)
             {
@@ -176,7 +176,7 @@ public class Player : MonoBehaviour
 
         gameObject.transform.position += vector;
 
-        Level.playerManager.UpdateColorCount();
+        LevelInfo.playerManager.UpdateColorCount();
     }
 
     bool Shift(int absDir)
@@ -204,13 +204,13 @@ public class Player : MonoBehaviour
         int newPosX = Mathf.RoundToInt(posX + vector.x);
         int newPosY = Mathf.RoundToInt(posY + vector.z);
 
-        if (newPosX < 0 || newPosX >= Level.levelData.tileArray.GetLength(0) || newPosY < 0 || newPosY >= Level.levelData.tileArray.GetLength(1))
+        if (newPosX < 0 || newPosX >= LevelInfo.levelData.tileArray.GetLength(0) || newPosY < 0 || newPosY >= LevelInfo.levelData.tileArray.GetLength(1))
         {
             return false ;
         }
 
         Player nudgedPlayer = null;
-        foreach (Player player in Level.playerManager.players)
+        foreach (Player player in LevelInfo.playerManager.players)
         {
             if (player.posX == newPosX && player.posY == newPosY && !player.reachedGoal)
             {
@@ -232,16 +232,16 @@ public class Player : MonoBehaviour
     void OnLevelUpdate()
     {
         // Check if player has died
-        if (!Level.levelData.tileArray[posX, posY].exists || !Level.levelData.tileArray[posX, posY].traversable)
+        if (!LevelInfo.levelData.tileArray[posX, posY].exists || !LevelInfo.levelData.tileArray[posX, posY].traversable)
         {
-            Level.playerManager.resetLocked = true;
-            Level.playerManager.resetLockTime = Time.time;
+            LevelInfo.playerManager.resetLocked = true;
+            LevelInfo.playerManager.resetLockTime = Time.time;
 
             rb.useGravity = true;
         }
 
         // Check if reached goal
-        if (!reachedGoal && posX == Level.levelData.goalX && posY == Level.levelData.goalY)
+        if (!reachedGoal && posX == LevelInfo.levelData.goalX && posY == LevelInfo.levelData.goalY)
         {
             reachedGoal = true;
 

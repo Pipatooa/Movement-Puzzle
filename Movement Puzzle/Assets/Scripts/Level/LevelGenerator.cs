@@ -1,20 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelGenerator : MonoBehaviour
 {
-    public string levelName;
-
-    [Range(0f, 1f)] public float tileSize;
-    [Range(0f, 1f)] public float tileSizeSmall;
-    [Range(0f, 1f)] public float colorIntensity;
+    public float tileSize = 0.9f;
+    public float tileSizeSmall = 0.2f;
+    public float colorIntensity = 0.75f;
 
     public ColorScheme colorScheme;
     public Material tileMaterial;
     
     public GameObject tilePrefab;
-    public GameObject playerPefab;
+    public GameObject playerPrefab;
     public GameObject goalPrefab;
 
     public LevelData levelData;
@@ -24,14 +23,19 @@ public class LevelGenerator : MonoBehaviour
     
     Material[] materials;
 
-    private void Awake()
+    void Awake()
     {
-        Level.levelGenerator = this;
-        Level.colorScheme = colorScheme;
+        LoadLevel(LevelInfo.currentLevel);
     }
 
-    void Start()
+    public void LoadLevel(string levelName)
     {
+        // Setup
+        levelData = LoadSystem.LoadLevel(levelName);
+        LevelInfo.colorScheme = colorScheme;
+        LevelInfo.levelGenerator = this;
+        LevelInfo.levelData = levelData;
+
         materials = new Material[colorScheme.colors.Count];
         for (int i = 0; i < colorScheme.colors.Count; i++)
         {
@@ -41,14 +45,6 @@ public class LevelGenerator : MonoBehaviour
             materials[i].color = Color.Lerp(tileMaterial.color, colorScheme.colors[i].material.color, 0.75f);
         }
 
-        levelData = LoadSystem.LoadLevel(levelName);
-        Level.levelData = levelData;
-
-        LoadLevel();
-    }
-
-    void LoadLevel()
-    {
         // Objects
         GameObject tileParent = new GameObject("Tiles");
         tileParent.transform.parent = gameObject.transform;
@@ -69,7 +65,7 @@ public class LevelGenerator : MonoBehaviour
         tileManager.levelGenerator = this;
 
         playerManager = playerParent.AddComponent<PlayerManager>();
-        Level.playerManager = playerManager;
+        LevelInfo.playerManager = playerManager;
 
         // Tiles
         for (int x = 0; x < levelData.sizeX; x++)
@@ -105,7 +101,7 @@ public class LevelGenerator : MonoBehaviour
         // Players
         foreach (LevelData.PlayerInfo playerInfo in levelData.players)
         {
-            GameObject playerObject = Instantiate(playerPefab, new Vector3(playerInfo.posX, 0.5f, playerInfo.posY), Quaternion.identity, playerParent.transform);
+            GameObject playerObject = Instantiate(playerPrefab, new Vector3(playerInfo.posX, 0.5f, playerInfo.posY), Quaternion.identity, playerParent.transform);
             Player playerScript = playerObject.GetComponent<Player>();
             
             playerScript.LoadState(playerInfo, true);

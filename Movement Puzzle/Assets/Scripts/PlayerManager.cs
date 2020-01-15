@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -11,14 +12,19 @@ public class PlayerManager : MonoBehaviour
     public bool resetLocked;
     public float resetLockTime;
 
+    public bool levelCompleted;
+    public float levelCompletedTime;
+
     public List<Player> players = new List<Player>();
 
     void Start()
     {
+        Events.OnPlayerReachedGoal += OnPlayerReachedGoal;
+        
         currentPlayer = players[0];
         currentPlayer.selected = true;
 
-        colorStatuses = new bool[Level.colorScheme.colors.Count];
+        colorStatuses = new bool[LevelInfo.colorScheme.colors.Count];
     }
 
     void Update()
@@ -57,6 +63,14 @@ public class PlayerManager : MonoBehaviour
                 resetLocked = false;
             }
         }
+
+        if (levelCompleted)
+        {
+            if (Time.time - levelCompletedTime > 3f)
+            {
+                SceneManager.LoadScene("Menu");
+            }
+        }
     }
 
     void SetActivePlayer(int index)
@@ -70,7 +84,7 @@ public class PlayerManager : MonoBehaviour
 
     public void UpdateColorCount()
     {
-        colorStatuses = new bool[Level.colorScheme.colors.Count];
+        colorStatuses = new bool[LevelInfo.colorScheme.colors.Count];
 
         foreach (Player player in players)
         {
@@ -92,5 +106,15 @@ public class PlayerManager : MonoBehaviour
         }
 
         Events.ColorUpdate();
+    }
+
+    void OnPlayerReachedGoal()
+    {
+        // Check if all players have reached goal
+        if (players.TrueForAll(player => player.reachedGoal))
+        {
+            levelCompleted = true;
+            levelCompletedTime = Time.time;
+        }
     }
 }

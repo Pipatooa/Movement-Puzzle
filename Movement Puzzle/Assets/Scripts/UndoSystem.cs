@@ -18,12 +18,12 @@ public static class UndoSystem
         State state = new State();
 
         state.players = new List<LevelData.PlayerInfo>();
-        foreach (Player player in Level.playerManager.players)
+        foreach (Player player in LevelInfo.playerManager.players)
         {
             state.players.Add(new LevelData.PlayerInfo(player));
         }
 
-        state.colorStatuses = Level.playerManager.colorStatuses;
+        state.colorStatuses = LevelInfo.playerManager.colorStatuses;
 
         states.Add(state);
     }
@@ -32,10 +32,10 @@ public static class UndoSystem
     {
         for (int i = 0; i < state.players.Count; i++)
         {
-            Level.playerManager.players[i].LoadState(state.players[i], false);
+            LevelInfo.playerManager.players[i].LoadState(state.players[i], false);
         }
 
-        Level.playerManager.colorStatuses = state.colorStatuses;
+        LevelInfo.playerManager.colorStatuses = state.colorStatuses;
         
         Events.LevelUpdate();
     }
