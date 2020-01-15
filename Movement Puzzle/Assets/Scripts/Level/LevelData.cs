@@ -11,7 +11,7 @@ public class LevelData
 
         public bool exists;
         public int colorIndex;
-        
+
         public bool traversable;
 
         public GameObject gameObject;
