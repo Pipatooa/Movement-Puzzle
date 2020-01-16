@@ -60,10 +60,6 @@ public class LevelGenerator : MonoBehaviour
 
         // Scripts
         tileManager = tileParent.AddComponent<TileManager>();
-        tileManager.colorGroups = new List<LevelData.Tile>[colorScheme.colors.Count];
-        for (int i = 0; i < colorScheme.colors.Count; i++) tileManager.colorGroups[i] = new List<LevelData.Tile>();
-        tileManager.levelGenerator = this;
-
         playerManager = playerParent.AddComponent<PlayerManager>();
         LevelInfo.playerManager = playerManager;
 
@@ -109,6 +105,7 @@ public class LevelGenerator : MonoBehaviour
             playerManager.players.Add(playerScript);
         }
 
+        UndoSystem.ClearStates();
         playerManager.UpdateColorCount();
     }
 }

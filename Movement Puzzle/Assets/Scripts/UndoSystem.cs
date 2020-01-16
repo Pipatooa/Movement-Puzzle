@@ -36,7 +36,6 @@ public static class UndoSystem
         }
 
         LevelInfo.playerManager.colorStatuses = state.colorStatuses;
-        
         Events.LevelUpdate();
     }
 
@@ -53,5 +52,10 @@ public static class UndoSystem
     {
         LoadState(states[0]);
         states.RemoveRange(1, states.Count - 1);
+    }
+
+    public static void ClearStates()
+    {
+        states = new List<State>();
     }
 }

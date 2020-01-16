@@ -17,10 +17,19 @@ public class PlayerManager : MonoBehaviour
 
     public List<Player> players = new List<Player>();
 
-    void Start()
+    void Awake()
     {
         Events.OnPlayerReachedGoal += OnPlayerReachedGoal;
-        
+        SceneManager.sceneUnloaded += delegate { OnSceneUnloaded(); };
+    }
+
+    void OnSceneUnloaded()
+    {
+        Events.OnPlayerReachedGoal -= OnPlayerReachedGoal;
+    }
+
+    void Start()
+    {
         currentPlayer = players[0];
         currentPlayer.selected = true;
 
@@ -29,46 +38,48 @@ public class PlayerManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (!levelCompleted)
         {
-            int nextPlayerIndex = currentPlayerIndex;
-            
-            do
+            if (Input.GetKeyDown(KeyCode.Tab))
             {
-                nextPlayerIndex = (nextPlayerIndex + 1) % players.Count;
+                int nextPlayerIndex = currentPlayerIndex;
+
+                do
+                {
+                    nextPlayerIndex = (nextPlayerIndex + 1) % players.Count;
+                }
+                while (players[nextPlayerIndex].reachedGoal && currentPlayerIndex != nextPlayerIndex);
+
+                SetActivePlayer(nextPlayerIndex);
             }
-            while (players[nextPlayerIndex].reachedGoal && currentPlayerIndex != nextPlayerIndex);
 
-            SetActivePlayer(nextPlayerIndex);
-        }
-
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            resetLocked = false;
-            
-            UndoSystem.Undo();
-        }
-
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            UndoSystem.ResetLevel();
-        }
-
-        if (resetLocked)
-        {
-            if (Time.time - resetLockTime > 1f)
+            if (Input.GetKeyDown(KeyCode.U))
             {
-                UndoSystem.Undo();
-
                 resetLocked = false;
-            }
-        }
 
-        if (levelCompleted)
+                UndoSystem.Undo();
+            }
+
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                UndoSystem.ResetLevel();
+            }
+
+            if (resetLocked)
+            {
+                if (Time.time - resetLockTime > 1f)
+                {
+                    UndoSystem.Undo();
+
+                    resetLocked = false;
+                }
+            }
+        } else if (levelCompleted)
         {
             if (Time.time - levelCompletedTime > 3f)
             {
-                SceneManager.LoadScene("Menu");
+                LevelInfo.currentLevel = "level2.level";
+                SceneManager.LoadScene("Level");
             }
         }
     }

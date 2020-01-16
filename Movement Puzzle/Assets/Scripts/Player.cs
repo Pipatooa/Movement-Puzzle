@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -43,6 +44,12 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         
         Events.OnLevelUpdate += OnLevelUpdate;
+        SceneManager.sceneUnloaded += delegate { OnSceneUnloaded(); };
+    }
+
+    void OnSceneUnloaded()
+    {
+        Events.OnLevelUpdate -= OnLevelUpdate;
     }
 
     void Start()
