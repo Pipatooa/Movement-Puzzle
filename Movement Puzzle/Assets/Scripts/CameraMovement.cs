@@ -15,7 +15,6 @@ public class CameraMovement : MonoBehaviour
 
     private Vector3 cameraOffset;
 
-    // Update is called once per frame
     void LateUpdate()
     {
         // Alter offset depending on camera zoom

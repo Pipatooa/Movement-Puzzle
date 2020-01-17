@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class LevelGenerator : MonoBehaviour
 {
@@ -49,14 +48,14 @@ public class LevelGenerator : MonoBehaviour
         GameObject tileParent = new GameObject("Tiles");
         tileParent.transform.parent = gameObject.transform;
 
+        GameObject playerParent = new GameObject("Players");
+        playerParent.transform.SetParent(gameObject.transform);
+
         GameObject goalParent = new GameObject("Goal");
         goalParent.transform.SetParent(gameObject.transform);
         goalParent.transform.position = new Vector3(levelData.goalX, 2.5f, levelData.goalY);
         GameObject goal = Instantiate(goalPrefab, goalParent.transform);
         goal.GetComponent<Renderer>().material = colorScheme.goalColor.material;
-
-        GameObject playerParent = new GameObject("Players");
-        playerParent.transform.SetParent(gameObject.transform);
 
         // Scripts
         tileManager = tileParent.AddComponent<TileManager>();

@@ -50,7 +50,7 @@ public static class LoadSystem
 
     public static LevelData LoadLevel(string fileName)
     {
-        string path = Path.Combine(Application.dataPath, "Level Data", fileName);
+        string path = Path.Combine(Application.streamingAssetsPath, "Levels", fileName);
 
         if (File.Exists(path))
         {

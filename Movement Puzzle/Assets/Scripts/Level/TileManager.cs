@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class TileManager : MonoBehaviour
 {
@@ -10,22 +9,18 @@ public class TileManager : MonoBehaviour
     void Awake()
     {
         Events.LevelUpdate += LevelUpdate;
-        SceneManager.sceneUnloaded += delegate { OnSceneUnloaded(); };
-    }
 
-    void OnSceneUnloaded()
-    {
-        Events.LevelUpdate -= LevelUpdate;
-    }
-
-    void Start()
-    {
         colorGroups = new List<LevelData.Tile>[LevelInfo.colorScheme.colors.Count];
 
         for (int i = 0; i < LevelInfo.colorScheme.colors.Count; i++)
         {
             colorGroups[i] = new List<LevelData.Tile>();
         }
+    }
+
+    void OnDestroy()
+    {
+        Events.LevelUpdate -= LevelUpdate;
     }
 
     void LevelUpdate()
