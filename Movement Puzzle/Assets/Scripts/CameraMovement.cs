@@ -21,8 +21,8 @@ public class CameraMovement : MonoBehaviour
     {
         movementEnabled = true;
 
-        cameraOffset.y = 10f;
-        cameraOffset.z = -10f / Mathf.Tan(cameraRotation * Mathf.Deg2Rad);
+        cameraOffset.y = minZoom;
+        cameraOffset.z = -minZoom / Mathf.Tan(cameraRotation * Mathf.Deg2Rad);
         cameraOffset = Quaternion.Euler(0, LevelInfo.playerManager.transform.rotation.y, 0) * cameraOffset;
 
         gameObject.transform.position = LevelInfo.playerManager.currentPlayer.transform.position + cameraOffset;
