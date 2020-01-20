@@ -33,6 +33,8 @@ public class PlayerManager : MonoBehaviour
         currentPlayer.selected = true;
 
         colorStatuses = new bool[LevelInfo.colorScheme.colors.Count];
+
+        Camera.main.GetComponent<CameraMovement>().EnableMovement();
     }
 
     void Update()
