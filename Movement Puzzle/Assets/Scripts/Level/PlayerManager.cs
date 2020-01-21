@@ -6,7 +6,6 @@ public class PlayerManager : MonoBehaviour
 {
     [HideInInspector] public Player currentPlayer;
     [HideInInspector] public int currentPlayerIndex;
-    [HideInInspector] public bool[] colorStatuses;
 
     public bool resetLocked;
     public float resetLockTime;
@@ -30,8 +29,6 @@ public class PlayerManager : MonoBehaviour
     {
         currentPlayer = players[0];
         currentPlayer.selected = true;
-
-        colorStatuses = new bool[LevelInfo.colorScheme.colors.Count];
 
         Camera.main.GetComponent<CameraMovement>().EnableMovement();
     }
@@ -90,32 +87,6 @@ public class PlayerManager : MonoBehaviour
         currentPlayer.selected = true;
 
         currentPlayerIndex = index;
-    }
-
-    public void UpdateColorCount()
-    {
-        colorStatuses = new bool[LevelInfo.colorScheme.colors.Count];
-
-        foreach (Player player in players)
-        {
-            switch(player.lastMoveDir)
-            {
-                case 0:
-                    colorStatuses[player.colorIndexUp] = true;
-                    break;
-                case 1:
-                    colorStatuses[player.colorIndexRight] = true;
-                    break;
-                case 2:
-                    colorStatuses[player.colorIndexDown] = true;
-                    break;
-                case 3:
-                    colorStatuses[player.colorIndexLeft] = true;
-                    break;
-            }
-        }
-
-        Events.ColorUpdate();
     }
 
     void OnPlayerReachedGoal()

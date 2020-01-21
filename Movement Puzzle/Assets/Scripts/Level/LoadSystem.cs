@@ -10,13 +10,9 @@ public static class LoadSystem
 
         using (BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create)))
         {
-            // writer.Write(new byte[] { });
-
             writer.Write(levelData.levelName);
             writer.Write((byte) levelData.sizeX);
             writer.Write((byte) levelData.sizeY);
-            writer.Write((byte) levelData.goalX);
-            writer.Write((byte) levelData.goalY);
 
             writer.Write((byte) levelData.players.Count);
 
@@ -39,10 +35,15 @@ public static class LoadSystem
             {
                 for (int y = 0; y < levelData.sizeY; y++)
                 {
-                    LevelData.Tile tile = levelData.tileArray[x, y];
+                    Tiles.Tile tile = levelData.tileArray[x, y];
 
-                    writer.Write(tile.exists);
-                    writer.Write((sbyte) tile.colorIndex);
+                    // [0000][0000] - [objectID][colorIndex]
+                    writer.Write((byte)((tile.objectID << 4 & 0xF0) | (tile.colorIndex & 0x0F)));
+
+                    if (tile.objectID != 0)
+                    {
+                        writer.Write(tile.GetAdditionalInfo());
+                    }
                 }
             }
         }
@@ -61,14 +62,13 @@ public static class LoadSystem
 
             using (BinaryReader reader = new BinaryReader(File.Open(path, FileMode.Open)))
             {
+                byte[] header = reader.ReadBytes(3);
+                
                 levelName = reader.ReadString();
                 sizeX = reader.ReadByte();
                 sizeY = reader.ReadByte();
 
                 levelData = new LevelData(levelName, sizeX, sizeY);
-
-                levelData.goalX = reader.ReadByte();
-                levelData.goalY = reader.ReadByte();
 
                 int numPlayers = reader.ReadByte();
 
@@ -91,11 +91,44 @@ public static class LoadSystem
                     levelData.players.Add(player);
                 }
 
+                byte tileInfo;
+                int objectID;
+                int colorIndex;
+
                 for (int x = 0; x < sizeX; x++)
                 {
                     for (int y = 0; y < sizeY; y++)
                     {
-                        levelData.tileArray[x, y] = new LevelData.Tile(x, y, reader.ReadBoolean(), reader.ReadSByte());
+                        tileInfo = reader.ReadByte();
+                        objectID = (tileInfo & 0xF0) >> 4;
+                        colorIndex = tileInfo & 0x0F;
+
+                        switch (objectID)
+                        {
+                            case 0:
+                                levelData.tileArray[x, y] = new Tiles.Tile();
+                                break;
+                            case 1:
+                                levelData.tileArray[x, y] = new Tiles.Goal();
+                                break;
+                            case 2:
+                                levelData.tileArray[x, y] = new Tiles.ColorTile();
+                                break;
+                            case 3:
+                                levelData.tileArray[x, y] = new Tiles.Switch();
+                                break;
+                        }
+
+                        levelData.tileArray[x, y].x = x;
+                        levelData.tileArray[x, y].y = y;
+
+                        levelData.tileArray[x, y].objectID = objectID;
+                        levelData.tileArray[x, y].colorIndex = colorIndex;
+
+                        if (objectID != 0)
+                        {
+                            levelData.tileArray[x, y].LoadAdditionalInfo(reader.ReadByte());
+                        }
                     }
                 }
             }

@@ -1,42 +1,37 @@
 =================================================
 BASE TILE INFO:
 [0000] (0-15) - Object ID
-[0] (0-1) - Enable/Disable On Control Group
-[000] - 
+[0000] - Color Code
 
-BASIC OBJECT INFO:
-[0000] (0-15) - Color Code
-[0000] (0-15) - Control Group
-
-PER OBJECT INFO:
+ADDITIONAL OBJECT INFO:
 [00000000]
 
 =================================================
 Object ID:
  0 - 
- 1 - Tile
- 2 - Goal
+ 1 - Goal
+ 2 - Tile
  3 - Switch
  4 - Rotator
  5 - Teleporter
 
 =================================================
-Per Object Info:
-
-Tile:
- [00000] -
+Additional Object Info:
 
 Goal:
- [00000] -
+ -
+
+Tile:
+ [0] - Enable/Disable By Default
 
 Switch:
  [0] (0-1) - Permanently On
- [0000] (0-15) - Control Group To Trigger
 
 Rotator:
- [00000] (0) - Infinite Rotation
-         (1-31) - Num uses
+ [0] (0-1) - Clockwise/Anti-Clockwise 
+ [0000000] (0) - Infinite Rotation
+           (1-127) - Num uses
 
 Teleporter:
  [00] (0-3) - Rotation
- [000] - 
+ [000000] (0-64) - Teleporter ID

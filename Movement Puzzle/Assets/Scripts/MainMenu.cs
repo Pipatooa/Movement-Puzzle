@@ -9,6 +9,11 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadScene("Level");
     }
+
+    public void Editor()
+    {
+        SceneManager.LoadScene("Level Editor");
+    }
     
     public void Exit()
     {

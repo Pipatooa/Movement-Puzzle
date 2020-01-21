@@ -35,6 +35,9 @@ public class LevelGenerator : MonoBehaviour
         LevelInfo.levelGenerator = this;
         LevelInfo.levelData = levelData;
 
+        ColorManager.colorCounts = new int[LevelInfo.colorScheme.colors.Count];
+        ColorManager.colorStates = new bool[LevelInfo.colorScheme.colors.Count];
+
         materials = new Material[colorScheme.colors.Count];
         for (int i = 0; i < colorScheme.colors.Count; i++)
         {
@@ -51,11 +54,11 @@ public class LevelGenerator : MonoBehaviour
         GameObject playerParent = new GameObject("Players");
         playerParent.transform.SetParent(gameObject.transform);
 
-        GameObject goalParent = new GameObject("Goal");
-        goalParent.transform.SetParent(gameObject.transform);
-        goalParent.transform.position = new Vector3(levelData.goalX, 2.5f, levelData.goalY);
-        GameObject goal = Instantiate(goalPrefab, goalParent.transform);
-        goal.GetComponent<Renderer>().material = colorScheme.goalColor.material;
+        //GameObject goalParent = new GameObject("Goal");
+        //goalParent.transform.SetParent(gameObject.transform);
+        //goalParent.transform.position = new Vector3(levelData.goalX, 2.5f, levelData.goalY);
+        //GameObject goal = Instantiate(goalPrefab, goalParent.transform);
+        //goal.GetComponent<Renderer>().material = colorScheme.goalColor.material;
 
         // Scripts
         tileManager = tileParent.AddComponent<TileManager>();
@@ -67,16 +70,16 @@ public class LevelGenerator : MonoBehaviour
         {
             for (int y = 0; y < levelData.sizeY; y++)
             {
-                if (levelData.tileArray[x, y].exists)
+                if (levelData.tileArray[x, y].objectID != 0)
                 {
                     GameObject tileObject = Instantiate(tilePrefab, new Vector3(x, 0, y), Quaternion.Euler(90, 0, 0), tileParent.transform);
                     tileObject.transform.localScale *= tileSize;
 
                     levelData.tileArray[x, y].gameObject = tileObject;
 
-                    LevelData.Tile tile = levelData.tileArray[x, y];
+                    Tiles.Tile tile = levelData.tileArray[x, y];
 
-                    if (levelData.goalX == x && levelData.goalY == y)
+                    if (false)
                     {
                         tileObject.GetComponent<Renderer>().material = colorScheme.goalColor.material;
                     }
@@ -105,6 +108,6 @@ public class LevelGenerator : MonoBehaviour
         }
 
         UndoSystem.ClearStates();
-        playerManager.UpdateColorCount();
+        ColorManager.CalculateColors();
     }
 }

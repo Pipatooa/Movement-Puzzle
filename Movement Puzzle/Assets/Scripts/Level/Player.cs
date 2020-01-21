@@ -181,7 +181,10 @@ public class Player : MonoBehaviour
 
         gameObject.transform.position += vector;
 
-        LevelInfo.playerManager.UpdateColorCount();
+        var thisPlayer = this;
+        LevelInfo.levelData.tileArray[posX, posY].ProcessPlayer(ref thisPlayer);
+
+        ColorManager.CalculateColors();
     }
 
     bool Shift(int absDir)
@@ -237,22 +240,12 @@ public class Player : MonoBehaviour
     void OnLevelUpdate()
     {
         // Check if player has died
-        if (!LevelInfo.levelData.tileArray[posX, posY].exists || !LevelInfo.levelData.tileArray[posX, posY].traversable)
+        if (LevelInfo.levelData.tileArray[posX, posY].objectID == 0 || !LevelInfo.levelData.tileArray[posX, posY].traversable)
         {
             LevelInfo.playerManager.resetLocked = true;
             LevelInfo.playerManager.resetLockTime = Time.time;
 
             rb.useGravity = true;
-        }
-
-        // Check if reached goal
-        if (!reachedGoal && posX == LevelInfo.levelData.goalX && posY == LevelInfo.levelData.goalY)
-        {
-            reachedGoal = true;
-
-            gameObject.SetActive(false);
-
-            Events.OnPlayerReachedGoal();
         }
     }
 }

@@ -10,7 +10,8 @@ public static class UndoSystem
     {
         public List<LevelData.PlayerInfo> players;
 
-        public bool[] colorStatuses;
+        public int[] colorCounts;
+        public bool[] colorStates;
     }
 
     public static void SaveState()
@@ -23,7 +24,8 @@ public static class UndoSystem
             state.players.Add(new LevelData.PlayerInfo(player));
         }
 
-        state.colorStatuses = LevelInfo.playerManager.colorStatuses;
+        state.colorCounts = ColorManager.colorCounts;
+        state.colorStates = ColorManager.colorStates;
 
         states.Add(state);
     }
@@ -35,7 +37,9 @@ public static class UndoSystem
             LevelInfo.playerManager.players[i].LoadState(state.players[i], false);
         }
 
-        LevelInfo.playerManager.colorStatuses = state.colorStatuses;
+        ColorManager.colorCounts = state.colorCounts;
+        ColorManager.colorStates = state.colorStates;
+
         Events.LevelUpdate();
     }
 

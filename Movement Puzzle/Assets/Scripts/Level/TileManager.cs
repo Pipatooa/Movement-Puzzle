@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class TileManager : MonoBehaviour
 {
-    public List<LevelData.Tile>[] colorGroups;
+    public List<Tiles.Tile>[] colorGroups;
 
     void Awake()
     {
         Events.LevelUpdate += LevelUpdate;
 
-        colorGroups = new List<LevelData.Tile>[LevelInfo.colorScheme.colors.Count];
+        colorGroups = new List<Tiles.Tile>[LevelInfo.colorScheme.colors.Count];
 
         for (int i = 0; i < LevelInfo.colorScheme.colors.Count; i++)
         {
-            colorGroups[i] = new List<LevelData.Tile>();
+            colorGroups[i] = new List<Tiles.Tile>();
         }
     }
 
@@ -27,16 +27,16 @@ public class TileManager : MonoBehaviour
     {
         for (int i = 0; i < colorGroups.Length; i++)
         {
-            if (LevelInfo.playerManager.colorStatuses[i])
+            if (ColorManager.colorStates[i])
             {
-                foreach (LevelData.Tile tile in colorGroups[i])
+                foreach (Tiles.Tile tile in colorGroups[i])
                 {
                     tile.gameObject.transform.localScale = Vector3.one * LevelInfo.levelGenerator.tileSize;
                     LevelInfo.levelData.tileArray[tile.x, tile.y].traversable = true;
                 }
             } else
             {
-                foreach (LevelData.Tile tile in colorGroups[i])
+                foreach (Tiles.Tile tile in colorGroups[i])
                 {
                     tile.gameObject.transform.localScale = Vector3.one * LevelInfo.levelGenerator.tileSizeSmall;
                     LevelInfo.levelData.tileArray[tile.x, tile.y].traversable = false;
