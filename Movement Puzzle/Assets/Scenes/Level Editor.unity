@@ -362,7 +362,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -411,8 +411,8 @@ MonoBehaviour:
   maxX: 60
   minZ: -10
   maxZ: 60
-  minZoom: 10
-  maxZoom: 30
+  minZoom: 5
+  maxZoom: 25
 --- !u!1 &1743898326
 GameObject:
   m_ObjectHideFlags: 0

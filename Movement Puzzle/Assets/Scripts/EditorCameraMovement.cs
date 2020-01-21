@@ -5,7 +5,7 @@ using UnityEngine;
 public class EditorCameraMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    public float zoomSpeed = 10000f;
+    public float zoomSpeed = 1000f;
 
     public float minX = -10f;
     public float maxX = 60f;
@@ -13,13 +13,19 @@ public class EditorCameraMovement : MonoBehaviour
     public float minZ = -10f;
     public float maxZ = 60f;
 
-    public float minZoom = 10f;
-    public float maxZoom = 30f;
+    public float minZoom = 5f;
+    public float maxZoom = 25f;
 
-    private Vector3 desiredPosition;
+    Camera cam;
 
-    private void Awake()
+    Vector3 desiredPosition;
+    float zoom;
+
+    void Awake()
     {
+        cam = gameObject.GetComponent<Camera>();
+
+        zoom = minZoom;
         desiredPosition = gameObject.transform.position;
     }
 
@@ -33,10 +39,11 @@ public class EditorCameraMovement : MonoBehaviour
         desiredPosition.z = Mathf.Clamp(desiredPosition.z, -10, 60);
 
         // Camera zoom
-        desiredPosition.y += Input.GetAxisRaw("Mouse ScrollWheel") * -zoomSpeed * Time.deltaTime;
-        desiredPosition.y = Mathf.Clamp(desiredPosition.y, minZoom, maxZoom);
+        zoom += Input.GetAxisRaw("Mouse ScrollWheel") * -zoomSpeed * Time.deltaTime;
+        zoom = Mathf.Clamp(zoom, minZoom, maxZoom);
 
-        // Update position
+        // Update camera
         gameObject.transform.position = desiredPosition;
+        cam.orthographicSize = zoom;
     }
 }
