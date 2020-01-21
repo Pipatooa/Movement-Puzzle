@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -79,8 +78,7 @@ public class PlayerManager : MonoBehaviour
         {
             if (Time.time - levelCompletedTime > 3f)
             {
-                LevelInfo.currentLevel = "level2.level";
-                SceneManager.LoadScene("Level");
+                LevelManager.NextLevel();
             }
         }
     }

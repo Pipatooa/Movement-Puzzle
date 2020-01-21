@@ -266,7 +266,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: PLAY
+  m_text: '
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -335,9 +337,9 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0.000030517578, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 118505618}
-    characterCount: 4
+    characterCount: 1
     spriteCount: 0
-    spaceCount: 0
+    spaceCount: 1
     wordCount: 1
     linkCount: 0
     lineCount: 1
@@ -462,7 +464,7 @@ GameObject:
   - component: {fileID: 371328044}
   - component: {fileID: 371328043}
   m_Layer: 5
-  m_Name: Play Button (8)
+  m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -941,7 +943,7 @@ GameObject:
   - component: {fileID: 644065896}
   - component: {fileID: 644065895}
   m_Layer: 5
-  m_Name: Play Button (3)
+  m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1070,7 +1072,7 @@ GameObject:
   - component: {fileID: 903817171}
   - component: {fileID: 903817170}
   m_Layer: 5
-  m_Name: Play Button (2)
+  m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1241,7 +1243,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: PLAY
+  m_text: '
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1310,9 +1314,9 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0.000030517578, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1051156830}
-    characterCount: 4
+    characterCount: 1
     spriteCount: 0
-    spaceCount: 0
+    spaceCount: 1
     wordCount: 1
     linkCount: 0
     lineCount: 1
@@ -1551,7 +1555,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: PLAY
+  m_text: '
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1620,9 +1626,9 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0.000030517578, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1173370117}
-    characterCount: 4
+    characterCount: 1
     spriteCount: 0
-    spaceCount: 0
+    spaceCount: 1
     wordCount: 1
     linkCount: 0
     lineCount: 1
@@ -1789,7 +1795,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: PLAY
+  m_text: '
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1858,9 +1866,9 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0.000030517578, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1319004984}
-    characterCount: 4
+    characterCount: 1
     spriteCount: 0
-    spaceCount: 0
+    spaceCount: 1
     wordCount: 1
     linkCount: 0
     lineCount: 1
@@ -1944,7 +1952,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: PLAY
+  m_text: '
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2013,9 +2023,9 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0.000030517578, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1445487218}
-    characterCount: 4
+    characterCount: 1
     spriteCount: 0
-    spaceCount: 0
+    spaceCount: 1
     wordCount: 1
     linkCount: 0
     lineCount: 1
@@ -2057,7 +2067,7 @@ GameObject:
   - component: {fileID: 1481883108}
   - component: {fileID: 1481883107}
   m_Layer: 5
-  m_Name: Play Button (1)
+  m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2125,18 +2135,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1481883108}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1723660739}
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1481883108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2315,7 +2314,7 @@ GameObject:
   - component: {fileID: 1494468455}
   - component: {fileID: 1494468454}
   m_Layer: 5
-  m_Name: Play Button (7)
+  m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2444,7 +2443,7 @@ GameObject:
   - component: {fileID: 1510978412}
   - component: {fileID: 1510978411}
   m_Layer: 5
-  m_Name: Play Button (6)
+  m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2615,7 +2614,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: PLAY
+  m_text: '
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2684,9 +2685,9 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0.000030517578, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1580007683}
-    characterCount: 4
+    characterCount: 1
     spriteCount: 0
-    spaceCount: 0
+    spaceCount: 1
     wordCount: 1
     linkCount: 0
     lineCount: 1
@@ -2840,7 +2841,7 @@ GameObject:
   - component: {fileID: 1787527355}
   - component: {fileID: 1787527354}
   m_Layer: 5
-  m_Name: Play Button (4)
+  m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3011,7 +3012,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: PLAY
+  m_text: '
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3080,9 +3083,9 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0.000030517578, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1988260864}
-    characterCount: 4
+    characterCount: 1
     spriteCount: 0
-    spaceCount: 0
+    spaceCount: 1
     wordCount: 1
     linkCount: 0
     lineCount: 1
@@ -3124,7 +3127,7 @@ GameObject:
   - component: {fileID: 2007618176}
   - component: {fileID: 2007618175}
   m_Layer: 5
-  m_Name: Play Button (5)
+  m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3295,7 +3298,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: PLAY
+  m_text: '
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3364,9 +3369,9 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0.000030517578, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 2078621185}
-    characterCount: 4
+    characterCount: 1
     spriteCount: 0
-    spaceCount: 0
+    spaceCount: 1
     wordCount: 1
     linkCount: 0
     lineCount: 1
