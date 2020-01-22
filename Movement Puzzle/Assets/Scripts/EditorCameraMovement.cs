@@ -7,11 +7,11 @@ public class EditorCameraMovement : MonoBehaviour
     public float moveSpeed = 5f;
     public float zoomSpeed = 1000f;
 
-    public float minX = -10f;
-    public float maxX = 60f;
+    public float minX = 0f;
+    public float maxX = 50f;
 
-    public float minZ = -10f;
-    public float maxZ = 60f;
+    public float minZ = 0f;
+    public float maxZ = 50f;
 
     public float minZoom = 5f;
     public float maxZoom = 25f;
@@ -32,11 +32,11 @@ public class EditorCameraMovement : MonoBehaviour
     void LateUpdate()
     {
         // Camera panning
-        desiredPosition.x += Input.GetAxisRaw("Horizontal") * moveSpeed * gameObject.transform.position.y * Time.deltaTime;
-        desiredPosition.z += Input.GetAxisRaw("Vertical") * moveSpeed * gameObject.transform.position.y * Time.deltaTime;
+        desiredPosition.x += Input.GetAxisRaw("Horizontal") * moveSpeed * zoom * Time.deltaTime;
+        desiredPosition.z += Input.GetAxisRaw("Vertical") * moveSpeed * zoom * Time.deltaTime;
 
-        desiredPosition.x = Mathf.Clamp(desiredPosition.x, -10, 60);
-        desiredPosition.z = Mathf.Clamp(desiredPosition.z, -10, 60);
+        desiredPosition.x = Mathf.Clamp(desiredPosition.x, minX, maxX);
+        desiredPosition.z = Mathf.Clamp(desiredPosition.z, minZ, maxZ);
 
         // Camera zoom
         zoom += Input.GetAxisRaw("Mouse ScrollWheel") * -zoomSpeed * Time.deltaTime;
