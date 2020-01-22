@@ -13,6 +13,16 @@ public class FunctionTestWindow : EditorWindow
 
     void OnGUI()
     {
-        
+        if (GUILayout.Button("Save Test Level"))
+        {
+            LevelData levelData = LoadSystem.CreateTestLevel();
+
+            LoadSystem.SaveLevel(levelData, "testLevel.level");
+        }
+
+        if (GUILayout.Button("Load Test Level"))
+        {
+            LevelData levelData = LoadSystem.LoadLevel("testLevel.level");
+        }
     }
 }

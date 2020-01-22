@@ -54,12 +54,6 @@ public class LevelGenerator : MonoBehaviour
         GameObject playerParent = new GameObject("Players");
         playerParent.transform.SetParent(gameObject.transform);
 
-        //GameObject goalParent = new GameObject("Goal");
-        //goalParent.transform.SetParent(gameObject.transform);
-        //goalParent.transform.position = new Vector3(levelData.goalX, 2.5f, levelData.goalY);
-        //GameObject goal = Instantiate(goalPrefab, goalParent.transform);
-        //goal.GetComponent<Renderer>().material = colorScheme.goalColor.material;
-
         // Scripts
         tileManager = tileParent.AddComponent<TileManager>();
         playerManager = playerParent.AddComponent<PlayerManager>();
@@ -70,28 +64,46 @@ public class LevelGenerator : MonoBehaviour
         {
             for (int y = 0; y < levelData.sizeY; y++)
             {
-                if (levelData.tileArray[x, y].objectID != 0)
+                Tiles.Tile tile = levelData.tileArray[x, y];
+
+                GameObject tileObject;
+
+                switch (tile.objectID)
                 {
-                    GameObject tileObject = Instantiate(tilePrefab, new Vector3(x, 0, y), Quaternion.Euler(90, 0, 0), tileParent.transform);
-                    tileObject.transform.localScale *= tileSize;
+                    case 1:
+                        GameObject goalParent = new GameObject("Goal");
+                        goalParent.transform.SetParent(tileParent.transform);
+                        goalParent.transform.position = new Vector3(x, 2.5f, y);
+                        
+                        GameObject goal = Instantiate(goalPrefab, goalParent.transform);
+                        goal.GetComponent<Renderer>().material = colorScheme.goalColor.material;
 
-                    levelData.tileArray[x, y].gameObject = tileObject;
-
-                    Tiles.Tile tile = levelData.tileArray[x, y];
-
-                    if (false)
-                    {
+                        tileObject = Instantiate(tilePrefab, new Vector3(x, 0, y), Quaternion.Euler(90, 0, 0), goalParent.transform);
+                        tileObject.transform.localScale *= tileSize;
                         tileObject.GetComponent<Renderer>().material = colorScheme.goalColor.material;
-                    }
-                    else if (tile.colorIndex == -1)
-                    {
                         tileObject.isStatic = true;
-                    }
-                    else
-                    {
+
+                        break;
+                    case 2:
+                        // Tile
+                        tileObject = Instantiate(tilePrefab, new Vector3(x, 0, y), Quaternion.Euler(90, 0, 0), tileParent.transform);
+                        tileObject.transform.localScale *= tileSize;
+                        tileObject.isStatic = true;
+
+                        tile.gameObject = tileObject;
+                        break;
+                    case 3:
+                        // Color Tile
+                        tileObject = Instantiate(tilePrefab, new Vector3(x, 0, y), Quaternion.Euler(90, 0, 0), tileParent.transform);
+                        tileObject.transform.localScale *= tileSize;
                         tileObject.GetComponent<Renderer>().material = materials[tile.colorIndex];
+
+                        tile.gameObject = tileObject;
                         tileManager.colorGroups[tile.colorIndex].Add(tile);
-                    }
+                        break;
+                    case 4:
+                        // Switch
+                        break;
                 }
             }
         }

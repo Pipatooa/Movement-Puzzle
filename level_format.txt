@@ -11,9 +11,10 @@ Object ID:
  0 - 
  1 - Goal
  2 - Tile
- 3 - Switch
- 4 - Rotator
- 5 - Teleporter
+ 3 - Color Tile
+ 4 - Switch
+ 5 - Rotator
+ 6 - Teleporter
 
 =================================================
 Additional Object Info:
@@ -22,6 +23,9 @@ Goal:
  -
 
 Tile:
+ -
+
+Color Tile:
  [0] - Enable/Disable By Default
 
 Switch:

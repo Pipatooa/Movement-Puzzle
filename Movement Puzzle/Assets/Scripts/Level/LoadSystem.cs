@@ -1,12 +1,53 @@
 ﻿using UnityEngine;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 
 public static class LoadSystem
 {
+    public static LevelData CreateTestLevel()
+    {
+        LevelData levelData = new LevelData("Test level", 20, 20);
+
+        LevelData.PlayerInfo player1 = new LevelData.PlayerInfo();
+        player1.posX = 3;
+        player1.posY = 3;
+
+        player1.facingDir = 0;
+        player1.lastMoveDir = 3;
+
+        player1.colorIndex = 0;
+        player1.colorIndexUp = 0;
+        player1.colorIndexRight = 1;
+        player1.colorIndexDown = 2;
+        player1.colorIndexLeft = 3;
+
+        levelData.players.Add(player1);
+
+        for (int x=0; x < 20; x++)
+        {
+            for (int y=0; y < 20; y++)
+            {
+               levelData.tileArray[x, y] = new Tiles.Tile();
+            }
+        }
+
+        for (int x = 1; x < 11; x++)
+        {
+            for (int y = 1; y < 6; y++)
+            {
+                levelData.tileArray[x, y] = new Tiles.ColorTile();
+                levelData.tileArray[x, y].colorIndex = Random.Range(0, 7);
+            }
+        }
+
+        levelData.tileArray[3, 3] = new Tiles.TraversableTile();
+        levelData.tileArray[9, 4] = new Tiles.Goal();
+
+        return levelData;
+    }
+    
     public static void SaveLevel(LevelData levelData, string fileName)
     {
-        string path = Path.Combine(Application.dataPath, "Level Data", fileName);
+        string path = Path.Combine(Application.streamingAssetsPath, "Levels", fileName);
 
         using (BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create)))
         {
@@ -62,8 +103,6 @@ public static class LoadSystem
 
             using (BinaryReader reader = new BinaryReader(File.Open(path, FileMode.Open)))
             {
-                byte[] header = reader.ReadBytes(3);
-                
                 levelName = reader.ReadString();
                 sizeX = reader.ReadByte();
                 sizeY = reader.ReadByte();
@@ -112,9 +151,12 @@ public static class LoadSystem
                                 levelData.tileArray[x, y] = new Tiles.Goal();
                                 break;
                             case 2:
-                                levelData.tileArray[x, y] = new Tiles.ColorTile();
+                                levelData.tileArray[x, y] = new Tiles.TraversableTile();
                                 break;
                             case 3:
+                                levelData.tileArray[x, y] = new Tiles.ColorTile();
+                                break;
+                            case 4:
                                 levelData.tileArray[x, y] = new Tiles.Switch();
                                 break;
                         }
@@ -122,7 +164,6 @@ public static class LoadSystem
                         levelData.tileArray[x, y].x = x;
                         levelData.tileArray[x, y].y = y;
 
-                        levelData.tileArray[x, y].objectID = objectID;
                         levelData.tileArray[x, y].colorIndex = colorIndex;
 
                         if (objectID != 0)
