@@ -104,6 +104,12 @@ public class LevelGenerator : MonoBehaviour
                     case 4:
                         // Switch
                         break;
+                    case 5:
+                        // Rotator
+                        break;
+                    case 6:
+                        // Telporter
+                        break;
                 }
             }
         }

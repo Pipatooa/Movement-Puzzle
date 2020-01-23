@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace Tiles
 {
-    public class TraversableTile : Tile
+    public class PlainTile : Tile
     {
-        public TraversableTile() : base()
+        public PlainTile() : base()
         {
             objectID = 2;
             traversable = true;

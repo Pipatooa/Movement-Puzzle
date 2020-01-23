@@ -39,7 +39,7 @@ public static class LoadSystem
             }
         }
 
-        levelData.tileArray[3, 3] = new Tiles.TraversableTile();
+        levelData.tileArray[3, 3] = new Tiles.PlainTile();
         levelData.tileArray[9, 4] = new Tiles.Goal();
 
         return levelData;
@@ -151,13 +151,19 @@ public static class LoadSystem
                                 levelData.tileArray[x, y] = new Tiles.Goal();
                                 break;
                             case 2:
-                                levelData.tileArray[x, y] = new Tiles.TraversableTile();
+                                levelData.tileArray[x, y] = new Tiles.PlainTile();
                                 break;
                             case 3:
                                 levelData.tileArray[x, y] = new Tiles.ColorTile();
                                 break;
                             case 4:
                                 levelData.tileArray[x, y] = new Tiles.Switch();
+                                break;
+                            case 5:
+                                levelData.tileArray[x, y] = new Tiles.Rotator();
+                                break;
+                            case 6:
+                                levelData.tileArray[x, y] = new Tiles.Teleporter();
                                 break;
                         }
 
