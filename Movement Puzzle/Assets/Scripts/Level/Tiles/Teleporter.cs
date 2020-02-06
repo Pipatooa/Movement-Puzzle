@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Tiles
 {
-    public class Teleporter : Tile
+    public class Teleporter : BaseTile
     {
         public Teleporter() : base()
         {

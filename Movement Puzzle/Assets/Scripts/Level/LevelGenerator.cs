@@ -64,7 +64,7 @@ public class LevelGenerator : MonoBehaviour
         {
             for (int y = 0; y < levelData.sizeY; y++)
             {
-                Tiles.Tile tile = levelData.tileArray[x, y];
+                Tiles.BaseTile tile = levelData.tileArray[x, y];
 
                 GameObject tileObject;
 

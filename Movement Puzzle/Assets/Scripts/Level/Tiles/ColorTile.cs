@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Tiles
 {
-    public class ColorTile : Tile
+    public class ColorTile : BaseTile
     {
         bool enabledDefault;
 

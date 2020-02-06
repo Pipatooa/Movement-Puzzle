@@ -26,20 +26,10 @@ public static class LoadSystem
         {
             for (int y=0; y < 20; y++)
             {
-               levelData.tileArray[x, y] = new Tiles.Tile();
+               levelData.tileArray[x, y] = new Tiles.PlainTile();
             }
         }
 
-        for (int x = 1; x < 11; x++)
-        {
-            for (int y = 1; y < 6; y++)
-            {
-                levelData.tileArray[x, y] = new Tiles.ColorTile();
-                levelData.tileArray[x, y].colorIndex = Random.Range(0, 7);
-            }
-        }
-
-        levelData.tileArray[3, 3] = new Tiles.PlainTile();
         levelData.tileArray[9, 4] = new Tiles.Goal();
 
         return levelData;
@@ -76,7 +66,7 @@ public static class LoadSystem
             {
                 for (int y = 0; y < levelData.sizeY; y++)
                 {
-                    Tiles.Tile tile = levelData.tileArray[x, y];
+                    Tiles.BaseTile tile = levelData.tileArray[x, y];
 
                     // [0000][0000] - [objectID][colorIndex]
                     writer.Write((byte)((tile.objectID << 4 & 0xF0) | (tile.colorIndex & 0x0F)));
@@ -145,7 +135,7 @@ public static class LoadSystem
                         switch (objectID)
                         {
                             case 0:
-                                levelData.tileArray[x, y] = new Tiles.Tile();
+                                levelData.tileArray[x, y] = new Tiles.BaseTile();
                                 break;
                             case 1:
                                 levelData.tileArray[x, y] = new Tiles.Goal();

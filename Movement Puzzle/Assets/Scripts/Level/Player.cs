@@ -130,61 +130,13 @@ public class Player : MonoBehaviour
     // Move the player in dir
     void Move(int dir)
     {
-        Vector3 vector;
-
-        switch (dir)
-        {
-            case 0:
-                vector = new Vector3(0, 0, 1);
-                break;
-            case 1:
-                vector = new Vector3(1, 0, 0);
-                break;
-            case 2:
-                vector = new Vector3(0, 0, -1);
-                break;
-            case 3:
-                vector = new Vector3(-1, 0, 0);
-                break;
-            default:
-                return;
-        }
-
-        vector = Quaternion.Euler(0, facingDir * 90, 0) * vector;
-
-        int newPosX = Mathf.RoundToInt(posX + vector.x);
-        int newPosY = Mathf.RoundToInt(posY + vector.z);
-
-        if (newPosX < 0 || newPosX >= LevelInfo.levelData.tileArray.GetLength(0) || newPosY < 0 || newPosY >= LevelInfo.levelData.tileArray.GetLength(1))
-        {
-            return;
-        }
-
-        Player nudgedPlayer = null;
-        foreach (Player player in LevelInfo.playerManager.players)
-        {
-            if (player.posX == newPosX && player.posY == newPosY && !player.reachedGoal)
-            {
-                nudgedPlayer = player;
-                break;
-            }
-        }
-
         int absDir = (dir + facingDir) % 4;
-
-        if (nudgedPlayer != null) if (!nudgedPlayer.Shift(absDir)) return;
-
-        lastMoveDir = dir;
-
-        posX = newPosX;
-        posY = newPosY;
-
-        gameObject.transform.position += vector;
-
-        var thisPlayer = this;
-        LevelInfo.levelData.tileArray[posX, posY].ProcessPlayer(ref thisPlayer);
-
-        ColorManager.CalculateColors();
+        if (Shift(absDir))
+        {
+            lastMoveDir = dir;
+            
+            ColorManager.CalculateColors();
+        }
     }
 
     bool Shift(int absDir)
@@ -214,7 +166,7 @@ public class Player : MonoBehaviour
 
         if (newPosX < 0 || newPosX >= LevelInfo.levelData.tileArray.GetLength(0) || newPosY < 0 || newPosY >= LevelInfo.levelData.tileArray.GetLength(1))
         {
-            return false ;
+            return false;
         }
 
         Player nudgedPlayer = null;
@@ -233,6 +185,9 @@ public class Player : MonoBehaviour
         posY = newPosY;
 
         gameObject.transform.position += vector;
+
+        var thisPlayer = this;
+        LevelInfo.levelData.tileArray[posX, posY].ProcessPlayer(ref thisPlayer);
 
         return true;
     }

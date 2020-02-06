@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Tiles
 {
-    public class Tile
+    public class BaseTile
     {
         public int objectID;
 
@@ -15,17 +15,17 @@ namespace Tiles
 
         public GameObject gameObject;
 
-        public void ProcessPlayer(ref Player player)
-        {
-
-        }
-
         public byte GetAdditionalInfo()
         {
             return 0;
         }
 
         public void LoadAdditionalInfo(byte additionalInfo)
+        {
+
+        }
+
+        public void ProcessPlayer(ref Player player)
         {
 
         }

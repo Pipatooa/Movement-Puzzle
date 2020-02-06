@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Tiles
 {
-    public class Rotator : Tile
+    public class Rotator : BaseTile
     {
         public Rotator() : base()
         {

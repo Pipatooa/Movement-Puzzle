@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Tiles
 {
-    public class Switch : Tile
+    public class Switch : BaseTile
     {
         public Switch() : base()
         {

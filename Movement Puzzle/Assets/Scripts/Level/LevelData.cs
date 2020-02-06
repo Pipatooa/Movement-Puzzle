@@ -41,7 +41,7 @@ public class LevelData
     public int sizeX, sizeY;
 
     public List<PlayerInfo> players;
-    public Tiles.Tile[,] tileArray;
+    public Tiles.BaseTile[,] tileArray;
 
     public LevelData(string levelName, int sizeX, int sizeY)
     {
@@ -50,6 +50,6 @@ public class LevelData
         this.sizeY = sizeY;
 
         players = new List<PlayerInfo>();
-        tileArray = new Tiles.Tile[sizeX, sizeY];
+        tileArray = new Tiles.BaseTile[sizeX, sizeY];
     }
 }
