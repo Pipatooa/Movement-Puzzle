@@ -186,6 +186,8 @@ public class Player : MonoBehaviour
 
         gameObject.transform.position += vector;
 
+        Debug.Log("a");
+
         var thisPlayer = this;
         LevelInfo.levelData.tileArray[posX, posY].ProcessPlayer(ref thisPlayer);
 

@@ -25,9 +25,9 @@ namespace Tiles
 
         }
 
-        public void ProcessPlayer(ref Player player)
+        public virtual void ProcessPlayer(ref Player player)
         {
-
+            
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Tiles
             traversable = true;
         }
 
-        public new void ProcessPlayer(ref Player player)
+        public override void ProcessPlayer(ref Player player)
         {
             Debug.Log("goal");
             

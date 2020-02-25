@@ -11,10 +11,5 @@ namespace Tiles
             objectID = 2;
             traversable = true;
         }
-
-        public new void ProcessPlayer(ref Player player)
-        {
-            Debug.Log("tile");
-        }
     }
 }
