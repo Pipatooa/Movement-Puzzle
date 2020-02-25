@@ -7,7 +7,7 @@ public static class LevelManager
 {
     public static void NextLevel()
     {
-        LevelInfo.currentLevel = "level2.level";
+        // LevelInfo.currentLevel = "level2.level";
         SceneManager.LoadScene("Level");
     }
 }

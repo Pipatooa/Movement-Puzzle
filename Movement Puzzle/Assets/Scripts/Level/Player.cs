@@ -12,8 +12,6 @@ public class Player : MonoBehaviour
     public int colorIndexLeft;
 
     public int facingDir;
-
-    [HideInInspector] public bool selected;
     [HideInInspector] public int lastMoveDir;
 
     [HideInInspector] public int posX;
@@ -52,6 +50,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        // Function to create arrows around the player
         GameObject CreateArrow(Quaternion rotation, int colorIndex)
         {
             GameObject arrow;
@@ -79,26 +78,11 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (selected && !LevelInfo.playerManager.resetLocked && !LevelInfo.playerManager.levelCompleted && !reachedGoal)
-        {
-            if (Input.GetKeyDown(KeyCode.UpArrow) && colorIndexUp != -1) Move(0);
-            else if (Input.GetKeyDown(KeyCode.RightArrow) && colorIndexRight != -1) Move(1);
-            else if (Input.GetKeyDown(KeyCode.DownArrow) && colorIndexDown != -1) Move(2);
-            else if (Input.GetKeyDown(KeyCode.LeftArrow) && colorIndexLeft != -1) Move(3);
-
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                facingDir += 1;
-                facingDir %= 4;
-
-                gameObject.transform.rotation = Quaternion.Euler(0, facingDir * 90, 0);
-            }
-        }
-
         // Needle spin
         needle.transform.localRotation = Quaternion.Lerp(needle.transform.localRotation, Quaternion.Euler(0, lastMoveDir * 90, 0), needleSpinSpeed * Time.deltaTime);
     }
 
+    // Loads a previous player state
     public void LoadState(LevelData.PlayerInfo playerInfo, bool isInitialState)
     {
         posX = playerInfo.posX;
@@ -127,8 +111,8 @@ public class Player : MonoBehaviour
         rb.velocity = Vector3.zero;
     }
 
-    // Move the player in dir
-    void Move(int dir)
+    // Move the player in dir, taking direction player is facing into account
+    public void Move(int dir)
     {
         int absDir = (dir + facingDir) % 4;
         if (Shift(absDir))
@@ -139,36 +123,23 @@ public class Player : MonoBehaviour
         }
     }
 
-    bool Shift(int absDir)
+    // Nudge the player in dir
+    // Returns true if successful, otherwise, false
+    public bool Shift(int absDir)
     {
-        Vector3 vector;
-
-        switch (absDir)
-        {
-            case 0:
-                vector = new Vector3(0, 0, 1);
-                break;
-            case 1:
-                vector = new Vector3(1, 0, 0);
-                break;
-            case 2:
-                vector = new Vector3(0, 0, -1);
-                break;
-            case 3:
-                vector = new Vector3(-1, 0, 0);
-                break;
-            default:
-                return false;
-        }
+        // Calculate the position the player will end up in
+        Vector3 vector = Utils.DirectionToVector(absDir);
 
         int newPosX = Mathf.RoundToInt(posX + vector.x);
         int newPosY = Mathf.RoundToInt(posY + vector.z);
 
+        // Check whether new position is within level bounds
         if (newPosX < 0 || newPosX >= LevelInfo.levelData.tileArray.GetLength(0) || newPosY < 0 || newPosY >= LevelInfo.levelData.tileArray.GetLength(1))
         {
             return false;
         }
 
+        // Check whether a player to be nudged is present in new position
         Player nudgedPlayer = null;
         foreach (Player player in LevelInfo.playerManager.players)
         {
@@ -179,14 +150,14 @@ public class Player : MonoBehaviour
             }
         }
 
+        // If player to nudge, and player did not move when nudged, don't move player
         if (nudgedPlayer != null) if (!nudgedPlayer.Shift(absDir)) return false;
 
+        // Otherwise, update player's position
         posX = newPosX;
         posY = newPosY;
 
         gameObject.transform.position += vector;
-
-        Debug.Log("a");
 
         var thisPlayer = this;
         LevelInfo.levelData.tileArray[posX, posY].ProcessPlayer(ref thisPlayer);

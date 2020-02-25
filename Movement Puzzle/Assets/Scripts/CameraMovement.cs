@@ -15,11 +15,12 @@ public class CameraMovement : MonoBehaviour
 
     Vector3 cameraOffset;
 
-    bool movementEnabled;
+    bool trackingEnabled;
 
-    public void EnableMovement()
+    // Moves camera to current player and enables tracking
+    public void StartTracking()
     {
-        movementEnabled = true;
+        trackingEnabled = true;
 
         cameraOffset.y = minZoom;
         cameraOffset.z = -minZoom / Mathf.Tan(cameraRotation * Mathf.Deg2Rad);
@@ -28,23 +29,30 @@ public class CameraMovement : MonoBehaviour
         gameObject.transform.position = LevelInfo.playerManager.currentPlayer.transform.position + cameraOffset;
     }
 
+    // Move camera after physics updates
     void LateUpdate()
     {
-        if (movementEnabled)
+        // Do not update camera if tracking is not enabled
+        if (!trackingEnabled)
         {
-            // Alter offset depending on camera zoom
-            cameraOffset.y += Input.GetAxisRaw("Mouse ScrollWheel") * -zoomSpeed * Time.deltaTime;
-            cameraOffset.y = Mathf.Clamp(cameraOffset.y, minZoom, maxZoom);
-            cameraOffset.z = -cameraOffset.y / Mathf.Tan(cameraRotation * Mathf.Deg2Rad);
-
-            Vector3 previousCameraOffset = Quaternion.Euler(0, gameObject.transform.eulerAngles.y, 0) * cameraOffset;
-            gameObject.transform.rotation = Quaternion.Lerp(gameObject.transform.rotation, Quaternion.Euler(cameraRotation, LevelInfo.playerManager.currentPlayer.transform.eulerAngles.y, 0), cameraRotSpeed * Time.deltaTime);
-
-            Vector3 newCameraOffset = Quaternion.Euler(0, gameObject.transform.eulerAngles.y, 0) * cameraOffset;
-            Vector3 desiredPosition = LevelInfo.playerManager.currentPlayer.transform.position;
-            desiredPosition.y = 0.5f;
-
-            gameObject.transform.position = Vector3.Lerp(gameObject.transform.position - previousCameraOffset, desiredPosition, cameraMoveSpeed * Time.deltaTime) + newCameraOffset;
+            return;
         }
+        
+        // Alter offset depending on camera zoom
+        cameraOffset.y += Input.GetAxisRaw("Mouse ScrollWheel") * -zoomSpeed * Time.deltaTime;
+        cameraOffset.y = Mathf.Clamp(cameraOffset.y, minZoom, maxZoom);
+        cameraOffset.z = -cameraOffset.y / Mathf.Tan(cameraRotation * Mathf.Deg2Rad);
+
+        // Store the camera offset prior to rotation and apply new rotation
+        Vector3 previousCameraOffset = Quaternion.Euler(0, gameObject.transform.eulerAngles.y, 0) * cameraOffset;
+        gameObject.transform.rotation = Quaternion.Lerp(gameObject.transform.rotation, Quaternion.Euler(cameraRotation, LevelInfo.playerManager.currentPlayer.transform.eulerAngles.y, 0), cameraRotSpeed * Time.deltaTime);
+
+        // Calculate new camera offset and position
+        Vector3 newCameraOffset = Quaternion.Euler(0, gameObject.transform.eulerAngles.y, 0) * cameraOffset;
+        Vector3 desiredPosition = LevelInfo.playerManager.currentPlayer.transform.position;
+        desiredPosition.y = 0.5f;
+
+        // Smoothly move camera to desired position, taking camera offset before rotation into account
+        gameObject.transform.position = Vector3.Lerp(gameObject.transform.position - previousCameraOffset, desiredPosition, cameraMoveSpeed * Time.deltaTime) + newCameraOffset;
     }
 }

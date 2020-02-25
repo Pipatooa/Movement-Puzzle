@@ -16,8 +16,6 @@ namespace Tiles
 
         public override void ProcessPlayer(ref Player player)
         {
-            Debug.Log("goal");
-            
             if (!goalUsed)
             {
                 player.reachedGoal = true;
@@ -26,8 +24,6 @@ namespace Tiles
                 Events.OnPlayerReachedGoal();
 
                 goalUsed = true;
-
-                Debug.Log("yay");
             }
         }
     }

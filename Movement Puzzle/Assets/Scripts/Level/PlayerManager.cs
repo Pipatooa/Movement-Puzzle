@@ -27,66 +27,78 @@ public class PlayerManager : MonoBehaviour
 
     void Start()
     {
+        // Set current player to first in list
         currentPlayer = players[0];
-        currentPlayer.selected = true;
 
-        Camera.main.GetComponent<CameraMovement>().EnableMovement();
+        // Tell camera to move to that player and start tracking
+        Camera.main.GetComponent<CameraMovement>().StartTracking();
     }
 
     void Update()
     {
-        if (!levelCompleted)
-        {
-            if (Input.GetKeyDown(KeyCode.Tab))
-            {
-                int nextPlayerIndex = currentPlayerIndex;
-
-                do
-                {
-                    nextPlayerIndex = (nextPlayerIndex + 1) % players.Count;
-                }
-                while (players[nextPlayerIndex].reachedGoal && currentPlayerIndex != nextPlayerIndex);
-
-                SetActivePlayer(nextPlayerIndex);
-            }
-
-            if (Input.GetKeyDown(KeyCode.U))
-            {
-                resetLocked = false;
-
-                UndoSystem.Undo();
-            }
-
-            if (Input.GetKeyDown(KeyCode.I))
-            {
-                UndoSystem.ResetLevel();
-            }
-
-            if (resetLocked)
-            {
-                if (Time.time - resetLockTime > 1f)
-                {
-                    UndoSystem.Undo();
-
-                    resetLocked = false;
-                }
-            }
-        } else if (levelCompleted)
+        // Move onto next level if level timer is complete
+        if (levelCompleted)
         {
             if (Time.time - levelCompletedTime > 3f)
             {
                 LevelManager.NextLevel();
             }
+
+            return;
+        }
+
+        // Switch players
+        if (Input.GetKeyDown(KeyCode.Tab)) SwitchPlayer();
+
+        // Undo
+        if (Input.GetKeyDown(KeyCode.U)) { resetLocked = false; UndoSystem.Undo(); }
+        
+        // Restart Level
+        if (Input.GetKeyDown(KeyCode.I)) UndoSystem.ResetLevel();
+
+        // Player movement input
+        if (!resetLocked && !currentPlayer.reachedGoal)
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow) && currentPlayer.colorIndexUp != -1) currentPlayer.Move(0);
+            else if (Input.GetKeyDown(KeyCode.RightArrow) && currentPlayer.colorIndexRight != -1) currentPlayer.Move(1);
+            else if (Input.GetKeyDown(KeyCode.DownArrow) && currentPlayer.colorIndexDown != -1) currentPlayer.Move(2);
+            else if (Input.GetKeyDown(KeyCode.LeftArrow) && currentPlayer.colorIndexLeft != -1) currentPlayer.Move(3);
+
+            // Temporary player rotation
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                currentPlayer.facingDir += 1;
+                currentPlayer.facingDir %= 4;
+
+                currentPlayer.gameObject.transform.rotation = Quaternion.Euler(0, currentPlayer.facingDir * 90, 0);
+            }
+        }
+
+        // Trigger undo if timer is complete
+        if (resetLocked)
+        {
+            if (Time.time - resetLockTime > 1f)
+            {
+                UndoSystem.Undo();
+
+                resetLocked = false;
+            }
         }
     }
 
-    void SetActivePlayer(int index)
+    // Selects next controllable player in player list
+    void SwitchPlayer()
     {
-        currentPlayer.selected = false;
-        currentPlayer = players[index];
-        currentPlayer.selected = true;
+        int nextPlayerIndex = currentPlayerIndex;
 
-        currentPlayerIndex = index;
+        do
+        {
+            nextPlayerIndex = (nextPlayerIndex + 1) % players.Count;
+        }
+        while (players[nextPlayerIndex].reachedGoal && currentPlayerIndex != nextPlayerIndex);
+
+        currentPlayer = players[nextPlayerIndex];
+        currentPlayerIndex = nextPlayerIndex;
     }
 
     void OnPlayerReachedGoal()
