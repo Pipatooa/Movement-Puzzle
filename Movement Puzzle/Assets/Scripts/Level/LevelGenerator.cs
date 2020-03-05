@@ -75,14 +75,15 @@ public class LevelGenerator : MonoBehaviour
                         goalParent.transform.SetParent(tileParent.transform);
                         goalParent.transform.position = new Vector3(x, 2.5f, y);
                         
-                        GameObject goal = Instantiate(goalPrefab, goalParent.transform);
-                        goal.GetComponent<Renderer>().material = colorScheme.goalColor.material;
+                        GameObject goalObject = Instantiate(goalPrefab, goalParent.transform);
+                        goalObject.GetComponent<Renderer>().material = colorScheme.goalColor.material;
 
                         tileObject = Instantiate(tilePrefab, new Vector3(x, 0, y), Quaternion.Euler(90, 0, 0), goalParent.transform);
                         tileObject.transform.localScale *= tileSize;
                         tileObject.GetComponent<Renderer>().material = colorScheme.goalColor.material;
                         tileObject.isStatic = true;
 
+                        tile.gameObject = goalObject;
                         break;
                     case 2:
                         // Tile
@@ -126,6 +127,8 @@ public class LevelGenerator : MonoBehaviour
         }
 
         UndoSystem.ClearStates();
+
         ColorManager.CalculateColors();
+        Events.LevelUpdate();
     }
 }

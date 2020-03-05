@@ -82,35 +82,6 @@ public class Player : MonoBehaviour
         needle.transform.localRotation = Quaternion.Lerp(needle.transform.localRotation, Quaternion.Euler(0, lastMoveDir * 90, 0), needleSpinSpeed * Time.deltaTime);
     }
 
-    // Loads a previous player state
-    public void LoadState(LevelData.PlayerInfo playerInfo, bool isInitialState)
-    {
-        posX = playerInfo.posX;
-        posY = playerInfo.posY;
-
-        facingDir = playerInfo.facingDir;
-        lastMoveDir = playerInfo.lastMoveDir;
-
-        reachedGoal = playerInfo.reachedGoal;
-
-        colorIndex = playerInfo.colorIndex;
-        colorIndexUp = playerInfo.colorIndexUp;
-        colorIndexRight = playerInfo.colorIndexRight;
-        colorIndexDown = playerInfo.colorIndexDown;
-        colorIndexLeft = playerInfo.colorIndexLeft;
-
-        if (!isInitialState)
-        {
-            gameObject.transform.position = new Vector3(posX, 0.5f, posY);
-            gameObject.transform.rotation = Quaternion.Euler(0, facingDir * 90, 0);
-        }
-
-        gameObject.SetActive(!reachedGoal);
-
-        rb.useGravity = false;
-        rb.velocity = Vector3.zero;
-    }
-
     // Move the player in dir, taking direction player is facing into account
     public void Move(int dir)
     {
@@ -119,7 +90,7 @@ public class Player : MonoBehaviour
         {
             lastMoveDir = dir;
             
-            ColorManager.CalculateColors();
+            Events.PlayerMoved();
         }
 
         SavePlayerState();
@@ -193,15 +164,19 @@ public class Player : MonoBehaviour
         public int oldFacingDir;
         public int oldLastMoveDir;
 
-        public PlayerChange(Player player, int oldPosX, int oldPosY, int oldFacingDir, int oldLastMoveDir)
+        public bool oldReachedGoalStatus;
+
+        public PlayerChange(Player player)
         {
             this.player = player;
 
-            this.oldPosX = oldPosX;
-            this.oldPosY = oldPosY;
+            oldPosX = player.posX;
+            oldPosY = player.posY;
 
-            this.oldFacingDir = oldFacingDir;
-            this.oldLastMoveDir = oldLastMoveDir;
+            oldFacingDir = player.facingDir;
+            oldLastMoveDir = player.lastMoveDir;
+
+            oldReachedGoalStatus = player.reachedGoal;
         }
 
         public override void UndoChange()
@@ -219,14 +194,21 @@ public class Player : MonoBehaviour
         facingDir = playerChange.oldFacingDir;
         lastMoveDir = playerChange.oldLastMoveDir;
 
+        reachedGoal = playerChange.oldReachedGoalStatus;
+
         gameObject.transform.position = new Vector3(posX, 0.5f, posY);
         gameObject.transform.rotation = Quaternion.Euler(0, facingDir * 90, 0);
+
+        gameObject.SetActive(!reachedGoal);
+
+        rb.useGravity = false;
+        rb.velocity = Vector3.zero;
     }
 
     // Saves an old state of the player as a change
     void SavePlayerState()
     {
-        PlayerChange playerChange = new PlayerChange(this, posX, posY, facingDir, lastMoveDir);
+        PlayerChange playerChange = new PlayerChange(this);
         UndoSystem.AddChange(playerChange);
     }
 }

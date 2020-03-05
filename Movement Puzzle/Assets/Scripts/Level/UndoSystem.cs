@@ -50,8 +50,6 @@ public static class UndoSystem
     // Undo changes since previous state
     public static void Undo()
     {
-        Debug.Log(states.Count);
-        
         if (states.Count == 0) return;
         
         State currentState = states[states.Count - 1];
@@ -61,6 +59,10 @@ public static class UndoSystem
 
         // Remove current state from stack
         states.RemoveAt(states.Count - 1);
+
+        // Recalculate colors and level state
+        ColorManager.CalculateColors();
+        Events.LevelUpdate();
     }
 
     // Rolls back all changes made since level load

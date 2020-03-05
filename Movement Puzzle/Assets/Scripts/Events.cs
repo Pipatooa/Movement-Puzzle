@@ -11,8 +11,10 @@ public static class Events
 
     public static DelegateFunc OnPlayerReachedGoal;
 
-    public static void ColorUpdate()
+    public static void PlayerMoved()
     {
+        ColorManager.CalculateColors();
+        
         LevelUpdate();
         OnLevelUpdate();
 

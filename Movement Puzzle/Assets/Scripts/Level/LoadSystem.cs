@@ -20,7 +20,21 @@ public static class LoadSystem
         player1.colorIndexDown = 2;
         player1.colorIndexLeft = 3;
 
+        LevelData.PlayerInfo player2 = new LevelData.PlayerInfo();
+        player2.posX = 3;
+        player2.posY = 7;
+
+        player2.facingDir = 0;
+        player2.lastMoveDir = 0;
+
+        player2.colorIndex = 1;
+        player2.colorIndexUp = 0;
+        player2.colorIndexRight = 1;
+        player2.colorIndexDown = 2;
+        player2.colorIndexLeft = 3;
+
         levelData.players.Add(player1);
+        levelData.players.Add(player2);
 
         for (int x=0; x < 20; x++)
         {
@@ -28,6 +42,19 @@ public static class LoadSystem
             {
                levelData.tileArray[x, y] = new Tiles.PlainTile();
             }
+        }
+
+        for (int x=1; x < 10; x++)
+        {
+            levelData.tileArray[x, 10] = new Tiles.ColorTile();
+            levelData.tileArray[x, 11] = new Tiles.ColorTile();
+            levelData.tileArray[x, 12] = new Tiles.ColorTile();
+            levelData.tileArray[x, 13] = new Tiles.ColorTile();
+
+            levelData.tileArray[x, 10].colorIndex = 0;
+            levelData.tileArray[x, 11].colorIndex = 1;
+            levelData.tileArray[x, 12].colorIndex = 2;
+            levelData.tileArray[x, 13].colorIndex = 3;
         }
 
         levelData.tileArray[9, 4] = new Tiles.Goal();
