@@ -121,6 +121,8 @@ public class Player : MonoBehaviour
             
             ColorManager.CalculateColors();
         }
+
+        SavePlayerState();
     }
 
     // Nudge the player in dir
@@ -153,6 +155,8 @@ public class Player : MonoBehaviour
         // If player to nudge, and player did not move when nudged, don't move player
         if (nudgedPlayer != null) if (!nudgedPlayer.Shift(absDir)) return false;
 
+        SavePlayerState();
+
         // Otherwise, update player's position
         posX = newPosX;
         posY = newPosY;
@@ -175,5 +179,54 @@ public class Player : MonoBehaviour
 
             rb.useGravity = true;
         }
+    }
+
+    // Information about a change that has occured to the player
+    class PlayerChange : UndoSystem.Change
+    {
+        // Info about change
+        Player player;
+
+        public int oldPosX;
+        public int oldPosY;
+
+        public int oldFacingDir;
+        public int oldLastMoveDir;
+
+        public PlayerChange(Player player, int oldPosX, int oldPosY, int oldFacingDir, int oldLastMoveDir)
+        {
+            this.player = player;
+
+            this.oldPosX = oldPosX;
+            this.oldPosY = oldPosY;
+
+            this.oldFacingDir = oldFacingDir;
+            this.oldLastMoveDir = oldLastMoveDir;
+        }
+
+        public override void UndoChange()
+        {
+            player.UndoPlayerChange(this);
+        }
+    }
+
+    // Undo a change that has occured to the player
+    void UndoPlayerChange(PlayerChange playerChange)
+    {
+        posX = playerChange.oldPosX;
+        posY = playerChange.oldPosY;
+        
+        facingDir = playerChange.oldFacingDir;
+        lastMoveDir = playerChange.oldLastMoveDir;
+
+        gameObject.transform.position = new Vector3(posX, 0.5f, posY);
+        gameObject.transform.rotation = Quaternion.Euler(0, facingDir * 90, 0);
+    }
+
+    // Saves an old state of the player as a change
+    void SavePlayerState()
+    {
+        PlayerChange playerChange = new PlayerChange(this, posX, posY, facingDir, lastMoveDir);
+        UndoSystem.AddChange(playerChange);
     }
 }

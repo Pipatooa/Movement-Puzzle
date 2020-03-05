@@ -16,7 +16,7 @@ public static class Events
         LevelUpdate();
         OnLevelUpdate();
 
-        UndoSystem.SaveState();
+        UndoSystem.SaveChanges();
     }
 
     public static void PlayerReachedGoal()
