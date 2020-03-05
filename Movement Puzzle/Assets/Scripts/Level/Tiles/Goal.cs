@@ -8,6 +8,7 @@ namespace Tiles
     {
         bool goalUsed;
 
+        // Set properties of tile
         public Goal() : base()
         {
             objectID = 1;

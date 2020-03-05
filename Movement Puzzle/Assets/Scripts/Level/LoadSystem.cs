@@ -3,6 +3,7 @@ using System.IO;
 
 public static class LoadSystem
 {
+    // Temporary function to create test level until level editor is complete
     public static LevelData CreateTestLevel()
     {
         LevelData levelData = new LevelData("Test level", 20, 20);
@@ -62,18 +63,21 @@ public static class LoadSystem
         return levelData;
     }
     
+    // Save a level data object to file
     public static void SaveLevel(LevelData levelData, string fileName)
     {
         string path = Path.Combine(Application.streamingAssetsPath, "Levels", fileName);
 
         using (BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create)))
         {
+            // Write basic level details
             writer.Write(levelData.levelName);
             writer.Write((byte) levelData.sizeX);
             writer.Write((byte) levelData.sizeY);
 
             writer.Write((byte) levelData.players.Count);
 
+            // Write player data
             for (int i = 0; i < levelData.players.Count; i++)
             {
                 writer.Write((byte) levelData.players[i].posX);
@@ -89,13 +93,13 @@ public static class LoadSystem
                 writer.Write((sbyte) levelData.players[i].colorIndexLeft);
             }
 
+            // Write tile data
             for (int x = 0; x < levelData.sizeX; x++)
             {
                 for (int y = 0; y < levelData.sizeY; y++)
                 {
                     Tiles.BaseTile tile = levelData.tileArray[x, y];
 
-                    // [0000][0000] - [objectID][colorIndex]
                     writer.Write((byte)((tile.objectID << 4 & 0xF0) | (tile.colorIndex & 0x0F)));
 
                     if (tile.objectID != 0)
@@ -107,6 +111,7 @@ public static class LoadSystem
         }
     }
 
+    // Load a level data object from file
     public static LevelData LoadLevel(string fileName)
     {
         string path = Path.Combine(Application.streamingAssetsPath, "Levels", fileName);
@@ -120,14 +125,17 @@ public static class LoadSystem
 
             using (BinaryReader reader = new BinaryReader(File.Open(path, FileMode.Open)))
             {
+                // Load basic level details
                 levelName = reader.ReadString();
                 sizeX = reader.ReadByte();
                 sizeY = reader.ReadByte();
 
+                // Create a new level object to be populated
                 levelData = new LevelData(levelName, sizeX, sizeY);
 
                 int numPlayers = reader.ReadByte();
 
+                // Load player info
                 for (int i = 0; i < numPlayers; i++)
                 {
                     LevelData.PlayerInfo player = new LevelData.PlayerInfo();
@@ -151,6 +159,7 @@ public static class LoadSystem
                 int objectID;
                 int colorIndex;
 
+                // Load tile info
                 for (int x = 0; x < sizeX; x++)
                 {
                     for (int y = 0; y < sizeY; y++)
@@ -159,30 +168,7 @@ public static class LoadSystem
                         objectID = (tileInfo & 0xF0) >> 4;
                         colorIndex = tileInfo & 0x0F;
 
-                        switch (objectID)
-                        {
-                            case 0:
-                                levelData.tileArray[x, y] = new Tiles.BaseTile();
-                                break;
-                            case 1:
-                                levelData.tileArray[x, y] = new Tiles.Goal();
-                                break;
-                            case 2:
-                                levelData.tileArray[x, y] = new Tiles.PlainTile();
-                                break;
-                            case 3:
-                                levelData.tileArray[x, y] = new Tiles.ColorTile();
-                                break;
-                            case 4:
-                                levelData.tileArray[x, y] = new Tiles.Switch();
-                                break;
-                            case 5:
-                                levelData.tileArray[x, y] = new Tiles.Rotator();
-                                break;
-                            case 6:
-                                levelData.tileArray[x, y] = new Tiles.Teleporter();
-                                break;
-                        }
+                        levelData.tileArray[x, y] = Utils.IDToTile(objectID);
 
                         levelData.tileArray[x, y].x = x;
                         levelData.tileArray[x, y].y = y;

@@ -8,6 +8,7 @@ namespace Tiles
     {
         bool enabledDefault;
 
+        // Set properties of tile
         public ColorTile() : base()
         {
             objectID = 3;

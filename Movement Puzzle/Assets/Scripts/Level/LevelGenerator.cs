@@ -17,6 +17,9 @@ public class LevelGenerator : MonoBehaviour
 
     public LevelData levelData;
 
+    GameObject tileParent;
+    GameObject playerParent;
+
     [HideInInspector] public TileManager tileManager;
     [HideInInspector] public PlayerManager playerManager;
     
@@ -47,19 +50,38 @@ public class LevelGenerator : MonoBehaviour
             materials[i].color = Color.Lerp(tileMaterial.color, colorScheme.colors[i].material.color, 0.75f);
         }
 
-        // Objects
-        GameObject tileParent = new GameObject("Tiles");
+        // Create empty parent objects to group objects
+        tileParent = new GameObject("Tiles");
         tileParent.transform.parent = gameObject.transform;
 
-        GameObject playerParent = new GameObject("Players");
+        playerParent = new GameObject("Players");
         playerParent.transform.SetParent(gameObject.transform);
 
-        // Scripts
+        // Load in level objects
+        LoadScripts();
+        LoadTiles();
+        LoadPlayers();
+
+        // Once level has finished loading, calculate initial level state
+        UndoSystem.ClearStates();
+
+        ColorManager.CalculateColors();
+        Events.LevelUpdate();
+    }
+
+    // Loads in all manager scripts
+    void LoadScripts()
+    {
         tileManager = tileParent.AddComponent<TileManager>();
         playerManager = playerParent.AddComponent<PlayerManager>();
-        LevelInfo.playerManager = playerManager;
 
-        // Tiles
+        LevelInfo.playerManager = playerManager;
+    }
+
+    // Loads tiles of level
+    void LoadTiles()
+    {
+        // Iterate through tiles
         for (int x = 0; x < levelData.sizeX; x++)
         {
             for (int y = 0; y < levelData.sizeY; y++)
@@ -74,7 +96,7 @@ public class LevelGenerator : MonoBehaviour
                         GameObject goalParent = new GameObject("Goal");
                         goalParent.transform.SetParent(tileParent.transform);
                         goalParent.transform.position = new Vector3(x, 2.5f, y);
-                        
+
                         GameObject goalObject = Instantiate(goalPrefab, goalParent.transform);
                         goalObject.GetComponent<Renderer>().material = colorScheme.goalColor.material;
 
@@ -114,21 +136,20 @@ public class LevelGenerator : MonoBehaviour
                 }
             }
         }
+    }
 
-        // Players
+    // Loads all players and player info into level
+    void LoadPlayers()
+    {
+        // Load each player
         foreach (LevelData.PlayerInfo playerInfo in levelData.players)
         {
             GameObject playerObject = Instantiate(playerPrefab, new Vector3(playerInfo.posX, 0.5f, playerInfo.posY), Quaternion.identity, playerParent.transform);
             Player playerScript = playerObject.GetComponent<Player>();
-            
-            playerScript.LoadState(playerInfo, true);
+
+            playerScript.LoadInfo(playerInfo);
 
             playerManager.players.Add(playerScript);
         }
-
-        UndoSystem.ClearStates();
-
-        ColorManager.CalculateColors();
-        Events.LevelUpdate();
     }
 }

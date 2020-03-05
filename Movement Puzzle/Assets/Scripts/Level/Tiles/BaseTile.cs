@@ -25,6 +25,7 @@ namespace Tiles
 
         }
 
+        // Processes a player that has landed on this tile
         public virtual void ProcessPlayer(ref Player player)
         {
             

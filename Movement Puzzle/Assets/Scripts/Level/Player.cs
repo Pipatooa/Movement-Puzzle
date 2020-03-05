@@ -82,6 +82,22 @@ public class Player : MonoBehaviour
         needle.transform.localRotation = Quaternion.Lerp(needle.transform.localRotation, Quaternion.Euler(0, lastMoveDir * 90, 0), needleSpinSpeed * Time.deltaTime);
     }
 
+    // Loads player info at start of level
+    public void LoadInfo(LevelData.PlayerInfo playerInfo)
+    {
+        posX = playerInfo.posX;
+        posY = playerInfo.posY;
+
+        facingDir = playerInfo.facingDir;
+        lastMoveDir = playerInfo.lastMoveDir;
+
+        colorIndex = playerInfo.colorIndex;
+        colorIndexUp = playerInfo.colorIndexUp;
+        colorIndexRight = playerInfo.colorIndexRight;
+        colorIndexDown = playerInfo.colorIndexDown;
+        colorIndexLeft = playerInfo.colorIndexLeft;
+    }
+
     // Move the player in dir, taking direction player is facing into account
     public void Move(int dir)
     {

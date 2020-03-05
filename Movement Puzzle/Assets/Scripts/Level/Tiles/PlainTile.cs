@@ -6,6 +6,7 @@ namespace Tiles
 {
     public class PlainTile : BaseTile
     {
+        // Set properties of tile
         public PlainTile() : base()
         {
             objectID = 2;
