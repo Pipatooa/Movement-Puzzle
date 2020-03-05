@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7087118858679663475}
   - component: {fileID: 7087118858679663479}
   - component: {fileID: 7087118858679663478}
-  - component: {fileID: 7087118858679663477}
   - component: {fileID: 979530425197169182}
   - component: {fileID: 7087118858679663476}
   m_Layer: 0
@@ -57,6 +56,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -81,19 +81,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &7087118858679663477
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7087118858679663474}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &979530425197169182
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -128,10 +115,10 @@ MonoBehaviour:
   colorIndexDown: 0
   colorIndexLeft: 0
   facingDir: 0
-  selected: 0
   lastMoveDir: 0
   posX: 0
   posY: 0
+  reachedGoal: 0
   arrowPrefab: {fileID: -927199367670048503, guid: c80f802011130fd4599882ecda68885a,
     type: 3}
   needlePrefab: {fileID: -927199367670048503, guid: cc0220bd731ee6d4ba2887d10da48852,
