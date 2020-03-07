@@ -58,7 +58,11 @@ public static class LoadSystem
             levelData.tileArray[x, 13].colorIndex = 3;
         }
 
-        levelData.tileArray[9, 4] = new Tiles.Goal();
+        levelData.tileArray[9, 3] = new Tiles.Goal();
+        levelData.tileArray[9, 7] = new Tiles.Goal();
+
+        levelData.tileArray[15, 3] = new Tiles.Switch();
+        levelData.tileArray[15, 3].colorIndex = 1;
 
         return levelData;
     }

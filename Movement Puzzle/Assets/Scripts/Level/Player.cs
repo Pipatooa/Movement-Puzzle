@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IMoveableObject
 {
     public int colorIndex;
     
@@ -132,17 +132,21 @@ public class Player : MonoBehaviour
             }
         }
 
+        
+
         // If player to nudge, and player did not move when nudged, don't move player
         if (nudgedPlayer != null) if (!nudgedPlayer.Shift(absDir)) return false;
 
-        // Otherwise, update player's position
+        // Otherwise, move player
+        var thisPlayer = this as IMoveableObject;
+
+        LevelInfo.levelData.tileArray[posX, posY].ProcessObjectExit(ref thisPlayer);
+
         posX = newPosX;
         posY = newPosY;
-
         gameObject.transform.position += vector;
-
-        var thisPlayer = this;
-        LevelInfo.levelData.tileArray[posX, posY].ProcessPlayer(ref thisPlayer);
+        
+        LevelInfo.levelData.tileArray[posX, posY].ProcessObjectEntry(ref thisPlayer);
 
         return true;
     }

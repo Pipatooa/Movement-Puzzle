@@ -6,13 +6,15 @@ namespace Tiles
 {
     public class Teleporter : BaseTile
     {
+        // Set properties of tile
         public Teleporter() : base()
         {
             objectID = 6;
             traversable = true;
         }
 
-        public new void ProcessPlayer(ref Player player)
+        // Processes an object that has landed on this tile
+        public override void ProcessObjectEntry(ref IMoveableObject moveableObject)
         {
 
         }

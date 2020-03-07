@@ -23,22 +23,24 @@ namespace Tiles
             goalParent.transform.SetParent(parentTransform);
             goalParent.transform.position = new Vector3(x, 2.5f, y);
 
-            GameObject goalObject = GameObject.Instantiate(LevelInfo.levelAssets.goal, goalParent.transform);
-            goalObject.GetComponent<Renderer>().material = LevelInfo.colorScheme.goalColor.material;
-
-            gameObject = GameObject.Instantiate(LevelInfo.levelAssets.tile, new Vector3(x, 0, y), Quaternion.Euler(90, 0, 0), goalParent.transform);
-            gameObject.transform.localScale *= 0.9f;
+            gameObject = GameObject.Instantiate(LevelInfo.levelAssets.goal, goalParent.transform);
             gameObject.GetComponent<Renderer>().material = LevelInfo.colorScheme.goalColor.material;
-            gameObject.isStatic = true;
+
+            GameObject tileObject = GameObject.Instantiate(LevelInfo.levelAssets.tile, new Vector3(x, 0, y), Quaternion.Euler(90, 0, 0), goalParent.transform);
+            tileObject.transform.localScale *= LevelInfo.levelGenerator.tileSize;
+            tileObject.GetComponent<Renderer>().material = LevelInfo.colorScheme.goalColor.material;
+            tileObject.isStatic = true;
         }
 
-        // Processes a player that has landed on this tile
-        public override void ProcessPlayer(ref Player player)
+        // Processes an object that has landed on this tile
+        public override void ProcessObjectEntry(ref IMoveableObject moveableObject)
         {
-            if (!goalUsed)
+            if (!goalUsed & moveableObject is Player)
             {
+                Player player = moveableObject as Player;
+
                 SaveGoalState();
-                
+
                 player.reachedGoal = true;
                 player.gameObject.SetActive(false);
 

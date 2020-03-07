@@ -29,10 +29,16 @@ namespace Tiles
 
         }
 
-        // Processes a player that has landed on this tile
-        public virtual void ProcessPlayer(ref Player player)
+        // Processes an object that has landed on this tile
+        public virtual void ProcessObjectEntry(ref IMoveableObject moveableObject)
         {
             
+        }
+
+        // Processes an object that is exiting this tile
+        public virtual void ProcessObjectExit(ref IMoveableObject moveableObject)
+        {
+
         }
     }
 }
