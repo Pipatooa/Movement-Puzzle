@@ -38,11 +38,6 @@ public class Player : MonoBehaviour, IMoveableObject
         Events.OnLevelUpdate += OnLevelUpdate;
     }
 
-    void OnDestroy()
-    {
-        Events.OnLevelUpdate -= OnLevelUpdate;
-    }
-
     void Start()
     {
         // Function to create arrows around the player

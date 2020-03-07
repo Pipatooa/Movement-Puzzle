@@ -20,11 +20,6 @@ public class PlayerManager : MonoBehaviour
         Events.OnPlayerReachedGoal += OnPlayerReachedGoal;
     }
 
-    void OnDestory()
-    {
-        Events.OnPlayerReachedGoal -= OnPlayerReachedGoal;
-    }
-
     void Start()
     {
         // Set current player to first in list

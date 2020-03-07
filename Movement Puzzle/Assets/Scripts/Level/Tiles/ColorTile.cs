@@ -18,11 +18,6 @@ namespace Tiles
             Events.LevelUpdate += LevelUpdate;
         }
 
-        ~ColorTile()
-        {
-            Events.LevelUpdate -= LevelUpdate;
-        }
-
         public new byte GetAdditionalInfo()
         {
             byte additionalInfo = enabledDefault ? (byte)1 : (byte)0;
