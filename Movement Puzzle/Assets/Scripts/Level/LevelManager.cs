@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public static class LevelManager
 {
+    // Loads the next level
     public static void NextLevel()
     {
         // LevelInfo.currentLevel = "level2.level";

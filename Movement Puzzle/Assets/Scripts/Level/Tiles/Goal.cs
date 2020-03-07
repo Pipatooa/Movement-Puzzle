@@ -15,6 +15,22 @@ namespace Tiles
             traversable = true;
         }
 
+        // Creates all objects for tile under parent transform
+        public override void CreateGameObjects(Transform parentTransform)
+        {
+            GameObject goalParent = new GameObject("Goal");
+            goalParent.transform.SetParent(parentTransform);
+            goalParent.transform.position = new Vector3(x, 2.5f, y);
+
+            GameObject goalObject = GameObject.Instantiate(LevelInfo.levelAssets.goal, goalParent.transform);
+            goalObject.GetComponent<Renderer>().material = LevelInfo.colorScheme.goalColor.material;
+
+            gameObject = GameObject.Instantiate(LevelInfo.levelAssets.tile, new Vector3(x, 0, y), Quaternion.Euler(90, 0, 0), goalParent.transform);
+            gameObject.transform.localScale *= 0.9f;
+            gameObject.GetComponent<Renderer>().material = LevelInfo.colorScheme.goalColor.material;
+            gameObject.isStatic = true;
+        }
+
         // Processes a player that has landed on this tile
         public override void ProcessPlayer(ref Player player)
         {

@@ -59,10 +59,10 @@ public class PlayerManager : MonoBehaviour
         // Player movement input
         if (!resetLocked && !currentPlayer.reachedGoal)
         {
-            if (Input.GetKeyDown(KeyCode.UpArrow) && currentPlayer.colorIndexUp != -1) currentPlayer.Move(0);
-            else if (Input.GetKeyDown(KeyCode.RightArrow) && currentPlayer.colorIndexRight != -1) currentPlayer.Move(1);
-            else if (Input.GetKeyDown(KeyCode.DownArrow) && currentPlayer.colorIndexDown != -1) currentPlayer.Move(2);
-            else if (Input.GetKeyDown(KeyCode.LeftArrow) && currentPlayer.colorIndexLeft != -1) currentPlayer.Move(3);
+            if (Input.GetKeyDown(KeyCode.UpArrow) && currentPlayer.colorIndexUp != -1) { SavePlayerStates();  currentPlayer.Move(0);  }
+            else if (Input.GetKeyDown(KeyCode.RightArrow) && currentPlayer.colorIndexRight != -1) { SavePlayerStates(); currentPlayer.Move(1); }
+            else if (Input.GetKeyDown(KeyCode.DownArrow) && currentPlayer.colorIndexDown != -1) { SavePlayerStates(); currentPlayer.Move(2); }
+            else if (Input.GetKeyDown(KeyCode.LeftArrow) && currentPlayer.colorIndexLeft != -1) { SavePlayerStates(); currentPlayer.Move(3); }
 
             // Temporary player rotation
             if (Input.GetKeyDown(KeyCode.R))
@@ -101,6 +101,16 @@ public class PlayerManager : MonoBehaviour
         currentPlayerIndex = nextPlayerIndex;
     }
 
+    // Saves all players current states as changes
+    void SavePlayerStates()
+    {
+        foreach (Player player in players)
+        {
+            player.SavePlayerState();
+        }
+    }
+
+    // Triggered when a player reaches enters a goal
     void OnPlayerReachedGoal()
     {
         // Check if all players have reached goal

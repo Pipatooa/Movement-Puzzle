@@ -7,6 +7,13 @@ public static class ColorManager
     public static int[] colorCounts;
     public static bool[] colorStates;
 
+    // Resets all color counts to be disabled
+    public static void ResetColorCounts()
+    {
+        colorCounts = new int[LevelInfo.colorScheme.colors.Count];
+        colorStates = new bool[LevelInfo.colorScheme.colors.Count];
+    }
+
     // Sets color states based on player facing directions
     public static void CheckPlayerColors()
     {

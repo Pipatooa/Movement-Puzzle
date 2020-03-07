@@ -9,11 +9,8 @@ public class LevelGenerator : MonoBehaviour
     public float colorIntensity = 0.75f;
 
     public ColorScheme colorScheme;
+    public LevelAssets levelAssets;
     public Material tileMaterial;
-    
-    public GameObject tilePrefab;
-    public GameObject playerPrefab;
-    public GameObject goalPrefab;
 
     public LevelData levelData;
 
@@ -30,24 +27,24 @@ public class LevelGenerator : MonoBehaviour
         LoadLevel(LevelInfo.currentLevel);
     }
 
+    // Loads in the current level
     public void LoadLevel(string levelName)
     {
         // Setup
         levelData = LoadSystem.LoadLevel(levelName);
         LevelInfo.colorScheme = colorScheme;
+        LevelInfo.levelAssets = levelAssets;
         LevelInfo.levelGenerator = this;
         LevelInfo.levelData = levelData;
 
-        ColorManager.colorCounts = new int[LevelInfo.colorScheme.colors.Count];
-        ColorManager.colorStates = new bool[LevelInfo.colorScheme.colors.Count];
-
-        materials = new Material[colorScheme.colors.Count];
+        // Create all color materials for tiles
+        LevelInfo.tileMaterials = new Material[colorScheme.colors.Count];
         for (int i = 0; i < colorScheme.colors.Count; i++)
         {
-            materials[i] = new Material(colorScheme.shader);
-            materials[i].name = "Tile (Color " + i + ")";
-            materials[i].CopyPropertiesFromMaterial(tileMaterial);
-            materials[i].color = Color.Lerp(tileMaterial.color, colorScheme.colors[i].material.color, 0.75f);
+            LevelInfo.tileMaterials[i] = new Material(colorScheme.shader);
+            LevelInfo.tileMaterials[i].name = "Tile (Color " + i + ")";
+            LevelInfo.tileMaterials[i].CopyPropertiesFromMaterial(tileMaterial);
+            LevelInfo.tileMaterials[i].color = Color.Lerp(tileMaterial.color, colorScheme.colors[i].material.color, 0.75f);
         }
 
         // Create empty parent objects to group objects
@@ -65,7 +62,9 @@ public class LevelGenerator : MonoBehaviour
         // Once level has finished loading, calculate initial level state
         UndoSystem.ClearStates();
 
+        ColorManager.ResetColorCounts();
         ColorManager.CalculateColors();
+
         Events.LevelUpdate();
     }
 
@@ -75,6 +74,7 @@ public class LevelGenerator : MonoBehaviour
         tileManager = tileParent.AddComponent<TileManager>();
         playerManager = playerParent.AddComponent<PlayerManager>();
 
+        LevelInfo.tileManager = tileManager;
         LevelInfo.playerManager = playerManager;
     }
 
@@ -86,54 +86,8 @@ public class LevelGenerator : MonoBehaviour
         {
             for (int y = 0; y < levelData.sizeY; y++)
             {
-                Tiles.BaseTile tile = levelData.tileArray[x, y];
-
-                GameObject tileObject;
-
-                switch (tile.objectID)
-                {
-                    case 1:
-                        GameObject goalParent = new GameObject("Goal");
-                        goalParent.transform.SetParent(tileParent.transform);
-                        goalParent.transform.position = new Vector3(x, 2.5f, y);
-
-                        GameObject goalObject = Instantiate(goalPrefab, goalParent.transform);
-                        goalObject.GetComponent<Renderer>().material = colorScheme.goalColor.material;
-
-                        tileObject = Instantiate(tilePrefab, new Vector3(x, 0, y), Quaternion.Euler(90, 0, 0), goalParent.transform);
-                        tileObject.transform.localScale *= tileSize;
-                        tileObject.GetComponent<Renderer>().material = colorScheme.goalColor.material;
-                        tileObject.isStatic = true;
-
-                        tile.gameObject = goalObject;
-                        break;
-                    case 2:
-                        // Tile
-                        tileObject = Instantiate(tilePrefab, new Vector3(x, 0, y), Quaternion.Euler(90, 0, 0), tileParent.transform);
-                        tileObject.transform.localScale *= tileSize;
-                        tileObject.isStatic = true;
-
-                        tile.gameObject = tileObject;
-                        break;
-                    case 3:
-                        // Color Tile
-                        tileObject = Instantiate(tilePrefab, new Vector3(x, 0, y), Quaternion.Euler(90, 0, 0), tileParent.transform);
-                        tileObject.transform.localScale *= tileSize;
-                        tileObject.GetComponent<Renderer>().material = materials[tile.colorIndex];
-
-                        tile.gameObject = tileObject;
-                        tileManager.colorGroups[tile.colorIndex].Add(tile);
-                        break;
-                    case 4:
-                        // Switch
-                        break;
-                    case 5:
-                        // Rotator
-                        break;
-                    case 6:
-                        // Telporter
-                        break;
-                }
+                // Create game objects for each tile
+                levelData.tileArray[x, y].CreateGameObjects(tileParent.transform);
             }
         }
     }
@@ -144,7 +98,7 @@ public class LevelGenerator : MonoBehaviour
         // Load each player
         foreach (LevelData.PlayerInfo playerInfo in levelData.players)
         {
-            GameObject playerObject = Instantiate(playerPrefab, new Vector3(playerInfo.posX, 0.5f, playerInfo.posY), Quaternion.identity, playerParent.transform);
+            GameObject playerObject = Instantiate(levelAssets.player, new Vector3(playerInfo.posX, 0.5f, playerInfo.posY), Quaternion.identity, playerParent.transform);
             Player playerScript = playerObject.GetComponent<Player>();
 
             playerScript.LoadInfo(playerInfo);

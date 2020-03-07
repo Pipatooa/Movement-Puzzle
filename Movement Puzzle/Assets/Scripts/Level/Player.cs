@@ -31,11 +31,6 @@ public class Player : MonoBehaviour
 
     GameObject needle;
 
-    GameObject arrowUp;
-    GameObject arrowRight;
-    GameObject arrowDown;
-    GameObject arrowLeft;
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -64,10 +59,10 @@ public class Player : MonoBehaviour
         }
         
         // Create arrows
-        if (colorIndexUp != -1) arrowUp = CreateArrow(Quaternion.identity, colorIndexUp);
-        if (colorIndexRight != -1) arrowUp = CreateArrow(Quaternion.Euler(0, 90, 0), colorIndexRight);
-        if (colorIndexDown != -1) arrowUp = CreateArrow(Quaternion.Euler(0, 180, 0), colorIndexDown);
-        if (colorIndexLeft != -1) arrowUp = CreateArrow(Quaternion.Euler(0, 270, 0), colorIndexLeft);
+        if (colorIndexUp != -1) CreateArrow(Quaternion.identity, colorIndexUp);
+        if (colorIndexRight != -1) CreateArrow(Quaternion.Euler(0, 90, 0), colorIndexRight);
+        if (colorIndexDown != -1) CreateArrow(Quaternion.Euler(0, 180, 0), colorIndexDown);
+        if (colorIndexLeft != -1) CreateArrow(Quaternion.Euler(0, 270, 0), colorIndexLeft);
 
         gameObject.transform.rotation = Quaternion.Euler(0, facingDir * 90, 0);
         gameObject.GetComponent<Renderer>().material = LevelInfo.colorScheme.colors[colorIndex].material;
@@ -108,8 +103,6 @@ public class Player : MonoBehaviour
             
             Events.PlayerMoved();
         }
-
-        SavePlayerState();
     }
 
     // Nudge the player in dir
@@ -141,8 +134,6 @@ public class Player : MonoBehaviour
 
         // If player to nudge, and player did not move when nudged, don't move player
         if (nudgedPlayer != null) if (!nudgedPlayer.Shift(absDir)) return false;
-
-        SavePlayerState();
 
         // Otherwise, update player's position
         posX = newPosX;
@@ -222,7 +213,7 @@ public class Player : MonoBehaviour
     }
 
     // Saves an old state of the player as a change
-    void SavePlayerState()
+    public void SavePlayerState()
     {
         PlayerChange playerChange = new PlayerChange(this);
         UndoSystem.AddChange(playerChange);

@@ -16,9 +16,10 @@ public static class UndoSystem
         // Undo all changes that have been made since previous state
         public void UndoChanges()
         {
-            foreach (Change change in changes)
+            // Iterate through changes in reverse
+            for (int i=changes.Count-1; i >= 0; i--)
             {
-                change.UndoChange();
+                changes[i].UndoChange();
             }
         }
     }
