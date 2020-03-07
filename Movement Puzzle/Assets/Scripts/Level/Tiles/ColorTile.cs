@@ -6,6 +6,7 @@ namespace Tiles
 {
     public class ColorTile : BaseTile
     {
+        GameObject gameObject;
         bool enabledDefault;
 
         // Set properties of tile
@@ -13,6 +14,13 @@ namespace Tiles
         {
             objectID = 3;
             traversable = true;
+
+            Events.LevelUpdate += LevelUpdate;
+        }
+
+        ~ColorTile()
+        {
+            Events.LevelUpdate -= LevelUpdate;
         }
 
         public new byte GetAdditionalInfo()
@@ -33,8 +41,20 @@ namespace Tiles
             gameObject = GameObject.Instantiate(LevelInfo.levelAssets.tile, new Vector3(x, 0, y), Quaternion.Euler(90, 0, 0), parentTransform);
             gameObject.transform.localScale *= 0.9f;
             gameObject.GetComponent<Renderer>().material = LevelInfo.tileMaterials[colorIndex];
+        }
 
-            LevelInfo.tileManager.colorGroups[colorIndex].Add(this);
+        // Called when the level should be updated
+        void LevelUpdate()
+        {
+            if (ColorManager.colorStates[colorIndex])
+            {
+                gameObject.transform.localScale = Vector3.one * LevelInfo.levelGenerator.tileSize;
+                traversable = true;
+            } else
+            {
+                gameObject.transform.localScale = Vector3.one * LevelInfo.levelGenerator.tileSizeSmall;
+                traversable = false;
+            }
         }
     }
 }

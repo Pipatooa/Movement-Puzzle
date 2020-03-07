@@ -17,7 +17,6 @@ public class LevelGenerator : MonoBehaviour
     GameObject tileParent;
     GameObject playerParent;
 
-    [HideInInspector] public TileManager tileManager;
     [HideInInspector] public PlayerManager playerManager;
     
     Material[] materials;
@@ -71,10 +70,7 @@ public class LevelGenerator : MonoBehaviour
     // Loads in all manager scripts
     void LoadScripts()
     {
-        tileManager = tileParent.AddComponent<TileManager>();
         playerManager = playerParent.AddComponent<PlayerManager>();
-
-        LevelInfo.tileManager = tileManager;
         LevelInfo.playerManager = playerManager;
     }
 

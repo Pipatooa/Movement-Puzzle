@@ -72,6 +72,9 @@ public class PlayerManager : MonoBehaviour
 
                 currentPlayer.gameObject.transform.rotation = Quaternion.Euler(0, currentPlayer.facingDir * 90, 0);
             }
+
+            // Temporary next level
+            if (Input.GetKeyDown(KeyCode.N)) LevelManager.NextLevel();
         }
 
         // Trigger undo if timer is complete

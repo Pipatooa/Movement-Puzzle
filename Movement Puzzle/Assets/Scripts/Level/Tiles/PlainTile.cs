@@ -6,6 +6,8 @@ namespace Tiles
 {
     public class PlainTile : BaseTile
     {
+        GameObject gameObject;
+        
         // Set properties of tile
         public PlainTile() : base()
         {

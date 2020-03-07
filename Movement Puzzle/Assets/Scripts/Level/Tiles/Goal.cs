@@ -6,6 +6,7 @@ namespace Tiles
 {
     public class Goal : BaseTile
     {
+        GameObject gameObject;
         bool goalUsed;
 
         // Set properties of tile

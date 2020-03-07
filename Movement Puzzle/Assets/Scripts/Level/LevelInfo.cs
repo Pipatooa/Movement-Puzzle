@@ -15,6 +15,5 @@ public static class LevelInfo
     public static LevelData levelData;
 
     public static LevelGenerator levelGenerator;
-    public static TileManager tileManager;
     public static PlayerManager playerManager;
 }

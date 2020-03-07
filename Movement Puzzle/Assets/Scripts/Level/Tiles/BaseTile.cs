@@ -13,8 +13,6 @@ namespace Tiles
         public bool traversable;
         public int colorIndex;
 
-        public GameObject gameObject;
-
         public byte GetAdditionalInfo()
         {
             return 0;
