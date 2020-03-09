@@ -14,6 +14,7 @@ public class ColorScheme : ScriptableObject
 
     public List<NamedColor> colors;
 
+    public NamedColor defaultTileColor;
     public NamedColor goalColor;
 
     public Shader shader;

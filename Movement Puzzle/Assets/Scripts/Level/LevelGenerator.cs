@@ -10,7 +10,6 @@ public class LevelGenerator : MonoBehaviour
 
     public ColorScheme colorScheme;
     public LevelAssets levelAssets;
-    public Material tileMaterial;
 
     public LevelData levelData;
 
@@ -18,8 +17,6 @@ public class LevelGenerator : MonoBehaviour
     GameObject playerParent;
 
     [HideInInspector] public PlayerManager playerManager;
-    
-    Material[] materials;
 
     void Awake()
     {
@@ -42,8 +39,8 @@ public class LevelGenerator : MonoBehaviour
         {
             LevelInfo.tileMaterials[i] = new Material(colorScheme.shader);
             LevelInfo.tileMaterials[i].name = "Tile (Color " + i + ")";
-            LevelInfo.tileMaterials[i].CopyPropertiesFromMaterial(tileMaterial);
-            LevelInfo.tileMaterials[i].color = Color.Lerp(tileMaterial.color, colorScheme.colors[i].material.color, 0.75f);
+            LevelInfo.tileMaterials[i].CopyPropertiesFromMaterial(colorScheme.defaultTileColor.material);
+            LevelInfo.tileMaterials[i].color = Color.Lerp(colorScheme.defaultTileColor.material.color, colorScheme.colors[i].material.color, 0.75f);
         }
 
         // Create empty parent objects to group objects

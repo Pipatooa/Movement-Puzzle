@@ -28,10 +28,9 @@ public class Player : MonoBehaviour, IMoveableObject
     public float needleSpinSpeed = 3f;
 
     Rigidbody rb;
+    GameObject needle; 
 
-    GameObject needle;
-
-    private void Awake()
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
         

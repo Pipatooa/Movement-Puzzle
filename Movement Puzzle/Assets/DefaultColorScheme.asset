@@ -29,6 +29,9 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: 6d0c3d0487964244087d6d42553db92f, type: 2}
   - name: Black
     material: {fileID: 2100000, guid: 4d6bb5a221425354fa10ca5be3ea4c44, type: 2}
+  defaultTileColor:
+    name: White
+    material: {fileID: 2100000, guid: efd4e5659d82dc642901abf900a53d6c, type: 2}
   goalColor:
     name: Purple
     material: {fileID: 2100000, guid: 5dff00e2d6e7fb249880d9a3a4397a81, type: 2}
