@@ -63,6 +63,11 @@ namespace LevelObjects
         // Creates all game objects for level object under parent transform
         public override void CreateGameObjects(Transform parentTransform)
         {
+            base.CreateGameObjects(parentTransform);
+            
+            // Add this script to player manager and list of level objects
+            LevelInfo.playerManager.players.Add(this);
+
             // Create player cube
             gameObject = GameObject.Instantiate(LevelInfo.levelAssets.player, new Vector3(posX, 0.5f, posY), Quaternion.identity, parentTransform);
             gameObject.transform.rotation = Quaternion.Euler(0, facingDir * 90, 0);
@@ -86,9 +91,6 @@ namespace LevelObjects
             // Create needle
             needle = GameObject.Instantiate(LevelInfo.levelAssets.playerNeedle, gameObject.transform.position + new Vector3(0, 0.6f, 0), Quaternion.identity, gameObject.transform) as GameObject;
             needle.transform.localScale *= needleScale;
-
-            // Add this script to player manager
-            LevelInfo.playerManager.players.Add(this);
         }
 
         // Called every frame by player manager

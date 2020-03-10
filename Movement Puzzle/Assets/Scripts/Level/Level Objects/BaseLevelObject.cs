@@ -29,7 +29,7 @@ namespace LevelObjects
         // Creates all game objects for level object under parent transform
         public virtual void CreateGameObjects(Transform parentTransform)
         {
-
+            LevelInfo.levelObjects.Add(this);
         }
 
         // Nudge the object in dir
