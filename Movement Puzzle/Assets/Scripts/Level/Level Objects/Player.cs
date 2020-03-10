@@ -23,7 +23,7 @@ namespace LevelObjects
         Rigidbody rb;
 
         // Set properties of object
-        public Player()
+        public Player() : base()
         {
             objectID = 0;
 

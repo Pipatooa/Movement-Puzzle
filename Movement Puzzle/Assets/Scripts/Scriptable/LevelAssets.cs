@@ -8,7 +8,9 @@ public class LevelAssets : ScriptableObject
     public GameObject player;
     public GameObject playerArrow;
     public GameObject playerNeedle;
-    
+
+    public GameObject cube;
+
     public GameObject tile;
     public GameObject goal;
 }

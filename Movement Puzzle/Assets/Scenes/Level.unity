@@ -349,8 +349,6 @@ MonoBehaviour:
   colorIntensity: 0.75
   colorScheme: {fileID: 11400000, guid: 25ff4618b3c03ca4f8063fcd37c2eba0, type: 2}
   levelAssets: {fileID: 11400000, guid: 03ace000a16ed154da374b3e203166a0, type: 2}
-  tileMaterial: {fileID: 2100000, guid: efd4e5659d82dc642901abf900a53d6c, type: 2}
-  tileManager: {fileID: 0}
   playerManager: {fileID: 0}
 --- !u!4 &1830762157
 Transform:

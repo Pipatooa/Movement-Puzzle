@@ -53,6 +53,8 @@ public static class Utils
         {
             case 0:
                 return new LevelObjects.Player();
+            case 1:
+                return new LevelObjects.Cube();
             default:
                 return null;
         }

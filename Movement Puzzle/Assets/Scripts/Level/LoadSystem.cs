@@ -28,8 +28,18 @@ public static class LoadSystem
         player2.colorIndex = 1;
         player2.colorIndexes = new int[4] { 0, 1, 2, 3 };
 
+        LevelObjects.Cube cube1 = new LevelObjects.Cube();
+        cube1.posX = 5;
+        cube1.posY = 3;
+
+        LevelObjects.Cube cube2 = new LevelObjects.Cube();
+        cube2.posX = 5;
+        cube2.posY = 7;
+
         levelData.levelObjects.Add(player1);
         levelData.levelObjects.Add(player2);
+        levelData.levelObjects.Add(cube1);
+        levelData.levelObjects.Add(cube2);
 
         for (int x=0; x < 20; x++)
         {
@@ -90,6 +100,8 @@ public static class LoadSystem
             writer.Write((byte)levelObject.objectID);
 
             levelObject.WriteData(ref writer);
+
+            writer.Write((byte)255);
         }
 
         // Write tile data
@@ -103,6 +115,9 @@ public static class LoadSystem
                 tile.WriteData(ref writer);
             }
         }
+
+        // Close the file
+        writer.Close();
     }
 
     // Load a level data object from file
@@ -136,6 +151,8 @@ public static class LoadSystem
             levelObject.ReadData(ref reader);
 
             levelData.levelObjects.Add(levelObject);
+
+            reader.ReadByte();
         }
 
         // Load tile info
