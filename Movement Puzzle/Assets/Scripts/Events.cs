@@ -5,7 +5,7 @@ using UnityEngine;
 public static class Events
 {
     public delegate void DelegateFunc();
-    
+
     public static DelegateFunc LevelUpdate;
     public static DelegateFunc OnLevelUpdate;
 
@@ -20,6 +20,7 @@ public static class Events
         OnPlayerReachedGoal = null;
     }
 
+    // Called when the player moves
     public static void PlayerMoved()
     {
         ColorManager.CalculateColors();
@@ -30,6 +31,7 @@ public static class Events
         UndoSystem.SaveChanges();
     }
 
+    // Called when the player reaches a goal
     public static void PlayerReachedGoal()
     {
         OnPlayerReachedGoal();

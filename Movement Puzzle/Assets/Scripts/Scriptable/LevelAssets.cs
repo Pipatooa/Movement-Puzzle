@@ -6,6 +6,8 @@ using UnityEngine;
 public class LevelAssets : ScriptableObject
 {
     public GameObject player;
+    public GameObject playerArrow;
+    public GameObject playerNeedle;
     
     public GameObject tile;
     public GameObject goal;

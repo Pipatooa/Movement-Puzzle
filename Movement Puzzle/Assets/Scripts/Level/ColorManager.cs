@@ -18,30 +18,14 @@ public static class ColorManager
     public static void CheckPlayerColors()
     {
         // Loop through all players
-        foreach (Player player in LevelInfo.playerManager.players)
+        foreach (LevelObjects.Player player in LevelInfo.playerManager.players)
         {
             // Do not count player if they have reached the goal
-            if (player.reachedGoal)
-            {
-                continue;
-            }
-            
+            if (player.reachedGoal) continue;
+
             // Set the appropriate color state to true if the player is facing in that direction
-            switch (player.lastMoveDir)
-            {
-                case 0:
-                    colorStates[player.colorIndexUp] = true;
-                    break;
-                case 1:
-                    colorStates[player.colorIndexRight] = true;
-                    break;
-                case 2:
-                    colorStates[player.colorIndexDown] = true;
-                    break;
-                case 3:
-                    colorStates[player.colorIndexLeft] = true;
-                    break;
-            }
+            int index = player.colorIndexes[player.lastMoveDir];
+            colorStates[index] = true;
         }
     }
 

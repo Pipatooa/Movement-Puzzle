@@ -8,7 +8,7 @@ public static class LoadSystem
     {
         LevelData levelData = new LevelData("Test level", 20, 20);
 
-        LevelData.PlayerInfo player1 = new LevelData.PlayerInfo();
+        LevelObjects.Player player1 = new LevelObjects.Player();
         player1.posX = 3;
         player1.posY = 3;
 
@@ -16,12 +16,9 @@ public static class LoadSystem
         player1.lastMoveDir = 3;
 
         player1.colorIndex = 0;
-        player1.colorIndexUp = 0;
-        player1.colorIndexRight = 1;
-        player1.colorIndexDown = 2;
-        player1.colorIndexLeft = 3;
+        player1.colorIndexes = new int[4] { 0, 1, 2, 3 };
 
-        LevelData.PlayerInfo player2 = new LevelData.PlayerInfo();
+        LevelObjects.Player player2 = new LevelObjects.Player();
         player2.posX = 3;
         player2.posY = 7;
 
@@ -29,13 +26,10 @@ public static class LoadSystem
         player2.lastMoveDir = 0;
 
         player2.colorIndex = 1;
-        player2.colorIndexUp = 0;
-        player2.colorIndexRight = 1;
-        player2.colorIndexDown = 2;
-        player2.colorIndexLeft = 3;
+        player2.colorIndexes = new int[4] { 0, 1, 2, 3 };
 
-        levelData.players.Add(player1);
-        levelData.players.Add(player2);
+        levelData.levelObjects.Add(player1);
+        levelData.levelObjects.Add(player2);
 
         for (int x=0; x < 20; x++)
         {
@@ -47,22 +41,31 @@ public static class LoadSystem
 
         for (int x=1; x < 10; x++)
         {
-            levelData.tileArray[x, 10] = new Tiles.ColorTile();
-            levelData.tileArray[x, 11] = new Tiles.ColorTile();
-            levelData.tileArray[x, 12] = new Tiles.ColorTile();
-            levelData.tileArray[x, 13] = new Tiles.ColorTile();
+            Tiles.ColorTile tile0 = new Tiles.ColorTile();
+            Tiles.ColorTile tile1 = new Tiles.ColorTile();
+            Tiles.ColorTile tile2 = new Tiles.ColorTile();
+            Tiles.ColorTile tile3 = new Tiles.ColorTile();
 
-            levelData.tileArray[x, 10].colorIndex = 0;
-            levelData.tileArray[x, 11].colorIndex = 1;
-            levelData.tileArray[x, 12].colorIndex = 2;
-            levelData.tileArray[x, 13].colorIndex = 3;
+            tile0.colorIndex = 0;
+            tile1.colorIndex = 1;
+            tile2.colorIndex = 2;
+            tile3.colorIndex = 3;
+
+            levelData.tileArray[x, 10] = tile0;
+            levelData.tileArray[x, 11] = tile1;
+            levelData.tileArray[x, 12] = tile2;
+            levelData.tileArray[x, 13] = tile3;
         }
 
         levelData.tileArray[9, 3] = new Tiles.Goal();
         levelData.tileArray[9, 7] = new Tiles.Goal();
 
-        levelData.tileArray[15, 3] = new Tiles.Switch();
-        levelData.tileArray[15, 3].colorIndex = 1;
+        Tiles.Switch @switch = new Tiles.Switch();
+        @switch.colorIndex = 1;
+
+        levelData.tileArray[15, 3] = @switch;
+
+        Debug.Log("Level Saved!");
 
         return levelData;
     }
@@ -72,45 +75,32 @@ public static class LoadSystem
     {
         string path = Path.Combine(Application.streamingAssetsPath, "Levels", fileName);
 
-        using (BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create)))
+        // Open file to be writen to
+        BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create));
+
+        // Write basic level details
+        writer.Write(levelData.levelName);
+        writer.Write((byte) levelData.sizeX);
+        writer.Write((byte) levelData.sizeY);
+        writer.Write((byte) levelData.levelObjects.Count);
+
+        // Write level object info
+        foreach (LevelObjects.BaseLevelObject levelObject in levelData.levelObjects)
         {
-            // Write basic level details
-            writer.Write(levelData.levelName);
-            writer.Write((byte) levelData.sizeX);
-            writer.Write((byte) levelData.sizeY);
+            writer.Write((byte)levelObject.objectID);
 
-            writer.Write((byte) levelData.players.Count);
+            levelObject.WriteData(ref writer);
+        }
 
-            // Write player data
-            for (int i = 0; i < levelData.players.Count; i++)
+        // Write tile data
+        for (int x = 0; x < levelData.sizeX; x++)
+        {
+            for (int y = 0; y < levelData.sizeY; y++)
             {
-                writer.Write((byte) levelData.players[i].posX);
-                writer.Write((byte) levelData.players[i].posY);
-                
-                writer.Write((byte) levelData.players[i].facingDir);
-                writer.Write((byte) levelData.players[i].lastMoveDir);
+                Tiles.BaseTile tile = levelData.tileArray[x, y];
 
-                writer.Write((sbyte) levelData.players[i].colorIndex);
-                writer.Write((sbyte) levelData.players[i].colorIndexUp);
-                writer.Write((sbyte) levelData.players[i].colorIndexRight);
-                writer.Write((sbyte) levelData.players[i].colorIndexDown);
-                writer.Write((sbyte) levelData.players[i].colorIndexLeft);
-            }
-
-            // Write tile data
-            for (int x = 0; x < levelData.sizeX; x++)
-            {
-                for (int y = 0; y < levelData.sizeY; y++)
-                {
-                    Tiles.BaseTile tile = levelData.tileArray[x, y];
-
-                    writer.Write((byte)((tile.tileID << 4 & 0xF0) | (tile.colorIndex & 0x0F)));
-
-                    if (tile.tileID != 0)
-                    {
-                        writer.Write(tile.GetAdditionalInfo());
-                    }
-                }
+                writer.Write((byte)tile.tileID);
+                tile.WriteData(ref writer);
             }
         }
     }
@@ -120,78 +110,54 @@ public static class LoadSystem
     {
         string path = Path.Combine(Application.streamingAssetsPath, "Levels", fileName);
 
-        if (File.Exists(path))
-        {
-            LevelData levelData;
-
-            string levelName;
-            int sizeX, sizeY;
-
-            using (BinaryReader reader = new BinaryReader(File.Open(path, FileMode.Open)))
-            {
-                // Load basic level details
-                levelName = reader.ReadString();
-                sizeX = reader.ReadByte();
-                sizeY = reader.ReadByte();
-
-                // Create a new level object to be populated
-                levelData = new LevelData(levelName, sizeX, sizeY);
-
-                int numPlayers = reader.ReadByte();
-
-                // Load player info
-                for (int i = 0; i < numPlayers; i++)
-                {
-                    LevelData.PlayerInfo player = new LevelData.PlayerInfo();
-
-                    player.posX = reader.ReadByte();
-                    player.posY = reader.ReadByte();
-                    
-                    player.facingDir = reader.ReadByte();
-                    player.lastMoveDir = reader.ReadByte();
-                    
-                    player.colorIndex = reader.ReadSByte();
-                    player.colorIndexUp = reader.ReadSByte();
-                    player.colorIndexRight = reader.ReadSByte();
-                    player.colorIndexDown = reader.ReadSByte();
-                    player.colorIndexLeft = reader.ReadSByte();
-
-                    levelData.players.Add(player);
-                }
-
-                byte tileInfo;
-                int objectID;
-                int colorIndex;
-
-                // Load tile info
-                for (int x = 0; x < sizeX; x++)
-                {
-                    for (int y = 0; y < sizeY; y++)
-                    {
-                        tileInfo = reader.ReadByte();
-                        objectID = (tileInfo & 0xF0) >> 4;
-                        colorIndex = tileInfo & 0x0F;
-
-                        levelData.tileArray[x, y] = Utils.IDToTile(objectID);
-
-                        levelData.tileArray[x, y].x = x;
-                        levelData.tileArray[x, y].y = y;
-
-                        levelData.tileArray[x, y].colorIndex = colorIndex;
-
-                        if (objectID != 0)
-                        {
-                            levelData.tileArray[x, y].LoadAdditionalInfo(reader.ReadByte());
-                        }
-                    }
-                }
-            }
-
-            return levelData;
-        } else
+        if (!File.Exists(path))
         {
             Debug.LogError("No level found at '" + path + "'");
             return null;
         }
+
+        // Open file to be read
+        BinaryReader reader = new BinaryReader(File.Open(path, FileMode.Open));
+
+        // Load basic level details and create a new level data object
+        string levelName = reader.ReadString();
+        int sizeX = reader.ReadByte();
+        int sizeY = reader.ReadByte();
+        int numLevelObjects = reader.ReadByte();
+
+        LevelData levelData = new LevelData(levelName, sizeX, sizeY);
+
+        // Load all object info
+        for (int i = 0; i < numLevelObjects; i++)
+        {
+            int objectID = reader.ReadByte();
+
+            LevelObjects.BaseLevelObject levelObject = Utils.IDToLevelObject(objectID);
+            levelObject.ReadData(ref reader);
+
+            levelData.levelObjects.Add(levelObject);
+        }
+
+        // Load tile info
+        for (int x = 0; x < sizeX; x++)
+        {
+            for (int y = 0; y < sizeY; y++)
+            {
+                int tileID = reader.ReadByte();
+
+                Tiles.BaseTile tile = Utils.IDToTile(tileID);
+                tile.ReadData(ref reader);
+                
+                tile.x = x;
+                tile.y = y;
+
+                levelData.tileArray[x, y] = tile;
+            }
+        }
+
+        // Close file
+        reader.Close();
+
+        return levelData;
     }
 }

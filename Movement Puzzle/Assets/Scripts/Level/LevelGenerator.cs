@@ -14,7 +14,7 @@ public class LevelGenerator : MonoBehaviour
     public LevelData levelData;
 
     GameObject tileParent;
-    GameObject playerParent;
+    GameObject levelObjectParent;
 
     [HideInInspector] public PlayerManager playerManager;
 
@@ -47,34 +47,14 @@ public class LevelGenerator : MonoBehaviour
         tileParent = new GameObject("Tiles");
         tileParent.transform.parent = gameObject.transform;
 
-        playerParent = new GameObject("Players");
-        playerParent.transform.SetParent(gameObject.transform);
+        levelObjectParent = new GameObject("Level Objects");
+        levelObjectParent.transform.SetParent(gameObject.transform);
 
-        // Load in level objects
-        LoadScripts();
-        LoadTiles();
-        LoadPlayers();
-
-        // Once level has finished loading, calculate initial level state
-        UndoSystem.ClearStates();
-
-        ColorManager.ResetColorCounts();
-        ColorManager.CalculateColors();
-
-        Events.LevelUpdate();
-    }
-
-    // Loads in all manager scripts
-    void LoadScripts()
-    {
-        playerManager = playerParent.AddComponent<PlayerManager>();
+        // Load in player manager
+        playerManager = levelObjectParent.AddComponent<PlayerManager>();
         LevelInfo.playerManager = playerManager;
-    }
 
-    // Loads tiles of level
-    void LoadTiles()
-    {
-        // Iterate through tiles
+        // Load tiles
         for (int x = 0; x < levelData.sizeX; x++)
         {
             for (int y = 0; y < levelData.sizeY; y++)
@@ -83,20 +63,19 @@ public class LevelGenerator : MonoBehaviour
                 levelData.tileArray[x, y].CreateGameObjects(tileParent.transform);
             }
         }
-    }
 
-    // Loads all players and player info into level
-    void LoadPlayers()
-    {
-        // Load each player
-        foreach (LevelData.PlayerInfo playerInfo in levelData.players)
+        // Load level objects
+        foreach (LevelObjects.BaseLevelObject levelObject in levelData.levelObjects)
         {
-            GameObject playerObject = Instantiate(levelAssets.player, new Vector3(playerInfo.posX, 0.5f, playerInfo.posY), Quaternion.identity, playerParent.transform);
-            Player playerScript = playerObject.GetComponent<Player>();
-
-            playerScript.LoadInfo(playerInfo);
-
-            playerManager.players.Add(playerScript);
+            levelObject.CreateGameObjects(levelObjectParent.transform);
         }
+
+        // Once level has finished loading, calculate initial level state
+        UndoSystem.ClearStates();
+
+        ColorManager.ResetColorCounts();
+        ColorManager.CalculateColors();
+
+        Events.LevelUpdate();
     }
 }

@@ -1,14 +1,36 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 namespace LevelObjects
 {
-    public class BaseLevelObject : MonoBehaviour
+    public class BaseLevelObject
     {
         public int objectID;
-
         public int posX, posY;
+
+        public GameObject gameObject;
+
+        // Writes additional data about the object given a binary reader
+        public virtual void WriteData(ref BinaryWriter writer)
+        {
+            writer.Write((byte)posX);
+            writer.Write((byte)posY);
+        }
+
+        // Reads additional data about the object given a binary reader
+        public virtual void ReadData(ref BinaryReader reader)
+        {
+            posX = reader.ReadByte();
+            posY = reader.ReadByte();
+        }
+
+        // Creates all game objects for level object under parent transform
+        public virtual void CreateGameObjects(Transform parentTransform)
+        {
+
+        }
 
         // Nudge the object in dir
         // Returns true if successful, otherwise, false
@@ -27,8 +49,8 @@ namespace LevelObjects
             }
 
             // Check whether a level object to be nudged is present in new position
-            LevelObjects.BaseLevelObject nudgedObject = null;
-            foreach (LevelObjects.BaseLevelObject levelObject in LevelInfo.levelObjects)
+            BaseLevelObject nudgedObject = null;
+            foreach (BaseLevelObject levelObject in LevelInfo.levelObjects)
             {
                 if (levelObject.posX == newPosX && levelObject.posY == newPosY)
                 {

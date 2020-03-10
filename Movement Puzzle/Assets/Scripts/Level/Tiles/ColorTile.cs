@@ -1,13 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 namespace Tiles
 {
     public class ColorTile : BaseTile
     {
+        public int colorIndex;
+        public bool enabledDefault;
+
         GameObject gameObject;
-        bool enabledDefault;
 
         // Set properties of tile
         public ColorTile() : base()
@@ -18,16 +21,20 @@ namespace Tiles
             Events.LevelUpdate += LevelUpdate;
         }
 
-        public new byte GetAdditionalInfo()
+        // Writes additional data about the object given a binary reader
+        public override void WriteData(ref BinaryWriter writer)
         {
-            byte additionalInfo = enabledDefault ? (byte)1 : (byte)0;
+            writer.Write((byte)colorIndex);
 
-            return additionalInfo;
+            writer.Write(enabledDefault);
         }
 
-        public new void LoadAdditionalInfo(byte additionalInfo)
+        // Reads additional data about the object given a binary reader
+        public override void ReadData(ref BinaryReader reader)
         {
-            enabledDefault = additionalInfo == 1;
+            colorIndex = reader.ReadByte();
+
+            enabledDefault = reader.ReadBoolean();
         }
 
         // Creates all objects for tile

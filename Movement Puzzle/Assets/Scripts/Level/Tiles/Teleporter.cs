@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 namespace Tiles
 {
@@ -14,7 +15,7 @@ namespace Tiles
         }
 
         // Processes an object that has landed on this tile
-        public override void ProcessObjectEntry(ref ILevelObject moveableObject)
+        public override void ProcessObjectEntry(ref LevelObjects.BaseLevelObject moveableObject)
         {
 
         }

@@ -26,7 +26,7 @@ public class CameraMovement : MonoBehaviour
         cameraOffset.z = -minZoom / Mathf.Tan(cameraRotation * Mathf.Deg2Rad);
         cameraOffset = Quaternion.Euler(0, LevelInfo.playerManager.transform.rotation.y, 0) * cameraOffset;
 
-        gameObject.transform.position = LevelInfo.playerManager.currentPlayer.transform.position + cameraOffset;
+        gameObject.transform.position = LevelInfo.playerManager.currentPlayer.gameObject.transform.position + cameraOffset;
     }
 
     // Move camera after physics updates
@@ -45,11 +45,11 @@ public class CameraMovement : MonoBehaviour
 
         // Store the camera offset prior to rotation and apply new rotation
         Vector3 previousCameraOffset = Quaternion.Euler(0, gameObject.transform.eulerAngles.y, 0) * cameraOffset;
-        gameObject.transform.rotation = Quaternion.Lerp(gameObject.transform.rotation, Quaternion.Euler(cameraRotation, LevelInfo.playerManager.currentPlayer.transform.eulerAngles.y, 0), cameraRotSpeed * Time.deltaTime);
+        gameObject.transform.rotation = Quaternion.Lerp(gameObject.transform.rotation, Quaternion.Euler(cameraRotation, LevelInfo.playerManager.currentPlayer.gameObject.transform.eulerAngles.y, 0), cameraRotSpeed * Time.deltaTime);
 
         // Calculate new camera offset and position
         Vector3 newCameraOffset = Quaternion.Euler(0, gameObject.transform.eulerAngles.y, 0) * cameraOffset;
-        Vector3 desiredPosition = LevelInfo.playerManager.currentPlayer.transform.position;
+        Vector3 desiredPosition = LevelInfo.playerManager.currentPlayer.gameObject.transform.position;
         desiredPosition.y = 0.5f;
 
         // Smoothly move camera to desired position, taking camera offset before rotation into account

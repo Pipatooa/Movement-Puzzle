@@ -33,11 +33,11 @@ namespace Tiles
         }
 
         // Processes an object that has landed on this tile
-        public override void ProcessObjectEntry(ref ILevelObject moveableObject)
+        public override void ProcessObjectEntry(ref LevelObjects.BaseLevelObject moveableObject)
         {
-            if (!goalUsed & moveableObject is Player)
+            if (!goalUsed & moveableObject is LevelObjects.Player)
             {
-                Player player = moveableObject as Player;
+                LevelObjects.Player player = moveableObject as LevelObjects.Player;
 
                 SaveGoalState();
 

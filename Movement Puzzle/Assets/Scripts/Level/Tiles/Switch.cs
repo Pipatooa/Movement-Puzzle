@@ -1,20 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 namespace Tiles
 {
     public class Switch : BaseTile
     {
-        GameObject gameObject;
-
+        public int colorIndex;
         bool active;
+
+        GameObject gameObject;
 
         // Set properties of tile
         public Switch() : base()
         {
             tileID = 4;
             traversable = true;
+        }
+
+        // Writes additional data about the object given a binary reader
+        public override void WriteData(ref BinaryWriter writer)
+        {
+            writer.Write((byte)colorIndex);
+        }
+
+        // Reads additional data about the object given a binary reader
+        public override void ReadData(ref BinaryReader reader)
+        {
+            colorIndex = reader.ReadByte();
         }
 
         // Creates all objects for tile
@@ -26,14 +40,14 @@ namespace Tiles
         }
 
         // Processes an object that has landed on this tile
-        public override void ProcessObjectEntry(ref ILevelObject moveableObject)
+        public override void ProcessObjectEntry(ref LevelObjects.BaseLevelObject moveableObject)
         {
             SaveSwitchState(SwitchChange.Event.entry);
             ColorManager.colorCounts[colorIndex] += 1;
         }
 
         // Processes an object that is exiting this tile
-        public override void ProcessObjectExit(ref ILevelObject moveableObject)
+        public override void ProcessObjectExit(ref LevelObjects.BaseLevelObject moveableObject)
         {
             SaveSwitchState(SwitchChange.Event.exit);
             ColorManager.colorCounts[colorIndex] -= 1;

@@ -45,4 +45,16 @@ public static class Utils
                 return null;
         }
     }
+
+    // Returns a new level object given an id
+    public static LevelObjects.BaseLevelObject IDToLevelObject(int id)
+    {
+        switch (id)
+        {
+            case 0:
+                return new LevelObjects.Player();
+            default:
+                return null;
+        }
+    }
 }

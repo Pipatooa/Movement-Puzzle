@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7087118858679663479}
   - component: {fileID: 7087118858679663478}
   - component: {fileID: 979530425197169182}
-  - component: {fileID: 7087118858679663476}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -97,32 +96,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &7087118858679663476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7087118858679663474}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59c48ce5da0d0264eb127a030f07c8d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorIndex: 0
-  colorIndexUp: 0
-  colorIndexRight: 0
-  colorIndexDown: 0
-  colorIndexLeft: 0
-  facingDir: 0
-  lastMoveDir: 0
-  posX: 0
-  posY: 0
-  reachedGoal: 0
-  arrowPrefab: {fileID: -927199367670048503, guid: c80f802011130fd4599882ecda68885a,
-    type: 3}
-  needlePrefab: {fileID: -927199367670048503, guid: cc0220bd731ee6d4ba2887d10da48852,
-    type: 3}
-  arrowScale: 0.25
-  needleScale: 0.75
-  needleSpinSpeed: 3

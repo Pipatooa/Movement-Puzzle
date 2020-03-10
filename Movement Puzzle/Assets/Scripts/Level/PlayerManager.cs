@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    [HideInInspector] public Player currentPlayer;
+    [HideInInspector] public LevelObjects.Player currentPlayer;
     [HideInInspector] public int currentPlayerIndex;
 
     public bool resetLocked;
@@ -13,7 +13,7 @@ public class PlayerManager : MonoBehaviour
     public bool levelCompleted;
     public float levelCompletedTime;
 
-    public List<Player> players = new List<Player>();
+    public List<LevelObjects.Player> players = new List<LevelObjects.Player>();
 
     void Awake()
     {
@@ -31,6 +31,12 @@ public class PlayerManager : MonoBehaviour
 
     void Update()
     {
+        // Update all players
+        foreach (LevelObjects.Player player in players)
+        {
+            player.Update();
+        }
+        
         // Move onto next level if level timer is complete
         if (levelCompleted)
         {
@@ -54,10 +60,10 @@ public class PlayerManager : MonoBehaviour
         // Player movement input
         if (!resetLocked && !currentPlayer.reachedGoal)
         {
-            if (Input.GetKeyDown(KeyCode.UpArrow) && currentPlayer.colorIndexUp != -1) { SavePlayerStates();  currentPlayer.Move(0);  }
-            else if (Input.GetKeyDown(KeyCode.RightArrow) && currentPlayer.colorIndexRight != -1) { SavePlayerStates(); currentPlayer.Move(1); }
-            else if (Input.GetKeyDown(KeyCode.DownArrow) && currentPlayer.colorIndexDown != -1) { SavePlayerStates(); currentPlayer.Move(2); }
-            else if (Input.GetKeyDown(KeyCode.LeftArrow) && currentPlayer.colorIndexLeft != -1) { SavePlayerStates(); currentPlayer.Move(3); }
+            if (Input.GetKeyDown(KeyCode.UpArrow) && currentPlayer.colorIndexes[0] != -1) { SavePlayerStates();  currentPlayer.Move(0);  }
+            else if (Input.GetKeyDown(KeyCode.RightArrow) && currentPlayer.colorIndexes[1] != -1) { SavePlayerStates(); currentPlayer.Move(1); }
+            else if (Input.GetKeyDown(KeyCode.DownArrow) && currentPlayer.colorIndexes[2] != -1) { SavePlayerStates(); currentPlayer.Move(2); }
+            else if (Input.GetKeyDown(KeyCode.LeftArrow) && currentPlayer.colorIndexes[3] != -1) { SavePlayerStates(); currentPlayer.Move(3); }
 
             // Temporary player rotation
             if (Input.GetKeyDown(KeyCode.R))
@@ -102,7 +108,7 @@ public class PlayerManager : MonoBehaviour
     // Saves all players current states as changes
     void SavePlayerStates()
     {
-        foreach (Player player in players)
+        foreach (LevelObjects.Player player in players)
         {
             player.SavePlayerState();
         }

@@ -1,92 +1,101 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 namespace LevelObjects
 {
-    public class Player : LevelObjects.BaseLevelObject
+    public class Player : BaseLevelObject
     {
-        public int colorIndex;
-
-        public int colorIndexUp;
-        public int colorIndexRight;
-        public int colorIndexDown;
-        public int colorIndexLeft;
-
         public int facingDir;
-        [HideInInspector] public int lastMoveDir;
+        public int lastMoveDir;
 
-        [HideInInspector] public int posX;
-        [HideInInspector] public int posY;
+        public int colorIndex;
+        public int[] colorIndexes = new int[4];
 
-        [HideInInspector] public bool reachedGoal;
+        public bool reachedGoal;
 
-        public GameObject arrowPrefab;
-        public GameObject needlePrefab;
+        float arrowScale = 0.25f;
+        float needleScale = 0.75f;
+        float needleSpinSpeed = 3f;
 
-        public float arrowScale = 0.25f;
-        public float needleScale = 0.75f;
-
-        public float needleSpinSpeed = 3f;
-
-        Rigidbody rb;
         GameObject needle;
+        Rigidbody rb;
 
-        void Awake()
+        // Set properties of object
+        public Player()
         {
-            rb = GetComponent<Rigidbody>();
+            objectID = 0;
 
             Events.OnLevelUpdate += OnLevelUpdate;
         }
 
-        void Start()
+        // Writes additional data about the object given a binary writer
+        public override void WriteData(ref BinaryWriter writer)
         {
-            // Function to create arrows around the player
-            GameObject CreateArrow(Quaternion rotation, int colorIndex)
-            {
-                GameObject arrow;
+            base.WriteData(ref writer);
 
-                arrow = Instantiate(arrowPrefab, gameObject.transform.position + rotation * new Vector3(0, 0.25f, 1), Quaternion.identity, gameObject.transform) as GameObject;
-                arrow.transform.localScale *= arrowScale;
-                arrow.transform.rotation = rotation;
-                arrow.GetComponent<Renderer>().material.color = LevelInfo.colorScheme.colors[colorIndex].material.color;
+            writer.Write((byte)facingDir);
+            writer.Write((byte)lastMoveDir);
 
-                return arrow;
-            }
+            writer.Write((sbyte)colorIndex);
+            writer.Write((sbyte)colorIndexes[0]);
+            writer.Write((sbyte)colorIndexes[1]);
+            writer.Write((sbyte)colorIndexes[2]);
+            writer.Write((sbyte)colorIndexes[3]);
+        }
 
-            // Create arrows
-            if (colorIndexUp != -1) CreateArrow(Quaternion.identity, colorIndexUp);
-            if (colorIndexRight != -1) CreateArrow(Quaternion.Euler(0, 90, 0), colorIndexRight);
-            if (colorIndexDown != -1) CreateArrow(Quaternion.Euler(0, 180, 0), colorIndexDown);
-            if (colorIndexLeft != -1) CreateArrow(Quaternion.Euler(0, 270, 0), colorIndexLeft);
+        // Reads additional data about the object given a binary reader
+        public override void ReadData(ref BinaryReader reader)
+        {
+            base.ReadData(ref reader);
 
+            facingDir = reader.ReadByte();
+            lastMoveDir = reader.ReadByte();
+
+            colorIndex = reader.ReadSByte();
+            colorIndexes[0] = reader.ReadSByte();
+            colorIndexes[1] = reader.ReadSByte();
+            colorIndexes[2] = reader.ReadSByte();
+            colorIndexes[3] = reader.ReadSByte();
+        }
+
+        // Creates all game objects for level object under parent transform
+        public override void CreateGameObjects(Transform parentTransform)
+        {
+            // Create player cube
+            gameObject = GameObject.Instantiate(LevelInfo.levelAssets.player, new Vector3(posX, 0.5f, posY), Quaternion.identity, parentTransform);
             gameObject.transform.rotation = Quaternion.Euler(0, facingDir * 90, 0);
             gameObject.GetComponent<Renderer>().material = LevelInfo.colorScheme.colors[colorIndex].material;
+            rb = gameObject.GetComponent<Rigidbody>();
 
-            needle = Instantiate(needlePrefab, gameObject.transform.position + new Vector3(0, 0.6f, 0), Quaternion.identity, gameObject.transform) as GameObject;
+            // Iterate through directions to create arrows
+            for (int dir = 0; dir < 4; dir++)
+            {
+                // Do not create arrow if no color for direction
+                if (colorIndexes[dir] == -1) continue;
+
+                // Otherwise create arrow with given color
+                Quaternion rotation = Quaternion.Euler(0, dir * 90, 0);
+                GameObject arrow = GameObject.Instantiate(LevelInfo.levelAssets.playerArrow, gameObject.transform.position + rotation * new Vector3(0, 0.25f, 1), Quaternion.identity, gameObject.transform) as GameObject;
+                arrow.transform.localScale *= arrowScale;
+                arrow.transform.rotation = rotation;
+                arrow.GetComponent<Renderer>().material.color = LevelInfo.colorScheme.colors[colorIndexes[dir]].material.color;
+            }
+
+            // Create needle
+            needle = GameObject.Instantiate(LevelInfo.levelAssets.playerNeedle, gameObject.transform.position + new Vector3(0, 0.6f, 0), Quaternion.identity, gameObject.transform) as GameObject;
             needle.transform.localScale *= needleScale;
+
+            // Add this script to player manager
+            LevelInfo.playerManager.players.Add(this);
         }
 
-        void Update()
+        // Called every frame by player manager
+        public void Update()
         {
-            // Needle spin
+            // Spin needle towards last move direction
             needle.transform.localRotation = Quaternion.Lerp(needle.transform.localRotation, Quaternion.Euler(0, lastMoveDir * 90, 0), needleSpinSpeed * Time.deltaTime);
-        }
-
-        // Loads player info at start of level
-        public void LoadInfo(LevelData.PlayerInfo playerInfo)
-        {
-            posX = playerInfo.posX;
-            posY = playerInfo.posY;
-
-            facingDir = playerInfo.facingDir;
-            lastMoveDir = playerInfo.lastMoveDir;
-
-            colorIndex = playerInfo.colorIndex;
-            colorIndexUp = playerInfo.colorIndexUp;
-            colorIndexRight = playerInfo.colorIndexRight;
-            colorIndexDown = playerInfo.colorIndexDown;
-            colorIndexLeft = playerInfo.colorIndexLeft;
         }
 
         // Move the player in dir, taking direction player is facing into account
@@ -101,52 +110,7 @@ namespace LevelObjects
             }
         }
 
-        // Nudge the player in dir
-        // Returns true if successful, otherwise, false
-        public bool Shift(int absDir)
-        {
-            // Calculate the position the player will end up in
-            Vector3 vector = Utils.DirectionToVector(absDir);
-
-            int newPosX = Mathf.RoundToInt(posX + vector.x);
-            int newPosY = Mathf.RoundToInt(posY + vector.z);
-
-            // Check whether new position is within level bounds
-            if (newPosX < 0 || newPosX >= LevelInfo.levelData.tileArray.GetLength(0) || newPosY < 0 || newPosY >= LevelInfo.levelData.tileArray.GetLength(1))
-            {
-                return false;
-            }
-
-            // Check whether a player to be nudged is present in new position
-            Player nudgedPlayer = null;
-            foreach (Player player in LevelInfo.playerManager.players)
-            {
-                if (player.posX == newPosX && player.posY == newPosY && !player.reachedGoal)
-                {
-                    nudgedPlayer = player;
-                    break;
-                }
-            }
-
-
-
-            // If player to nudge, and player did not move when nudged, don't move player
-            if (nudgedPlayer != null) if (!nudgedPlayer.Shift(absDir)) return false;
-
-            // Otherwise, move player
-            var thisPlayer = this as ILevelObject;
-
-            LevelInfo.levelData.tileArray[posX, posY].ProcessObjectExit(ref thisPlayer);
-
-            posX = newPosX;
-            posY = newPosY;
-            gameObject.transform.position += vector;
-
-            LevelInfo.levelData.tileArray[posX, posY].ProcessObjectEntry(ref thisPlayer);
-
-            return true;
-        }
-
+        // Called after the level has updated
         void OnLevelUpdate()
         {
             // Check if player has died
