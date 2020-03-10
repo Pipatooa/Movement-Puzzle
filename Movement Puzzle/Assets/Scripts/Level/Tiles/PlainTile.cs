@@ -11,7 +11,7 @@ namespace Tiles
         // Set properties of tile
         public PlainTile() : base()
         {
-            objectID = 2;
+            tileID = 2;
             traversable = true;
         }
 

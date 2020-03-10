@@ -12,7 +12,7 @@ namespace Tiles
         // Set properties of tile
         public ColorTile() : base()
         {
-            objectID = 3;
+            tileID = 3;
             traversable = true;
 
             Events.LevelUpdate += LevelUpdate;

@@ -9,12 +9,12 @@ namespace Tiles
         // Set properties of tile
         public Teleporter() : base()
         {
-            objectID = 6;
+            tileID = 6;
             traversable = true;
         }
 
         // Processes an object that has landed on this tile
-        public override void ProcessObjectEntry(ref IMoveableObject moveableObject)
+        public override void ProcessObjectEntry(ref ILevelObject moveableObject)
         {
 
         }

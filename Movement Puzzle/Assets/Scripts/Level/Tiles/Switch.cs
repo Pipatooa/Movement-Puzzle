@@ -13,7 +13,7 @@ namespace Tiles
         // Set properties of tile
         public Switch() : base()
         {
-            objectID = 4;
+            tileID = 4;
             traversable = true;
         }
 
@@ -26,14 +26,14 @@ namespace Tiles
         }
 
         // Processes an object that has landed on this tile
-        public override void ProcessObjectEntry(ref IMoveableObject moveableObject)
+        public override void ProcessObjectEntry(ref ILevelObject moveableObject)
         {
             SaveSwitchState(SwitchChange.Event.entry);
             ColorManager.colorCounts[colorIndex] += 1;
         }
 
         // Processes an object that is exiting this tile
-        public override void ProcessObjectExit(ref IMoveableObject moveableObject)
+        public override void ProcessObjectExit(ref ILevelObject moveableObject)
         {
             SaveSwitchState(SwitchChange.Event.exit);
             ColorManager.colorCounts[colorIndex] -= 1;

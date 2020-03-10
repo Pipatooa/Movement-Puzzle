@@ -6,7 +6,7 @@ namespace Tiles
 {
     public class BaseTile
     {
-        public int objectID;
+        public int tileID;
 
         public int x, y;
 
@@ -30,13 +30,13 @@ namespace Tiles
         }
 
         // Processes an object that has landed on this tile
-        public virtual void ProcessObjectEntry(ref IMoveableObject moveableObject)
+        public virtual void ProcessObjectEntry(ref ILevelObject moveableObject)
         {
             
         }
 
         // Processes an object that is exiting this tile
-        public virtual void ProcessObjectExit(ref IMoveableObject moveableObject)
+        public virtual void ProcessObjectExit(ref ILevelObject moveableObject)
         {
 
         }

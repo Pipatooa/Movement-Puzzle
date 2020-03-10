@@ -9,12 +9,12 @@ namespace Tiles
         // Set properties of tile
         public Rotator() : base()
         {
-            objectID = 5;
+            tileID = 5;
             traversable = true;
         }
 
         // Processes an object that has landed on this tile
-        public override void ProcessObjectEntry(ref IMoveableObject moveableObject)
+        public override void ProcessObjectEntry(ref ILevelObject moveableObject)
         {
             
         }

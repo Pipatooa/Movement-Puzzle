@@ -12,7 +12,7 @@ namespace Tiles
         // Set properties of tile
         public Goal() : base()
         {
-            objectID = 1;
+            tileID = 1;
             traversable = true;
         }
 
@@ -33,7 +33,7 @@ namespace Tiles
         }
 
         // Processes an object that has landed on this tile
-        public override void ProcessObjectEntry(ref IMoveableObject moveableObject)
+        public override void ProcessObjectEntry(ref ILevelObject moveableObject)
         {
             if (!goalUsed & moveableObject is Player)
             {

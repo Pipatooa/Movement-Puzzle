@@ -104,9 +104,9 @@ public static class LoadSystem
                 {
                     Tiles.BaseTile tile = levelData.tileArray[x, y];
 
-                    writer.Write((byte)((tile.objectID << 4 & 0xF0) | (tile.colorIndex & 0x0F)));
+                    writer.Write((byte)((tile.tileID << 4 & 0xF0) | (tile.colorIndex & 0x0F)));
 
-                    if (tile.objectID != 0)
+                    if (tile.tileID != 0)
                     {
                         writer.Write(tile.GetAdditionalInfo());
                     }
