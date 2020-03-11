@@ -17,6 +17,6 @@ MonoBehaviour:
     type: 3}
   playerNeedle: {fileID: -927199367670048503, guid: cc0220bd731ee6d4ba2887d10da48852,
     type: 3}
-  cube: {fileID: 5109450525699730077, guid: b2b1cce35e5b4044d93baf1c6d66a9f4, type: 3}
+  cube: {fileID: 5461095267130853641, guid: b2b1cce35e5b4044d93baf1c6d66a9f4, type: 3}
   tile: {fileID: 5431107993581950412, guid: 2a14fb69eb17552429764f35f39d1c29, type: 3}
   goal: {fileID: 7978724167011042773, guid: 4ef431c63a9e11f408242e12e9f4f10d, type: 3}
