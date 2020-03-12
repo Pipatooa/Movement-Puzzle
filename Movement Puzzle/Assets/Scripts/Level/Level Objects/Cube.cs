@@ -17,6 +17,8 @@ namespace LevelObjects {
             base.CreateGameObjects(parentTransform);
 
             gameObject = GameObject.Instantiate(LevelInfo.levelAssets.cube, new Vector3(posX, 0.5f, posY), Quaternion.identity, parentTransform);
+            rb = gameObject.AddComponent<Rigidbody>();
+            rb.useGravity = false;
         }
     }
 }

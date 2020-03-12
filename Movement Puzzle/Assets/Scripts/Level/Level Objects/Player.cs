@@ -20,7 +20,6 @@ namespace LevelObjects
         float needleSpinSpeed = 3f;
 
         GameObject needle;
-        Rigidbody rb;
 
         // Set properties of object
         public Player() : base()
@@ -68,11 +67,13 @@ namespace LevelObjects
             // Add this script to player manager and list of level objects
             LevelInfo.playerManager.players.Add(this);
 
+         
             // Create player cube
             gameObject = GameObject.Instantiate(LevelInfo.levelAssets.player, new Vector3(posX, 0.5f, posY), Quaternion.identity, parentTransform);
             gameObject.transform.rotation = Quaternion.Euler(0, facingDir * 90, 0);
             gameObject.GetComponent<Renderer>().material = LevelInfo.colorScheme.colors[colorIndex].material;
-            rb = gameObject.GetComponent<Rigidbody>();
+            rb = gameObject.AddComponent<Rigidbody>();
+            rb.useGravity = false;
 
             // Iterate through directions to create arrows
             for (int dir = 0; dir < 4; dir++)
@@ -93,6 +94,15 @@ namespace LevelObjects
             needle.transform.localScale *= needleScale;
         }
 
+        // Makes the player fall out of the level
+        public override void Kill()
+        {
+            base.Kill();
+
+            LevelInfo.playerManager.resetLocked = true;
+            LevelInfo.playerManager.resetLockTime = Time.time;
+        }
+
         // Called every frame by player manager
         public void Update()
         {
@@ -109,19 +119,6 @@ namespace LevelObjects
                 lastMoveDir = dir;
 
                 Events.PlayerMoved();
-            }
-        }
-
-        // Called after the level has updated
-        void OnLevelUpdate()
-        {
-            // Check if player has died
-            if (LevelInfo.levelData.tileArray[posX, posY].tileID == 0 || !LevelInfo.levelData.tileArray[posX, posY].traversable)
-            {
-                LevelInfo.playerManager.resetLocked = true;
-                LevelInfo.playerManager.resetLockTime = Time.time;
-
-                rb.useGravity = true;
             }
         }
 

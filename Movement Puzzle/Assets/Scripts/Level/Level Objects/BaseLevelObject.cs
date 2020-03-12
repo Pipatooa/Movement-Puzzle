@@ -11,6 +11,12 @@ namespace LevelObjects
         public int posX, posY;
 
         public GameObject gameObject;
+        public Rigidbody rb;
+
+        public BaseLevelObject()
+        {
+            Events.OnLevelUpdate += OnLevelUpdate;
+        }
 
         // Writes additional data about the object given a binary reader
         public virtual void WriteData(ref BinaryWriter writer)
@@ -86,6 +92,22 @@ namespace LevelObjects
             LevelInfo.levelData.tileArray[posX, posY].ProcessObjectEntry(ref thisObject);
 
             return true;
+        }
+
+        // Called after the level has updated
+        protected virtual void OnLevelUpdate()
+        {
+            // Check if object has died
+            if (LevelInfo.levelData.tileArray[posX, posY].tileID == 0 || !LevelInfo.levelData.tileArray[posX, posY].traversable)
+            {
+                Kill();
+            }
+        }
+
+        // Makes the level object fall out of the level
+        public virtual void Kill()
+        {
+            rb.useGravity = true;
         }
     }
 }

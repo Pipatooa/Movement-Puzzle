@@ -41,5 +41,11 @@ namespace Tiles
         {
 
         }
+
+        // Returns whether a level object can safely be on this tile
+        public bool CheckTraversable()
+        {
+            return traversable;
+        }
     }
 }
