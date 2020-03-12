@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelEditorSelection
+public class LevelEditor : MonoBehaviour
 {
     
 }
