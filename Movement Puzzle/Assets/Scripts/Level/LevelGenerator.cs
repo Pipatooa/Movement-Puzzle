@@ -71,11 +71,11 @@ public class LevelGenerator : MonoBehaviour
         }
 
         // Once level has finished loading, calculate initial level state
-        UndoSystem.ClearStates();
-
         ColorManager.ResetColorCounts();
+        Events.LevelInit();
         ColorManager.CalculateColors();
-
         Events.LevelUpdate();
+
+        UndoSystem.ClearStates();
     }
 }

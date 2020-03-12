@@ -79,5 +79,6 @@ public static class UndoSystem
     public static void ClearStates()
     {
         states = new List<State>();
+        newState = new State();
     }
 }

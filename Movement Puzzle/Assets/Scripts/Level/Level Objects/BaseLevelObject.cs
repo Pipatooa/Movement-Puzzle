@@ -10,11 +10,14 @@ namespace LevelObjects
         public int objectID;
         public int posX, posY;
 
+        public bool fallenInVoid;
+
         public GameObject gameObject;
         public Rigidbody rb;
 
         public BaseLevelObject()
         {
+            Events.LevelInit += LevelInit;
             Events.OnLevelUpdate += OnLevelUpdate;
         }
 
@@ -80,6 +83,8 @@ namespace LevelObjects
             if (nudgedObject != null) if (!nudgedObject.Shift(absDir)) return false;
 
             // Otherwise, move this object
+            SaveObjectState();
+            
             var thisObject = this;
 
             LevelInfo.levelData.tileArray[posX, posY].ProcessObjectExit(ref thisObject);
@@ -94,20 +99,83 @@ namespace LevelObjects
             return true;
         }
 
-        // Called after the level has updated
-        protected virtual void OnLevelUpdate()
+        // Called before first level update
+        void LevelInit()
         {
-            // Check if object has died
-            if (LevelInfo.levelData.tileArray[posX, posY].tileID == 0 || !LevelInfo.levelData.tileArray[posX, posY].traversable)
+            var thisObject = this;
+            LevelInfo.levelData.tileArray[posX, posY].ProcessObjectEntry(ref thisObject);
+        }
+
+        // Called after the level has updated
+        void OnLevelUpdate()
+        {
+            // Check if object should fall into the void
+            if (!LevelInfo.levelData.tileArray[posX, posY].traversable)
             {
                 Kill();
             }
         }
 
-        // Makes the level object fall out of the level
+        // Makes the level object fall into the void
         public virtual void Kill()
         {
+            SaveObjectState();
+            
+            fallenInVoid = true;
             rb.useGravity = true;
+        }
+
+        // Information about a change that has occured to this object
+        protected class LevelObjectChange : UndoSystem.Change
+        {
+            // Info about change
+            protected BaseLevelObject levelObject;
+
+            public int oldPosX;
+            public int oldPosY;
+
+            public bool oldFallenInVoidStatus;
+
+            public LevelObjectChange(BaseLevelObject levelObject)
+            {
+                this.levelObject = levelObject;
+
+                oldPosX = levelObject.posX;
+                oldPosY = levelObject.posY;
+
+                oldFallenInVoidStatus = levelObject.fallenInVoid;
+            }
+
+            public override void UndoChange()
+            {
+                levelObject.UndoObjectChange(this);
+            }
+        }
+
+        // Undo a change that has occured to the player
+        protected virtual void UndoObjectChange(LevelObjectChange levelObjectChange)
+        {
+            // Load properties
+            posX = levelObjectChange.oldPosX;
+            posY = levelObjectChange.oldPosY;
+
+            fallenInVoid = levelObjectChange.oldFallenInVoidStatus;
+
+            // Update game objects - Do not update if the object has fallen into the void
+            if (!fallenInVoid)
+            {
+                gameObject.transform.position = new Vector3(posX, 0.5f, posY);
+
+                rb.useGravity = false;
+                rb.velocity = Vector3.zero;
+            }
+        }
+
+        // Saves an old state of this object as a change
+        public virtual void SaveObjectState()
+        {
+            LevelObjectChange levelObjectChange = new LevelObjectChange(this);
+            UndoSystem.AddChange(levelObjectChange);
         }
     }
 }

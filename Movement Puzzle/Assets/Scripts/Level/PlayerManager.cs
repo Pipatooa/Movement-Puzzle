@@ -110,7 +110,7 @@ public class PlayerManager : MonoBehaviour
     {
         foreach (LevelObjects.Player player in players)
         {
-            player.SavePlayerState();
+            player.SaveObjectState();
         }
     }
 

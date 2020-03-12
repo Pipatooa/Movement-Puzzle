@@ -25,8 +25,6 @@ namespace LevelObjects
         public Player() : base()
         {
             objectID = 0;
-
-            Events.OnLevelUpdate += OnLevelUpdate;
         }
 
         // Writes additional data about the object given a binary writer
@@ -123,23 +121,16 @@ namespace LevelObjects
         }
 
         // Information about a change that has occured to the player
-        class PlayerChange : UndoSystem.Change
+        protected class PlayerChange : LevelObjectChange
         {
             // Info about change
-            Player player;
-
-            public int oldPosX;
-            public int oldPosY;
-
             public int oldFacingDir;
             public int oldLastMoveDir;
 
             public bool oldReachedGoalStatus;
 
-            public PlayerChange(Player player)
+            public PlayerChange(Player player) : base(player)
             {
-                this.player = player;
-
                 oldPosX = player.posX;
                 oldPosY = player.posY;
 
@@ -148,35 +139,35 @@ namespace LevelObjects
 
                 oldReachedGoalStatus = player.reachedGoal;
             }
-
-            public override void UndoChange()
-            {
-                player.UndoPlayerChange(this);
-            }
         }
 
         // Undo a change that has occured to the player
-        void UndoPlayerChange(PlayerChange playerChange)
+        protected override void UndoObjectChange(LevelObjectChange levelObjectChange)
         {
-            posX = playerChange.oldPosX;
-            posY = playerChange.oldPosY;
+            // Load properties
+            base.UndoObjectChange(levelObjectChange);
+            PlayerChange playerChange = levelObjectChange as PlayerChange;
 
             facingDir = playerChange.oldFacingDir;
             lastMoveDir = playerChange.oldLastMoveDir;
 
             reachedGoal = playerChange.oldReachedGoalStatus;
 
-            gameObject.transform.position = new Vector3(posX, 0.5f, posY);
-            gameObject.transform.rotation = Quaternion.Euler(0, facingDir * 90, 0);
+            // Update game objects - Do not update if the object has fallen into the void
+            if (!fallenInVoid)
+            {
+                gameObject.transform.position = new Vector3(posX, 0.5f, posY);
+                gameObject.transform.rotation = Quaternion.Euler(0, facingDir * 90, 0);
 
-            gameObject.SetActive(!reachedGoal);
+                gameObject.SetActive(!reachedGoal);
 
-            rb.useGravity = false;
-            rb.velocity = Vector3.zero;
+                rb.useGravity = false;
+                rb.velocity = Vector3.zero;
+            }
         }
 
         // Saves an old state of the player as a change
-        public void SavePlayerState()
+        public override void SaveObjectState()
         {
             PlayerChange playerChange = new PlayerChange(this);
             UndoSystem.AddChange(playerChange);

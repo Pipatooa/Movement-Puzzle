@@ -36,10 +36,15 @@ public static class LoadSystem
         cube2.posX = 5;
         cube2.posY = 7;
 
+        LevelObjects.Cube cube3 = new LevelObjects.Cube();
+        cube3.posX = 15;
+        cube3.posY = 3;
+
         levelData.levelObjects.Add(player1);
         levelData.levelObjects.Add(player2);
         levelData.levelObjects.Add(cube1);
         levelData.levelObjects.Add(cube2);
+        levelData.levelObjects.Add(cube3);
 
         for (int x=0; x < 20; x++)
         {

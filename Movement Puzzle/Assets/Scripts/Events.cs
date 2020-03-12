@@ -6,6 +6,8 @@ public static class Events
 {
     public delegate void DelegateFunc();
 
+    public static DelegateFunc LevelInit;
+
     public static DelegateFunc LevelUpdate;
     public static DelegateFunc OnLevelUpdate;
 
