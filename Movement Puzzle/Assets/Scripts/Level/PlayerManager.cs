@@ -60,10 +60,10 @@ public class PlayerManager : MonoBehaviour
         // Player movement input
         if (!resetLocked && !currentPlayer.reachedGoal)
         {
-            if (Input.GetKeyDown(KeyCode.UpArrow) && currentPlayer.colorIndexes[0] != -1) { SavePlayerStates();  currentPlayer.Move(0);  }
-            else if (Input.GetKeyDown(KeyCode.RightArrow) && currentPlayer.colorIndexes[1] != -1) { SavePlayerStates(); currentPlayer.Move(1); }
-            else if (Input.GetKeyDown(KeyCode.DownArrow) && currentPlayer.colorIndexes[2] != -1) { SavePlayerStates(); currentPlayer.Move(2); }
-            else if (Input.GetKeyDown(KeyCode.LeftArrow) && currentPlayer.colorIndexes[3] != -1) { SavePlayerStates(); currentPlayer.Move(3); }
+            if (Input.GetKeyDown(KeyCode.UpArrow) && currentPlayer.colorIndexes[0] != -1) currentPlayer.Move(0);
+            else if (Input.GetKeyDown(KeyCode.RightArrow) && currentPlayer.colorIndexes[1] != -1) currentPlayer.Move(1);
+            else if (Input.GetKeyDown(KeyCode.DownArrow) && currentPlayer.colorIndexes[2] != -1) currentPlayer.Move(2);
+            else if (Input.GetKeyDown(KeyCode.LeftArrow) && currentPlayer.colorIndexes[3] != -1) currentPlayer.Move(3);
 
             // Temporary player rotation
             if (Input.GetKeyDown(KeyCode.R))
@@ -103,15 +103,6 @@ public class PlayerManager : MonoBehaviour
 
         currentPlayer = players[nextPlayerIndex];
         currentPlayerIndex = nextPlayerIndex;
-    }
-
-    // Saves all players current states as changes
-    void SavePlayerStates()
-    {
-        foreach (LevelObjects.Player player in players)
-        {
-            player.SaveObjectState();
-        }
     }
 
     // Triggered when a player reaches enters a goal

@@ -65,7 +65,6 @@ namespace LevelObjects
             // Add this script to player manager and list of level objects
             LevelInfo.playerManager.players.Add(this);
 
-         
             // Create player cube
             gameObject = GameObject.Instantiate(LevelInfo.levelAssets.player, new Vector3(posX, 0.5f, posY), Quaternion.identity, parentTransform);
             gameObject.transform.rotation = Quaternion.Euler(0, facingDir * 90, 0);

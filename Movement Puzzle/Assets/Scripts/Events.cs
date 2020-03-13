@@ -16,6 +16,8 @@ public static class Events
     // Clears all attached events
     public static void Clear()
     {
+        LevelInit = null;
+        
         LevelUpdate = null;
         OnLevelUpdate = null;
 
