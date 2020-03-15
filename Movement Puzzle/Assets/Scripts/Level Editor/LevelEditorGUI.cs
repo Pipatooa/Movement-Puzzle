@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEditor;
 using System.IO;
+using SFB;
 
 public class LevelEditorGUI : MonoBehaviour
 {
@@ -89,12 +90,12 @@ public class LevelEditorGUI : MonoBehaviour
     // Load level button
     public void LoadLevel()
     {
-        string path = EditorUtility.OpenFilePanel("Open Level", "", "level");
+        string[] paths = StandaloneFileBrowser.OpenFilePanel("Open Level", "", "level", false);
 
         // If no file selected, ignore
-        if (path.Length == 0) return;
+        if (paths.Length == 0) return;
 
-        LevelEditor.LoadLevel(path);
+        LevelEditor.LoadLevel(paths[0]);
 
         ResetSelection();
     }
@@ -102,7 +103,11 @@ public class LevelEditorGUI : MonoBehaviour
     // Save level button
     public void SaveLevel()
     {
-        string path = EditorUtility.SaveFilePanel("Save Level", "", LevelInfo.currentLevelName + ".level", "level");
+        string path = StandaloneFileBrowser.SaveFilePanel("Save Level", "", LevelInfo.currentLevelName + ".level", "level");
+
+        // If no filepath chose, ignore
+        if (path.Length == 0) return;
+        
         LevelEditor.filePath = path;
 
         LoadSystem.SaveLevel(LevelInfo.levelData, path);
