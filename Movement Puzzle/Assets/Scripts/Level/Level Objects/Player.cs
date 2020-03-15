@@ -60,8 +60,6 @@ namespace LevelObjects
         // Creates all game objects for level object under parent transform
         public override void CreateGameObjects(Transform parentTransform)
         {
-            base.CreateGameObjects(parentTransform);
-            
             // Add this script to player manager and list of level objects
             LevelInfo.playerManager?.players.Add(this);
 

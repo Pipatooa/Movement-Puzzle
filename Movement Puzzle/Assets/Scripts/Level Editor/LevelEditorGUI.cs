@@ -216,7 +216,6 @@ public class LevelEditorGUI : MonoBehaviour
     {
         // Destory current level object
         selectedLevelObject.DestroyGameObjects();
-        LevelInfo.levelObjects.Remove(selectedLevelObject);
         LevelInfo.levelData.levelObjects.Remove(selectedLevelObject);
 
         // Create a new level object with new properties
@@ -257,7 +256,6 @@ public class LevelEditorGUI : MonoBehaviour
         selectedLevelObject.DestroyGameObjects();
 
         // Remove level object from lists of level objects
-        LevelInfo.levelObjects.Remove(selectedLevelObject);
         LevelInfo.levelData.levelObjects.Remove(selectedLevelObject);
 
         selectedLevelObject = null;
@@ -366,7 +364,7 @@ public class LevelEditorGUI : MonoBehaviour
 
             if (canAddObject)
             {
-                foreach (LevelObjects.BaseLevelObject levelObject in LevelInfo.levelObjects)
+                foreach (LevelObjects.BaseLevelObject levelObject in LevelInfo.levelData.levelObjects)
                 {
                     if (selectionStart.x == levelObject.posX && selectionStart.y == levelObject.posY)
                     {

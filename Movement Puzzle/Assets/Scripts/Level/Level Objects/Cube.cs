@@ -14,8 +14,6 @@ namespace LevelObjects {
         // Creates all game objects for level object under parent transform
         public override void CreateGameObjects(Transform parentTransform)
         {
-            base.CreateGameObjects(parentTransform);
-
             gameObject = GameObject.Instantiate(LevelInfo.levelAssets.cube, new Vector3(posX, 0.5f, posY), Quaternion.identity, parentTransform);
             rb = gameObject.AddComponent<Rigidbody>();
             rb.useGravity = false;

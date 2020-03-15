@@ -38,7 +38,7 @@ namespace LevelObjects
         // Creates all game objects for level object under parent transform
         public virtual void CreateGameObjects(Transform parentTransform)
         {
-            LevelInfo.levelObjects.Add(this);
+            
         }
 
         // Destorys all game objects for this level object
@@ -65,7 +65,7 @@ namespace LevelObjects
 
             // Check whether a level object to be nudged is present in new position
             BaseLevelObject nudgedObject = null;
-            foreach (BaseLevelObject levelObject in LevelInfo.levelObjects)
+            foreach (BaseLevelObject levelObject in LevelInfo.levelData.levelObjects)
             {
                 if (levelObject.posX == newPosX && levelObject.posY == newPosY)
                 {

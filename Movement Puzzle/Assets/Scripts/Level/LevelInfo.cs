@@ -16,6 +16,4 @@ public static class LevelInfo
 
     public static LevelGenerator levelGenerator;
     public static PlayerManager playerManager;
-
-    public static List<LevelObjects.BaseLevelObject> levelObjects = new List<LevelObjects.BaseLevelObject>();
 }
