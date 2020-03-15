@@ -63,11 +63,10 @@ namespace LevelObjects
             base.CreateGameObjects(parentTransform);
             
             // Add this script to player manager and list of level objects
-            LevelInfo.playerManager.players.Add(this);
+            LevelInfo.playerManager?.players.Add(this);
 
             // Create player cube
             gameObject = GameObject.Instantiate(LevelInfo.levelAssets.player, new Vector3(posX, 0.5f, posY), Quaternion.identity, parentTransform);
-            gameObject.transform.rotation = Quaternion.Euler(0, facingDir * 90, 0);
             gameObject.GetComponent<Renderer>().material = LevelInfo.colorScheme.colors[colorIndex].material;
             rb = gameObject.AddComponent<Rigidbody>();
             rb.useGravity = false;
@@ -87,8 +86,11 @@ namespace LevelObjects
             }
 
             // Create needle
-            needle = GameObject.Instantiate(LevelInfo.levelAssets.playerNeedle, gameObject.transform.position + new Vector3(0, 0.6f, 0), Quaternion.identity, gameObject.transform) as GameObject;
+            needle = GameObject.Instantiate(LevelInfo.levelAssets.playerNeedle, gameObject.transform.position + new Vector3(0, 0.6f, 0), Quaternion.Euler(0, lastMoveDir*90, 0), gameObject.transform) as GameObject;
             needle.transform.localScale *= needleScale;
+
+            // Update players rotation
+            gameObject.transform.rotation = Quaternion.Euler(0, facingDir * 90, 0);
         }
 
         // Makes the player fall out of the level

@@ -10,7 +10,7 @@ public static class LevelInfo
 
     public static Material[] tileMaterials;
 
-    public static string currentLevel = "testLevel.level";
+    public static string currentLevelName = LoadSystem.GetBuiltinLevelPath("testLevel.level");
 
     public static LevelData levelData;
 

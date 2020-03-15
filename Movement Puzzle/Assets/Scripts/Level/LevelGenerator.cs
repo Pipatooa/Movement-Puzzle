@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
 {
+    public bool editorMode;
+    
     public float tileSize = 0.9f;
     public float tileSizeSmall = 0.2f;
     public float colorIntensity = 0.75f;
@@ -11,27 +13,17 @@ public class LevelGenerator : MonoBehaviour
     public ColorScheme colorScheme;
     public LevelAssets levelAssets;
 
-    public LevelData levelData;
-
-    GameObject tileParent;
-    GameObject levelObjectParent;
+    [HideInInspector] public GameObject tileParent;
+    [HideInInspector] public GameObject levelObjectParent;
 
     [HideInInspector] public PlayerManager playerManager;
 
     void Awake()
     {
-        LoadLevel(LevelInfo.currentLevel);
-    }
-
-    // Loads in the current level
-    public void LoadLevel(string levelName)
-    {
         // Setup
-        levelData = LoadSystem.LoadLevel(levelName);
+        LevelInfo.levelGenerator = this;
         LevelInfo.colorScheme = colorScheme;
         LevelInfo.levelAssets = levelAssets;
-        LevelInfo.levelGenerator = this;
-        LevelInfo.levelData = levelData;
 
         // Create all color materials for tiles
         LevelInfo.tileMaterials = new Material[colorScheme.colors.Count];
@@ -43,6 +35,24 @@ public class LevelGenerator : MonoBehaviour
             LevelInfo.tileMaterials[i].color = Color.Lerp(colorScheme.defaultTileColor.material.color, colorScheme.colors[i].material.color, 0.75f);
         }
 
+        if (editorMode)
+        {
+            // Use an empty level if in editor mode
+            LevelEditor.CreateNewLevel();
+        }
+        else
+        {
+            // Load level data from file
+            LevelInfo.levelData = LoadSystem.LoadLevel(LevelInfo.currentLevelName);
+        }
+
+        // Generate level
+        LoadLevel();
+    }
+
+    // Loads in the current level
+    public void LoadLevel()
+    {
         // Create empty parent objects to group objects
         tileParent = new GameObject("Tiles");
         tileParent.transform.parent = gameObject.transform;
@@ -51,31 +61,71 @@ public class LevelGenerator : MonoBehaviour
         levelObjectParent.transform.SetParent(gameObject.transform);
 
         // Load in player manager
-        playerManager = levelObjectParent.AddComponent<PlayerManager>();
-        LevelInfo.playerManager = playerManager;
+        if (!editorMode)
+        {
+            playerManager = levelObjectParent.AddComponent<PlayerManager>();
+            LevelInfo.playerManager = playerManager;
+        }
 
         // Load tiles
-        for (int x = 0; x < levelData.sizeX; x++)
+        for (int x = 0; x < LevelInfo.levelData.sizeX; x++)
         {
-            for (int y = 0; y < levelData.sizeY; y++)
+            for (int y = 0; y < LevelInfo.levelData.sizeY; y++)
             {
                 // Create game objects for each tile
-                levelData.tileArray[x, y].CreateGameObjects(tileParent.transform);
+                if (editorMode)
+                {
+                    LevelInfo.levelData.tileArray[x, y].LevelEditorCreateGameObjects(tileParent.transform);
+                } else
+                {
+                    LevelInfo.levelData.tileArray[x, y].CreateGameObjects(tileParent.transform);
+                }
             }
         }
 
         // Load level objects
-        foreach (LevelObjects.BaseLevelObject levelObject in levelData.levelObjects)
+        foreach (LevelObjects.BaseLevelObject levelObject in LevelInfo.levelData.levelObjects)
         {
-            levelObject.CreateGameObjects(levelObjectParent.transform);
+            // Create game objects for each level object
+            if (editorMode)
+            {
+                levelObject.CreateGameObjects(levelObjectParent.transform);
+            }
+            else
+            {
+                levelObject.CreateGameObjects(levelObjectParent.transform);
+            }
         }
 
         // Once level has finished loading, calculate initial level state
-        ColorManager.ResetColorCounts();
-        Events.LevelInit();
-        ColorManager.CalculateColors();
-        Events.LevelUpdate();
+        if (!editorMode)
+        {
+            ColorManager.ResetColorCounts();
+            Events.LevelInit?.Invoke();
+            ColorManager.CalculateColors();
+            Events.LevelUpdate?.Invoke();
 
-        UndoSystem.ClearStates();
+            UndoSystem.ClearStates();
+        }
+    }
+
+    // Destroys all game objects for the level
+    public void DestroyLevelObjects()
+    {
+        for (int x=0; x < LevelInfo.levelData.sizeX; x++)
+        {
+            for (int y=0; y < LevelInfo.levelData.sizeY; y++)
+            {
+                LevelInfo.levelData.tileArray[x, y].DestroyGameObjects();
+            }
+        }
+
+        foreach (LevelObjects.BaseLevelObject levelObject in LevelInfo.levelData.levelObjects)
+        {
+            levelObject.DestroyGameObjects();
+        }
+
+        GameObject.Destroy(tileParent);
+        GameObject.Destroy(levelObjectParent);
     }
 }

@@ -12,6 +12,8 @@ namespace Tiles
         
         public int x, y;
 
+        GameObject gameObject;
+
         // Writes additional data about the object given a binary reader
         public virtual void WriteData(ref BinaryWriter writer)
         {
@@ -30,6 +32,20 @@ namespace Tiles
 
         }
 
+        // Creates level editor game objects for level object under parent transform
+        public virtual void LevelEditorCreateGameObjects(Transform parentTransform)
+        {
+            gameObject = GameObject.Instantiate(LevelInfo.levelAssets.tile, new Vector3(x, 0, y), Quaternion.Euler(90, 0, 0), parentTransform);
+            gameObject.transform.localScale *= LevelInfo.levelGenerator.tileSizeSmall;
+            gameObject.isStatic = true;
+        }
+
+        // Destorys all game objects for this tile
+        public virtual void DestroyGameObjects()
+        {
+            GameObject.Destroy(gameObject);
+        }
+
         // Processes an object that has landed on this tile
         public virtual void ProcessObjectEntry(ref LevelObjects.BaseLevelObject moveableObject)
         {
@@ -42,10 +58,12 @@ namespace Tiles
 
         }
 
-        // Returns whether a level object can safely be on this tile
-        public bool CheckTraversable()
+        // Returns a new tile of this type with same properties
+        public virtual BaseTile CreateCopy()
         {
-            return traversable;
+            BaseTile tile = new BaseTile();
+
+            return tile;
         }
     }
 }

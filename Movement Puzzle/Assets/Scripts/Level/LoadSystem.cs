@@ -84,12 +84,16 @@ public static class LoadSystem
 
         return levelData;
     }
-    
-    // Save a level data object to file
-    public static void SaveLevel(LevelData levelData, string fileName)
-    {
-        string path = Path.Combine(Application.streamingAssetsPath, "Levels", fileName);
 
+    // Returns the path of a level packaged within the game
+    public static string GetBuiltinLevelPath(string relativePath)
+    {
+        return Path.Combine(Application.streamingAssetsPath, "Levels", relativePath);
+    }
+
+    // Save a level data object to file
+    public static void SaveLevel(LevelData levelData, string path)
+    {
         // Open file to be writen to
         BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create));
 
@@ -105,8 +109,6 @@ public static class LoadSystem
             writer.Write((byte)levelObject.objectID);
 
             levelObject.WriteData(ref writer);
-
-            writer.Write((byte)255);
         }
 
         // Write tile data
@@ -126,10 +128,8 @@ public static class LoadSystem
     }
 
     // Load a level data object from file
-    public static LevelData LoadLevel(string fileName)
+    public static LevelData LoadLevel(string path)
     {
-        string path = Path.Combine(Application.streamingAssetsPath, "Levels", fileName);
-
         if (!File.Exists(path))
         {
             Debug.LogError("No level found at '" + path + "'");
@@ -156,8 +156,6 @@ public static class LoadSystem
             levelObject.ReadData(ref reader);
 
             levelData.levelObjects.Add(levelObject);
-
-            reader.ReadByte();
         }
 
         // Load tile info

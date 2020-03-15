@@ -23,5 +23,25 @@ namespace Tiles
             gameObject.transform.localScale *= LevelInfo.levelGenerator.tileSize;
             gameObject.isStatic = true;
         }
+
+        // Creates level editor game objects for level object under parent transform
+        public override void LevelEditorCreateGameObjects(Transform parentTransform)
+        {
+            CreateGameObjects(parentTransform);
+        }
+
+        // Destorys all game objects for this tile
+        public override void DestroyGameObjects()
+        {
+            GameObject.Destroy(gameObject);
+        }
+
+        // Returns a new tile of this type with same properties
+        public override BaseTile CreateCopy()
+        {
+            PlainTile tile = new PlainTile();
+
+            return tile;
+        }
     }
 }

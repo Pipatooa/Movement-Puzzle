@@ -45,6 +45,28 @@ namespace Tiles
             gameObject.GetComponent<Renderer>().material = LevelInfo.tileMaterials[colorIndex];
         }
 
+        // Creates level editor game objects for level object under parent transform
+        public override void LevelEditorCreateGameObjects(Transform parentTransform)
+        {
+            CreateGameObjects(parentTransform);
+        }
+
+        // Destorys all game objects for this tile
+        public override void DestroyGameObjects()
+        {
+            GameObject.Destroy(gameObject);
+        }
+
+        // Returns a new tile of this type with same properties
+        public override BaseTile CreateCopy()
+        {
+            ColorTile tile = new ColorTile();
+            tile.colorIndex = colorIndex;
+            tile.enabledDefault = enabledDefault;
+
+            return tile;
+        }
+
         // Called when the level should be updated
         void LevelUpdate()
         {

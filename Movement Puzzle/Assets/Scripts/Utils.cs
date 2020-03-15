@@ -5,7 +5,7 @@ using UnityEngine;
 public static class Utils
 {
     // Returns a vector direction given integer direction
-    public static Vector3 DirectionToVector(int dir)
+    public static Vector3 DirectionToVector3(int dir)
     {
         switch (dir)
         {
@@ -20,6 +20,30 @@ public static class Utils
             default:
                 return Vector3.zero;
         }
+    }
+
+    // Gets the bottom left and top right of a rectangle given two corners
+    public static Vector2Int[] GetTopLeftAndBottomRight(Vector2Int corner1, Vector2Int corner2)
+    {
+        Vector2Int bottomLeft = corner1;
+        Vector2Int topRight = corner2;
+
+        // Swap coordinates to be correct
+        if (topRight.x < bottomLeft.x)
+        {
+            int temp = topRight.x;
+            topRight.x = bottomLeft.x;
+            bottomLeft.x = temp;
+        }
+
+        if (topRight.y < bottomLeft.y)
+        {
+            int temp = topRight.y;
+            topRight.y = bottomLeft.y;
+            bottomLeft.y = temp;
+        }
+
+        return new Vector2Int[2] { bottomLeft, topRight };
     }
 
     // Returns a new tile object given an id

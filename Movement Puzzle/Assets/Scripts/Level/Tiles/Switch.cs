@@ -10,7 +10,11 @@ namespace Tiles
         public int colorIndex;
         bool active;
 
+        GameObject switchParent;
         GameObject gameObject;
+        
+        GameObject textObject;
+        TMPro.TextMeshPro textMesh;
 
         // Set properties of tile
         public Switch() : base()
@@ -34,9 +38,53 @@ namespace Tiles
         // Creates all objects for tile
         public override void CreateGameObjects(Transform parentTransform)
         {
-            gameObject = GameObject.Instantiate(LevelInfo.levelAssets.tile, new Vector3(x, 0, y), Quaternion.Euler(90, 0, 0), parentTransform);
+            switchParent = new GameObject("Switch");
+            switchParent.transform.SetParent(parentTransform);
+            switchParent.transform.position = new Vector3(x, 2.5f, y);
+
+            gameObject = GameObject.Instantiate(LevelInfo.levelAssets.tile, new Vector3(x, 0, y), Quaternion.Euler(90, 0, 0), switchParent.transform);
             gameObject.transform.localScale *= LevelInfo.levelGenerator.tileSize;
             gameObject.GetComponent<Renderer>().material = LevelInfo.tileMaterials[colorIndex];
+
+            textObject = new GameObject("Text");
+            textObject.transform.SetParent(switchParent.transform);
+            textObject.transform.localPosition = new Vector3(0, 0.5f, 0);
+            textObject.transform.rotation = Quaternion.Euler(90, 0, 0);
+            textMesh = textObject.AddComponent<TMPro.TextMeshPro>();
+            textMesh.transform.position = new Vector3(x, 0.5f, y);
+            textMesh.text = "S";
+            textMesh.fontSize = 7;
+            textMesh.alignment = TMPro.TextAlignmentOptions.Center;
+        }
+
+        // Creates level editor game objects for level object under parent transform
+        public override void LevelEditorCreateGameObjects(Transform parentTransform)
+        {
+            switchParent = new GameObject("Switch");
+            switchParent.transform.SetParent(parentTransform);
+            switchParent.transform.position = new Vector3(x, 2.5f, y);
+
+            gameObject = GameObject.Instantiate(LevelInfo.levelAssets.tile, new Vector3(x, 0, y), Quaternion.Euler(90, 0, 0), switchParent.transform);
+            gameObject.transform.localScale *= LevelInfo.levelGenerator.tileSize;
+            gameObject.GetComponent<Renderer>().material = LevelInfo.tileMaterials[colorIndex];
+
+            textObject = new GameObject("Text");
+            textObject.transform.SetParent(switchParent.transform);
+            textObject.transform.localPosition = new Vector3(0, 0.5f, 0);
+            textObject.transform.rotation = Quaternion.Euler(90, 0, 0);
+            textMesh = textObject.AddComponent<TMPro.TextMeshPro>();
+            textMesh.transform.position = new Vector3(x, 0.5f, y);
+            textMesh.text = "S";
+            textMesh.fontSize = 7;
+            textMesh.alignment = TMPro.TextAlignmentOptions.Center;
+        }
+
+        // Destorys all game objects for this tile
+        public override void DestroyGameObjects()
+        {
+            GameObject.Destroy(switchParent);
+            GameObject.Destroy(gameObject);
+            GameObject.Destroy(textObject);
         }
 
         // Processes an object that has landed on this tile
@@ -51,6 +99,15 @@ namespace Tiles
         {
             SaveSwitchState(SwitchChange.Event.exit);
             ColorManager.colorCounts[colorIndex] -= 1;
+        }
+
+        // Returns a new tile of this type with same properties
+        public override BaseTile CreateCopy()
+        {
+            Switch tile = new Switch();
+            tile.colorIndex = colorIndex;
+
+            return tile;
         }
 
         // Information about a change that has occured to the switch

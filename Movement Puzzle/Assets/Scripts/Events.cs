@@ -28,9 +28,9 @@ public static class Events
     public static void PlayerMoved()
     {
         ColorManager.CalculateColors();
-        
-        LevelUpdate();
-        OnLevelUpdate();
+
+        LevelUpdate?.Invoke();
+        OnLevelUpdate?.Invoke();
 
         UndoSystem.SaveChanges();
     }
@@ -38,6 +38,6 @@ public static class Events
     // Called when the player reaches a goal
     public static void PlayerReachedGoal()
     {
-        OnPlayerReachedGoal();
+        OnPlayerReachedGoal?.Invoke();
     }
 }

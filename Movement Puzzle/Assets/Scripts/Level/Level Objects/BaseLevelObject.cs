@@ -41,12 +41,18 @@ namespace LevelObjects
             LevelInfo.levelObjects.Add(this);
         }
 
+        // Destorys all game objects for this level object
+        public virtual void DestroyGameObjects()
+        {
+            GameObject.Destroy(gameObject);
+        }
+
         // Nudge the object in dir
         // Returns true if successful, otherwise, false
         public virtual bool Shift(int absDir)
         {
             // Calculate the position the player will end up in
-            Vector3 vector = Utils.DirectionToVector(absDir);
+            Vector3 vector = Utils.DirectionToVector3(absDir);
 
             int newPosX = Mathf.RoundToInt(posX + vector.x);
             int newPosY = Mathf.RoundToInt(posY + vector.z);

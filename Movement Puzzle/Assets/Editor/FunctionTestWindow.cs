@@ -17,12 +17,12 @@ public class FunctionTestWindow : EditorWindow
         {
             LevelData levelData = LoadSystem.CreateTestLevel();
 
-            LoadSystem.SaveLevel(levelData, "testLevel.level");
+            LoadSystem.SaveLevel(levelData, LoadSystem.GetBuiltinLevelPath("testLevel.level"));
         }
 
         if (GUILayout.Button("Load Test Level"))
         {
-            LevelData levelData = LoadSystem.LoadLevel("testLevel.level");
+            LevelData levelData = LoadSystem.LoadLevel(LoadSystem.GetBuiltinLevelPath("testLevel.level"));
         }
     }
 }

@@ -63,7 +63,7 @@ public static class UndoSystem
 
         // Recalculate colors and level state
         ColorManager.CalculateColors();
-        Events.LevelUpdate();
+        Events.LevelUpdate?.Invoke();
     }
 
     // Rolls back all changes made since level load
