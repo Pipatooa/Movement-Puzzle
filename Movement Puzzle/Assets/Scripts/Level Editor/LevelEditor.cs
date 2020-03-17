@@ -4,8 +4,6 @@ using UnityEngine;
 
 public static class LevelEditor
 {
-    public static LevelEditorGUIOld levelEditorGUI;
-
     public static LevelEditorGUI.LevelOptionsGUI levelOptionsGUI;
     public static LevelEditorGUI.SelectionGUI selectionGUI;
     public static LevelEditorGUI.TilePlacementGUI tilePlacementGUI;
