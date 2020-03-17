@@ -6,6 +6,7 @@ public static class LevelEditor
 {
     public static LevelEditorGUIOld levelEditorGUI;
 
+    public static LevelEditorGUI.LevelOptionsGUI levelOptionsGUI;
     public static LevelEditorGUI.SelectionGUI selectionGUI;
     public static LevelEditorGUI.TilePlacementGUI tilePlacementGUI;
     public static LevelEditorGUI.AddObjectGUI addObjectGUI;
@@ -55,7 +56,7 @@ public static class LevelEditor
     // Updates the level name
     public static void UpdateLevelName(string name)
     {
-        // levelEditorGUI.levelNameInputField.text = name;
+        levelOptionsGUI.levelNameField.text = name;
         LevelInfo.currentLevelName = name;
         LevelInfo.levelData.levelName = name;
     }

@@ -45,9 +45,10 @@ namespace LevelEditorGUI
                     SetVisibility(true);
 
                     LevelEditor.tilePlacementGUI.applyToSelectionButton.interactable = false;
-                    LevelEditor.addObjectGUI.enabled = false;
+                    // LevelEditor.addObjectGUI.enabled = false;
+                    LevelEditor.addObjectGUI.SetVisibility(true);
                     LevelEditor.addObjectGUI.addObjectButton.interactable = false;
-                    LevelEditor.objectSettingsGUI.enabled = false;
+                    LevelEditor.objectSettingsGUI.SetVisibility(false);
                 }
             }
 
@@ -100,6 +101,7 @@ namespace LevelEditorGUI
                 }
 
                 LevelEditor.tilePlacementGUI.applyToSelectionButton.interactable = true;
+                LevelEditor.addObjectGUI.SetVisibility(LevelEditor.selectedLevelObject == null);
                 LevelEditor.addObjectGUI.addObjectButton.interactable = canAddObject;
                 LevelEditor.objectSettingsGUI.SetVisibility(LevelEditor.selectedLevelObject != null);
             }
@@ -122,7 +124,9 @@ namespace LevelEditorGUI
             SetVisibility(false);
 
             LevelEditor.tilePlacementGUI.applyToSelectionButton.interactable = false;
+            LevelEditor.addObjectGUI.SetVisibility(true);
             LevelEditor.addObjectGUI.addObjectButton.interactable = false;
+            LevelEditor.objectSettingsGUI.SetVisibility(false);
         }
     }
 }

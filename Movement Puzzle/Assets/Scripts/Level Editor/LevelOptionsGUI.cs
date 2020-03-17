@@ -8,7 +8,16 @@ namespace LevelEditorGUI
     public class LevelOptionsGUI : MonoBehaviour
     {
         public GameObject guiParent;
-        
+
+        public TMPro.TMP_InputField levelNameField;
+
+        void Awake()
+        {
+            LevelEditor.levelOptionsGUI = this;
+
+            levelNameField.onEndEdit.AddListener(value => LevelEditor.UpdateLevelName(value));
+        }
+
         // Sets whether this GUI is visible
         public void SetVisibility(bool value)
         {

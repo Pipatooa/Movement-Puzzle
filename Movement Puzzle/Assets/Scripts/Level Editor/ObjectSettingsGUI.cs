@@ -133,8 +133,8 @@ namespace LevelEditorGUI
 
             LevelEditor.selectedLevelObject = null;
 
-            // Enable add object button
-            LevelEditor.addObjectGUI.addObjectButton.interactable = true;
+            // Open add object menu
+            LevelEditor.addObjectGUI.SetVisibility(true);
 
             // Close this menu
             SetVisibility(false);

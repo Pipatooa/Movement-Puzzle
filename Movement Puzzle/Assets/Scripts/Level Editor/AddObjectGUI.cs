@@ -38,8 +38,8 @@ namespace LevelEditorGUI
 
             LevelEditor.selectedLevelObject = levelObject;
 
-            // Disable add object button
-            addObjectButton.interactable = false;
+            // Hide this menu
+            SetVisibility(false);
 
             // Open level object options menu
             LevelEditor.objectSettingsGUI.SetVisibility(true);
