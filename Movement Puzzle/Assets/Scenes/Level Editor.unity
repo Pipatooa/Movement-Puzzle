@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 42686080}
   - component: {fileID: 42686079}
   m_Layer: 5
-  m_Name: Level Object Options Panel
+  m_Name: Object Settings Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -154,7 +154,7 @@ RectTransform:
   - {fileID: 1179120363}
   - {fileID: 1309259794}
   m_Father: {fileID: 509540556}
-  m_RootOrder: 1
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -1274,7 +1274,7 @@ GameObject:
   - component: {fileID: 237846815}
   - component: {fileID: 237846814}
   m_Layer: 5
-  m_Name: Tile Selection Panel
+  m_Name: Tile Placement Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3247,7 +3247,11 @@ GameObject:
   - component: {fileID: 509540555}
   - component: {fileID: 509540554}
   - component: {fileID: 509540553}
+  - component: {fileID: 509540560}
+  - component: {fileID: 509540558}
   - component: {fileID: 509540557}
+  - component: {fileID: 509540561}
+  - component: {fileID: 509540559}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -3327,10 +3331,10 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 488487219}
-  - {fileID: 42686078}
+  - {fileID: 1597136055}
   - {fileID: 237846813}
   - {fileID: 707952540}
-  - {fileID: 1597136055}
+  - {fileID: 42686078}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3348,28 +3352,53 @@ MonoBehaviour:
   m_GameObject: {fileID: 509540552}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b926820dc3b70a54892d77807e59177b, type: 3}
+  m_Script: {fileID: 11500000, guid: f2920fdcaa262df44b4852cd52381cb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelNameInputField: {fileID: 224924497}
+  guiParent: {fileID: 237846812}
   tileSelectionDropdown: {fileID: 140973493}
-  levelObjectSelectionDropdown: {fileID: 2131507171}
-  selectionInfoPanel: {fileID: 1597136054}
-  selectionInfoText: {fileID: 1170208251}
   applyToSelectionButton: {fileID: 2018494922}
-  addObjectButton: {fileID: 982192493}
-  tileOptionMenus:
+  additionalOptionMenus:
   - optionsParent: {fileID: 0}
-    dropdown1: {fileID: 0}
+    dropdowns: []
   - optionsParent: {fileID: 0}
-    dropdown1: {fileID: 0}
+    dropdowns: []
   - optionsParent: {fileID: 0}
-    dropdown1: {fileID: 0}
+    dropdowns: []
   - optionsParent: {fileID: 347759830}
-    dropdown1: {fileID: 1108518022}
+    dropdowns:
+    - {fileID: 1108518022}
   - optionsParent: {fileID: 347759830}
-    dropdown1: {fileID: 1108518022}
-  levelObjectOptionsPanel: {fileID: 42686077}
+    dropdowns:
+    - {fileID: 1108518022}
+--- !u!114 &509540558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 509540552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e5f043d84019304aba6e7109cce9af9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guiParent: {fileID: 1597136054}
+  selectionBox: {fileID: 704405263}
+  selectionText: {fileID: 1170208251}
+--- !u!114 &509540559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 509540552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e32df83987ee5d44b8a0bd89043b716d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guiParent: {fileID: 42686077}
   levelObjectOptionMenus:
   - optionsParent: {fileID: 1055542160}
     dropdowns:
@@ -3382,7 +3411,34 @@ MonoBehaviour:
     - {fileID: 1323309821}
   - optionsParent: {fileID: 0}
     dropdowns: []
-  selectionBox: {fileID: 704405263}
+--- !u!114 &509540560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 509540552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9345f156a990ee444866bc8c7ac24c6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guiParent: {fileID: 488487218}
+--- !u!114 &509540561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 509540552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 589292310a8540a428918b4c63052cde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guiParent: {fileID: 707952539}
+  objectSelectionDropdown: {fileID: 2131507171}
+  addObjectButton: {fileID: 982192493}
 --- !u!1 &517727821
 GameObject:
   m_ObjectHideFlags: 0
@@ -7597,7 +7653,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 509540557}
+      - m_Target: {fileID: 509540560}
         m_MethodName: SaveLevel
         m_Mode: 1
         m_Arguments:
@@ -7726,7 +7782,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 509540557}
+      - m_Target: {fileID: 509540561}
         m_MethodName: AddObject
         m_Mode: 1
         m_Arguments:
@@ -9462,7 +9518,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 509540557}
+      - m_Target: {fileID: 509540559}
         m_MethodName: ApplyLevelObjectSettings
         m_Mode: 1
         m_Arguments:
@@ -10158,7 +10214,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 509540557}
+      - m_Target: {fileID: 509540559}
         m_MethodName: DeleteLevelObject
         m_Mode: 1
         m_Arguments:
@@ -11080,7 +11136,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 509540557}
+      - m_Target: {fileID: 509540560}
         m_MethodName: NewLevel
         m_Mode: 1
         m_Arguments:
@@ -12161,7 +12217,7 @@ GameObject:
   - component: {fileID: 1597136057}
   - component: {fileID: 1597136056}
   m_Layer: 5
-  m_Name: Selection Info Panel
+  m_Name: Selection Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12180,7 +12236,7 @@ RectTransform:
   m_Children:
   - {fileID: 1170208250}
   m_Father: {fileID: 509540556}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -12311,7 +12367,9 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options: []
+    m_Options:
+    - m_Text: None
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -13282,7 +13340,9 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options: []
+    m_Options:
+    - m_Text: None
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -14133,7 +14193,9 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options: []
+    m_Options:
+    - m_Text: None
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -14874,7 +14936,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 509540557}
+      - m_Target: {fileID: 509540560}
         m_MethodName: LoadLevel
         m_Mode: 1
         m_Arguments:
@@ -15168,7 +15230,9 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options: []
+    m_Options:
+    - m_Text: None
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

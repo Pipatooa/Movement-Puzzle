@@ -4,8 +4,18 @@ using UnityEngine;
 
 public static class LevelEditor
 {
-    public static LevelEditorGUI levelEditorGUI;
-    
+    public static LevelEditorGUIOld levelEditorGUI;
+
+    public static LevelEditorGUI.SelectionGUI selectionGUI;
+    public static LevelEditorGUI.TilePlacementGUI tilePlacementGUI;
+    public static LevelEditorGUI.AddObjectGUI addObjectGUI;
+    public static LevelEditorGUI.ObjectSettingsGUI objectSettingsGUI;
+
+    public static Vector2Int selectionStart;
+    public static Vector2Int selectionEnd;
+
+    public static LevelObjects.BaseLevelObject selectedLevelObject;
+
     public static bool levelOpen;
     public static string filePath;
 
@@ -45,7 +55,7 @@ public static class LevelEditor
     // Updates the level name
     public static void UpdateLevelName(string name)
     {
-        levelEditorGUI.levelNameInputField.text = name;
+        // levelEditorGUI.levelNameInputField.text = name;
         LevelInfo.currentLevelName = name;
         LevelInfo.levelData.levelName = name;
     }

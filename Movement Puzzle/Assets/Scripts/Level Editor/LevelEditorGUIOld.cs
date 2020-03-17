@@ -7,7 +7,7 @@ using UnityEditor;
 using System.IO;
 using SFB;
 
-public class LevelEditorGUI : MonoBehaviour
+public class LevelEditorGUIOld : MonoBehaviour
 {
     public TMPro.TMP_InputField levelNameInputField;
     public TMPro.TMP_Dropdown tileSelectionDropdown;
