@@ -6,6 +6,7 @@ public static class LevelEditor
 {
     public static LevelEditorGUI.LevelOptionsGUI levelOptionsGUI;
     public static LevelEditorGUI.SelectionGUI selectionGUI;
+    public static LevelEditorGUI.MoveSelectionGUI moveSelectionGUI;
     public static LevelEditorGUI.TilePlacementGUI tilePlacementGUI;
     public static LevelEditorGUI.AddObjectGUI addObjectGUI;
     public static LevelEditorGUI.ObjectSettingsGUI objectSettingsGUI;

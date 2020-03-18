@@ -25,6 +25,21 @@ namespace LevelEditorGUI
             guiParent.SetActive(value);
         }
 
+        // Updates the selection box and selection info text
+        public void UpdateSelectionBox()
+        {
+            // Format selection text
+            Vector2Int[] corners = Utils.GetTopLeftAndBottomRight(LevelEditor.selectionStart, LevelEditor.selectionEnd);
+            selectionText.text = corners[0].x + "," + corners[0].y + " - " + corners[1].x + "," + corners[1].y;
+
+            // Update selection box
+            Vector2 midPoint = (Vector2)(LevelEditor.selectionStart + LevelEditor.selectionEnd) / 2;
+            Vector2Int selection = LevelEditor.selectionEnd - LevelEditor.selectionStart;
+
+            selectionBox.transform.position = new Vector3(midPoint.x, 1, midPoint.y);
+            selectionBox.transform.localScale = new Vector3(Mathf.Abs(selection.x) + 1, Mathf.Abs(selection.y) + 1, 1);
+        }
+
         void Update()
         {
             // Selection start
@@ -45,7 +60,7 @@ namespace LevelEditorGUI
                     SetVisibility(true);
 
                     LevelEditor.tilePlacementGUI.applyToSelectionButton.interactable = false;
-                    // LevelEditor.addObjectGUI.enabled = false;
+                    LevelEditor.moveSelectionGUI.SetButtonsInteractable(false);
                     LevelEditor.addObjectGUI.SetVisibility(true);
                     LevelEditor.addObjectGUI.addObjectButton.interactable = false;
                     LevelEditor.objectSettingsGUI.SetVisibility(false);
@@ -61,15 +76,7 @@ namespace LevelEditorGUI
                 int y = Mathf.RoundToInt(worldPoint.z);
                 LevelEditor.selectionEnd = new Vector2Int(x, y);
 
-                Vector2 midPoint = (Vector2)(LevelEditor.selectionStart + LevelEditor.selectionEnd) / 2;
-                Vector2 selection = LevelEditor.selectionEnd - LevelEditor.selectionStart;
-
-                selectionBox.transform.position = new Vector3(midPoint.x, 1, midPoint.y);
-                selectionBox.transform.localScale = new Vector3(Mathf.Abs(selection.x) + 1, Mathf.Abs(selection.y) + 1, 1);
-
-                Vector2Int[] corners = Utils.GetTopLeftAndBottomRight(LevelEditor.selectionStart, LevelEditor.selectionEnd);
-
-                selectionText.text = corners[0].x + "," + corners[0].y + " - " + corners[1].x + "," + corners[1].y;
+                UpdateSelectionBox();
             }
 
             // Selection complete
@@ -101,6 +108,7 @@ namespace LevelEditorGUI
                 }
 
                 LevelEditor.tilePlacementGUI.applyToSelectionButton.interactable = true;
+                LevelEditor.moveSelectionGUI.SetButtonsInteractable(true);
                 LevelEditor.addObjectGUI.SetVisibility(LevelEditor.selectedLevelObject == null);
                 LevelEditor.addObjectGUI.addObjectButton.interactable = canAddObject;
                 LevelEditor.objectSettingsGUI.SetVisibility(LevelEditor.selectedLevelObject != null);
@@ -119,11 +127,13 @@ namespace LevelEditorGUI
             LevelEditor.selectionStart = -Vector2Int.one;
             LevelEditor.selectionEnd = -Vector2Int.one;
 
+            // Remove selection box
             selectionBox.transform.localScale = Vector3.zero;
 
             SetVisibility(false);
 
             LevelEditor.tilePlacementGUI.applyToSelectionButton.interactable = false;
+            LevelEditor.moveSelectionGUI.SetButtonsInteractable(false);
             LevelEditor.addObjectGUI.SetVisibility(true);
             LevelEditor.addObjectGUI.addObjectButton.interactable = false;
             LevelEditor.objectSettingsGUI.SetVisibility(false);
